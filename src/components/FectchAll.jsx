@@ -12,7 +12,7 @@ function FetchComponent() {
         }
         const result = await response.json();
         console.log(result);
-        setData(result.data);
+        setData(result);
       } catch (error) {
         console.error('Der opstod en fejl ved indlæsning af data:', error);
       }
@@ -33,7 +33,7 @@ function FetchComponent() {
           ))}
         </div>
       ) : (
-        <p>Loading...</p>
+        <p>Loading...</p> // Loading text hvis data ikke kan hentes
       )}
     </div>
   );
