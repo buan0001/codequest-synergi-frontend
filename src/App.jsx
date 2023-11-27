@@ -1,7 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
+// import About from "./pages/About";
+import "./App.css";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import Navbar from "./components/Navbar";
 
 
 export default function App() {
