@@ -24,8 +24,8 @@ export default function ItemDetail({ Id }) { // tror ikke det gør noget hvis de
     <div>
       {item ? (
         <div>
-          <h3>{item.name}</h3>
-          <p>{item.description}</p>
+          <h3>{item.first_name}</h3>
+          <p>{item.email}</p>
           {/* Eventuelle andre props ind her som passet til objektet */}
         </div>
       ) : (
