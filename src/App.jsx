@@ -23,7 +23,7 @@ export default function App() {
             element={<Booksandarticles />}
           ></Route>
           <Route path="*" element={<h1>Not Found</h1>}></Route>
-          {/* <Route path="/admin" element={<Admin/>}></Route> */}
+          <Route path="/admin" element={<Admin/>}></Route>
       </Routes>
     </>
   );
