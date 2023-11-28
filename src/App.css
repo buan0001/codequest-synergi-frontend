@@ -4,3 +4,7 @@ nav {
   padding: 20px;
   margin: 0px;
 }
+
+nav a {
+  padding: 0 10px 0 10px;
+}
