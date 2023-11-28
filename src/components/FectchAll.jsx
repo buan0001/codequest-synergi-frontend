@@ -7,14 +7,14 @@ function FetchComponent() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "localhost:3000"
+          "http://localhost:3333/frontpage"
         );
         if (!response.ok) {
           throw new Error('Der opstod en fejl ved fetch');
         }
         const result = await response.json();
         console.log(result);
-        setData(result);
+        setData(result[0].pagebody);
       } catch (error) {
         console.error('Der opstod en fejl ved indlæsning af data:', error);
       }
@@ -29,8 +29,8 @@ function FetchComponent() {
         <div>
           {data.map((item) => (
             <div key={item.id}>
-              <h3>{item.first_name}</h3>
-              <p>{item.email}</p>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
             </div>
           ))}
         </div>
