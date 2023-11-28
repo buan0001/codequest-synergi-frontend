@@ -16,9 +16,9 @@ export default function Header() {
               Kontakt
             </Nav.Link>
             <NavDropdown title="Om mig" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Teoretisk standpunkt</NavDropdown.Item>
+              <NavDropdown.Item href="/theory">Teoretisk ståsted</NavDropdown.Item>
               <NavDropdown.Item href="/about">Om mig</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">CV</NavDropdown.Item>
+              <NavDropdown.Item href="/cv">CV</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
             </NavDropdown>

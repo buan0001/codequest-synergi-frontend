@@ -1,4 +1,5 @@
 // import { useEffect, useState } from "react";
+// import { CVImage } from "../assets/CVImage";
 
 export default function Home() {
   // const [data, setData] = useState([]);
