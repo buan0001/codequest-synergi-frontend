@@ -3,7 +3,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-function CenteredLoginForm() {
+export default function LoginForm() {
   return (
     <Row className="justify-content-md-center">
       <Col md={6}>
@@ -39,5 +39,3 @@ function CenteredLoginForm() {
     </Row>
   );
 }
-
-export default CenteredLoginForm;
