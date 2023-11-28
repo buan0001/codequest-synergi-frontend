@@ -27,7 +27,7 @@ export default function Contact() {
           {...register("email", { required: "Feltet er ikke udfyldt" })}
           placeholder="Email"
         ></input>
-        <span>{errors.email?.message}</span>
+        <p>{errors.email?.message}</p>
         <input type="number"
           {...register("phone", { valueAsNumber: true,
             required: "Feltet er ikke udfyldt",

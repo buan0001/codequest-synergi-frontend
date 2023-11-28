@@ -5,6 +5,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import CV from "./pages/CV";
 import Booksandarticles from "./pages/BooksAndArticles";
+import Admin from "./pages/Admin";
 import "./App.css";
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
             element={<Booksandarticles />}
           ></Route>
           <Route path="*" element={<h1>Not Found</h1>}></Route>
+          {/* <Route path="/admin" element={<Admin/>}></Route> */}
       </Routes>
     </>
   );
