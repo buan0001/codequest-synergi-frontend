@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 export default function Contact() {
 
  const {register, handleSubmit, formState: {errors} } = useForm(); 
- console.log(errors);
+//  console.log(errors);
 
   return (
     <div>
@@ -17,40 +17,40 @@ export default function Contact() {
           {...register("firstname", { required: "Feltet er ikke udfyldt" })}
           placeholder="Fornavn"
         ></input>
-        <p>{errors.firstname?.message}</p>
+        <span>{errors.firstname?.message}</span>
         <input
           {...register("lastname", { required: "Feltet er ikke udfyldt" })}
           placeholder="Efternavn"
         ></input>
-        <p>{errors.lastname?.message}</p>
+        <span>{errors.lastname?.message}</span>
         <input
           {...register("email", { required: "Feltet er ikke udfyldt" })}
           placeholder="Email"
         ></input>
-        <p>{errors.email?.message}</p>
-        <input
-          {...register("phone", {
+        <span>{errors.email?.message}</span>
+        <input type="number"
+          {...register("phone", { valueAsNumber: true,
             required: "Feltet er ikke udfyldt",
             minLength: {value: 8, message: "Telefon nummeret skal være 8 cifre"},
           })}
           placeholder="Telefon nummer"
         ></input>
-        <p>{errors.phone?.message}</p>
+        <span>{errors.phone?.message}</span>
         <input
           {...register("company", { required: "Feltet er ikke udfyldt" })}
-          placeholder="Virksomheds navn"
+          placeholder="Virksomhedens navn"
         ></input>
-        <p>{errors.company?.message}</p>
+        <span>{errors.company?.message}</span>
         <input
           {...register("address", { required: "Feltet er ikke udfyldt" })}
           placeholder="Adresse"
         ></input>
-        <p>{errors.address?.message}</p>
+        <span>{errors.address?.message}</span>
         <input
           {...register("introduction", { required: "Feltet er ikke udfyldt"  })}
           placeholder="Kort introduktion"
         ></input>
-        <p>{errors.introduction?.message}</p>
+        <span>{errors.introduction?.message}</span>
         <button>Submit</button>
       </form>
     </div>
