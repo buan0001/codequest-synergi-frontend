@@ -6,7 +6,9 @@ function FetchComponent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://reqres.in/api/users?page=2");
+        const response = await fetch(
+          "localhost:3000"
+        );
         if (!response.ok) {
           throw new Error('Der opstod en fejl ved fetch');
         }
