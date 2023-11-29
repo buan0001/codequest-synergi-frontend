@@ -12,6 +12,7 @@ export default function Header() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto" /*justify-content-end" variant="pills" defaultActiveKey="/"*/>
             <Nav.Link href="/">Startside</Nav.Link>
+            <Nav.Link href="/Calendar">Kalender</Nav.Link>
             <Nav.Link href="/contact" eventKey="link-1">
               Kontakt
             </Nav.Link>
