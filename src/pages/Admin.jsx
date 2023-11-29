@@ -3,17 +3,20 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-export default function LoginForm() {
+function CenteredLoginForm() {
   return (
-    <Row className="justify-content-md-center">
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "80vh" }}
+    >
       <Col md={6}>
         <Form>
           <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
             <Form.Label column sm={3}>
-              Email
+              Brugernavn
             </Form.Label>
             <Col sm={9}>
-              <Form.Control type="email" placeholder="Email" />
+              <Form.Control type="username" placeholder="Brugernavn" />
             </Col>
           </Form.Group>
 
@@ -31,11 +34,13 @@ export default function LoginForm() {
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Col sm={{ span: 9, offset: 3 }}>
-              <Button type="submit">Sign in</Button>
+              <Button type="submit">Login</Button>
             </Col>
           </Form.Group>
         </Form>
       </Col>
-    </Row>
+    </div>
   );
 }
+
+export default CenteredLoginForm;
