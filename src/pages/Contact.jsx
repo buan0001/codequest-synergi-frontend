@@ -63,7 +63,7 @@ export default function Contact() {
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupEmail">
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupPhone">
           <Form.Label column sm={2}>
             Telefon nummer
           </Form.Label>
@@ -73,7 +73,7 @@ export default function Contact() {
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupEmail">
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupBusiness">
           <Form.Label column sm={2}>
             Virksomhedens navn
           </Form.Label>
@@ -92,7 +92,7 @@ export default function Contact() {
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formBasicCheckbox">
+        <Form.Group className="text-center" controlId="formBasicButton">
           <Button variant="primary" type="submit" value="Send">
             Send
           </Button>
