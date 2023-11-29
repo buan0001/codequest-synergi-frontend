@@ -1,4 +1,4 @@
-import FetchAll from "../components/FectchAll";
+import FetchAll from "../components/FetchAll";
 
 export default function Booksandarticles() {
   return (
