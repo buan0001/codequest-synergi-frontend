@@ -6,9 +6,9 @@ import About from "./pages/About";
 import CV from "./pages/CV";
 import Booksandarticles from "./pages/BooksAndArticles";
 import "./App.css";
+import Theory from "./pages/Theory";
 import Calendar from "./pages/calendar";
 // import calendar from "./pages/calendar";
-
 
 export default function App() {
   return (
@@ -19,8 +19,9 @@ export default function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/about" element={<About />}></Route>
-        <Route path="/cv" element={<CV />}></Route>
         <Route path="/calendar" element={<Calendar />}></Route>
+        <Route path="/theory" element={<Theory />}></Route>
+        <Route path="/cv" element={<CV />}></Route>
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route>
         <Route path="*" element={<h1>Not Found</h1>}></Route>
       </Routes>
