@@ -85,16 +85,6 @@ export default function Contact() {
 
         <Form.Group as={Row} className="mb-3" controlId="formGroupEmail">
           <Form.Label column sm={2}>
-            Adresse
-          </Form.Label>
-          <Col sm={3}>
-            <Form.Control type="text" name="adresse" placeholder="Adresse" required />
-            {/* <span>{errors.address?.message}</span> */}
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3" controlId="formGroupEmail">
-          <Form.Label column sm={2}>
             Kort introduktion
           </Form.Label>
           <Col sm={3}>
@@ -114,7 +104,7 @@ export default function Contact() {
 
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Button variant="primary" type="submit" value="Send">
-            Submit
+            Send
           </Button>
         </Form.Group>
       </Form>
