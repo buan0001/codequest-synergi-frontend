@@ -7,10 +7,12 @@ import CV from "./pages/CV";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Admin from "./pages/Admin";
 import "./App.css";
+import { AuthProvider } from "./components/AuthContext";
 
 export default function App() {
   return (
     <>
+    <AuthProvider>
       <Header />
 
       <Routes>
@@ -25,6 +27,7 @@ export default function App() {
           <Route path="*" element={<h1>Not Found</h1>}></Route>
           <Route path="/admin" element={<Admin/>}></Route>
       </Routes>
+      </AuthProvider>
     </>
   );
 }
