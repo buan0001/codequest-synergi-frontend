@@ -1,5 +1,8 @@
 // import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 
+// export default function ItemDetail({ Id }) { // tror ikke det gør noget hvis det kommer "itemid is missing in props validation", måske tjek op på det
+//   const [item, setItem] = useState(null);
 // export default function ItemDetail({ Id }) { // tror ikke det gør noget hvis det kommer "itemid is missing in props validation", måske tjek op på det
 //   const [item, setItem] = useState(null);
 
@@ -19,7 +22,23 @@
 
 //     fetchItem();
 //   }, [Id]);
+//     fetchItem();
+//   }, [Id]);
 
+//   return (
+//     <div>
+//       {item ? (
+//         <div>
+//           <h3>{item.first_name}</h3>
+//           <p>{item.email}</p>
+//           {/* Eventuelle andre props ind her som passet til objektet */}
+//         </div>
+//       ) : (
+//         <p>Loading...</p> // Loading text hvis data ikke kan hentes
+//       )}
+//     </div>
+//   );
+// }
 //   return (
 //     <div>
 //       {item ? (
