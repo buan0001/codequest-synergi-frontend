@@ -1,10 +1,13 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
+import LogoutButton from "./LogoutButton";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { useAuth } from "./AuthContext";
 import logo from "../assets/synergi-hrm logo.png";
 
 export default function Header() {
+  const { loggedIn } = useAuth();
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container className="ms-0 mw-100">
@@ -40,6 +43,7 @@ export default function Header() {
             </Nav>
           </Navbar.Collapse>
         </div>
+        <LogoutButton loggedIn={loggedIn} />
       </Container>
     </Navbar>
   );

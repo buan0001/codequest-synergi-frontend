@@ -6,6 +6,7 @@ import About from "./pages/About";
 import CV from "./pages/CV";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Admin from "./pages/Admin";
+import Bookings from "./pages/booking.jsx";
 import "./App.css";
 import Theory from "./pages/Theory";
 import Calendar from "./pages/calendar";
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route>
         <Route path="*" element={<h1>Not Found</h1>}></Route>
         <Route path="/admin" element={<Admin/>}></Route>
+        <Route path="/bookings" element={<Bookings/>}></Route>
       </Routes>
       </AuthProvider>
     </>

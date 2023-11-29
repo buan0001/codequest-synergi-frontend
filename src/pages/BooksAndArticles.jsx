@@ -1,10 +1,10 @@
-import FetchAll from "../components/FetchAll";
+import FetchPageOne from "../components/FetchPageOne";
 
 export default function Booksandarticles() {
   return (
     <>
       <h1>Come buy your books!</h1>
-      <FetchAll />
+      <FetchPageOne />
     </>
   );
 }
