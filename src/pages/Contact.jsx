@@ -31,78 +31,68 @@ export default function Contact() {
   };
 
   return (
-    <div>
-      <Form ref={form} onSubmit={sendEmail}>
-        <Form.Group as={Row} className="mb-3" controlId="formGroupName">
+    <div className="bg-dark">
+      <Form ref={form} onSubmit={sendEmail} className="ms-4 mt-4 bg-white">
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
           <Form.Label column sm={2}>
             Fornavn
           </Form.Label>
           <Col sm={3}>
-            <Form.Control type="text" placeholder="Fornavn" name="fornavn" required />
+            <Form.Control type="text" className="bg-light" placeholder="Fornavn" name="fornavn" required />
             {/* <span style={{ color: "red" }}>{errors.firstname?.message}</span> */}
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3" controlId="formGroupName">
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
           <Form.Label column sm={2}>
             Efternavn
           </Form.Label>
           <Col sm={3}>
-            <Form.Control type="text" placeholder="Efternavn" name="efternavn" required />
+            <Form.Control type="text" className="bg-light" placeholder="Efternavn" name="efternavn" required />
             {/* <span>{errors.lastname?.message}</span> */}
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3" controlId="formGroupEmail">
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupEmail">
           <Form.Label column sm={2}>
             Email
           </Form.Label>
           <Col sm={3}>
-            <Form.Control type="email" placeholder="Email" name="email" required />
+            <Form.Control type="email" className="bg-light" placeholder="Email" name="email" required />
             {/* <span>{errors.email?.message}</span> */}
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3" controlId="formGroupEmail">
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupEmail">
           <Form.Label column sm={2}>
             Telefon nummer
           </Form.Label>
           <Col sm={3}>
-            <Form.Control type="number" placeholder="Telefon nummer" name="telefon" required />
+            <Form.Control type="number" className="bg-light" placeholder="Telefon nummer" name="telefon" required />
             {/* <span>{errors.phone?.message}</span> */}
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3" controlId="formGroupEmail">
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupEmail">
           <Form.Label column sm={2}>
             Virksomhedens navn
           </Form.Label>
           <Col sm={3}>
-            <Form.Control type="text" placeholder="Virksomhedens navn" name="virksomhed" required />
+            <Form.Control type="text" className="bg-light" placeholder="Virksomhedens navn (valgfrit)" name="virksomhed" />
             {/* <span>{errors.company?.message}</span> */}
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3" controlId="formGroupEmail">
-          <Form.Label column sm={2}>
-            Kort introduktion
-          </Form.Label>
-          <Col sm={3}>
-            <Form.Control type="text" placeholder="Kort introduktion" name="intro" required />
-            {/* <span>{errors.introduction?.message}</span> */}
-          </Col>
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label column sm={2}>
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
+          <Form.Label column sm={1}>
             Besked
           </Form.Label>
-          <Col sm={3}>
-            <Form.Control as="textarea" name="besked" rows={4} />
+          <Col sm={4}>
+            <Form.Control as="textarea" className="bg-light" name="besked" rows={4} />
           </Col>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formBasicCheckbox">
           <Button variant="primary" type="submit" value="Send">
             Send
           </Button>
