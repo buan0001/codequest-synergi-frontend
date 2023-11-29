@@ -93,7 +93,7 @@ export default function Contact() {
         </Form.Group>
 
         <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formBasicCheckbox">
-          <Button variant="primary" type="submit" value="Send">
+          <Button variant="outline-primary" type="submit" value="Send">
             Send
           </Button>
         </Form.Group>
