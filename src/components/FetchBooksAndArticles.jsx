@@ -29,11 +29,15 @@ export default function FetchComponent() {
           {data.pageBody.map((item) => (
             <div key={item._id}>
               <h5>{item.title}</h5>
-              <p>{item.description}</p>
-                <p>{item.author}</p>
-                <p>{item.published}</p>
+              <p>{item.release}</p>
+                <p>{item.year}</p>
                 <p>{item.publisher}</p>
-                <p>{item.pages}</p>
+                <p>{item.author.firstName}</p>
+                <p>{item.author.lastName}</p>
+                <p>{item.pay}</p>
+                <a>{item.link}</a>
+                <p>{item.resume}</p>
+                
             </div>
           ))}
         </div>

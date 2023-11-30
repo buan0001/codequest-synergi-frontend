@@ -1,5 +1,6 @@
 // import { useEffect, useState } from "react";
 // import { CVImage } from "../assets/CVImage";
+import FetchPageOne from "../components/FetchPageOne";
 
 export default function Home() {
   // const [data, setData] = useState([]);
@@ -17,6 +18,7 @@ export default function Home() {
     <>
       <h1>Home</h1>
       <p>Welcome to the home page!</p>
+      <FetchPageOne />
     </>
   );
 }
