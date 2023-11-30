@@ -4,6 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import logo from "../assets/synergi-hrm logo.png";
 
+// Funktionen hedder Header selvom det er en Navbar, pga. navngivningskonflikt med Navbar i React Bootstrap.
 export default function Header() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -31,7 +32,6 @@ export default function Header() {
                 <NavDropdown.Item href="/about">Om mig</NavDropdown.Item>
                 <NavDropdown.Item href="/cv">CV</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                 <NavDropdown.Item href="/booksandarticles">Bøger og artikler</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href="/contact" eventKey="link-1">
@@ -44,13 +44,3 @@ export default function Header() {
     </Navbar>
   );
 }
-
-// export default function Navbar() {
-//   return (
-//     <nav>
-//       <a href="/">Startside</a>
-//       <a href="/about">Om mig</a>
-//       <a href="/contact">Kontakt</a>
-//     </nav>
-//   );
-// }

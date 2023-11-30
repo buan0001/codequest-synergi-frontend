@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { toast } from "react-toastify";
 
 export default function Contact() {
   // const {
@@ -17,21 +18,48 @@ export default function Contact() {
 
   const form = useRef();
 
+  // EmailJS funktionalitet
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs.sendForm(`service_mo1481e`, `template_3x3y7gc`, form.current, `QennLeEfNjWQd9kMQ`).then(
       (result) => {
         console.log(result.text);
+
+        // Success toast - React Toastify library
+        toast.success("Din besked er sendt!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       },
       (error) => {
         console.log(error.text);
+
+        // Error toast - React Toastify library
+        toast.error("Din besked blev ikke sendt, prøv igen!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     );
   };
 
   return (
     <div className="bg-dark">
+      {/* Kontakt Form */}
+
       <Form ref={form} onSubmit={sendEmail} className="ms-4 mt-4 bg-white">
         <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
           <Form.Label column sm={2}>
