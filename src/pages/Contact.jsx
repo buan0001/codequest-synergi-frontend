@@ -59,7 +59,6 @@ export default function Contact() {
   return (
     <div className="bg-dark">
       {/* Kontakt Form */}
-
       <Form ref={form} onSubmit={sendEmail} className="ms-4 mt-4 bg-white">
         <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
           <Form.Label column sm={2}>

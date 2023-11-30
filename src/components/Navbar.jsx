@@ -10,12 +10,14 @@ export default function Header() {
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container className="ms-0 mw-100">
         <div className="nav align-self-center">
+          {/* Synergi Logo */}
           <Navbar.Brand href="/" className="align-self-center">
             <img src={logo} href="/" alt="logo" width="118" height="75" />
             Synergi HRM
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
+          {/* Startside, Kalender. KALENDER SKAL MÅSKE RYKKES? !!! */}
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
               <Nav.Link href="/">Startside</Nav.Link>
@@ -27,6 +29,7 @@ export default function Header() {
         <div>
           <Navbar.Collapse>
             <Nav>
+              {/* Om mig dropdown & Kontakt */}
               <NavDropdown title="Om mig" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/theory">Teoretisk ståsted</NavDropdown.Item>
                 <NavDropdown.Item href="/about">Om mig</NavDropdown.Item>
