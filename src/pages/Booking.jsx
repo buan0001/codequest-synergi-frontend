@@ -13,7 +13,7 @@ export default function Booking() {
       <h1>Booking</h1>
       <p>Welcome to the booking page!</p>
 
-      <DatePicker locale="da" selected={startDate} onChange={(date) => setStartDate(date)} />
+      <DatePicker locale="da" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" />
     </>
   );
 }
