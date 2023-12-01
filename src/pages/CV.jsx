@@ -26,7 +26,7 @@ export default function CV() {
         <li> 1986 - Selvstændig konsulent først indenfor ledelse, kommunikation og samarbejde, senere også indenfor ledelses- og organiseringsudvikling.</li>
         <li> 1984 - 1986 Afdelingsleder og underviser ved Hospitalslaborantskolen i København (nu bioanalytikeruddannelsen).</li>
         <li> 1982 - 1986 Underviser ved Hospitalslaborantskolen i København</li>
-        <li> 1981 – 1984 Dyrlæge i blandet praksis.</li>
+        <li> 1981 - 1984 Dyrlæge i blandet praksis.</li>
       </ul>
 
       <h4>Undervisningserfaring</h4>
