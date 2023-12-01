@@ -23,6 +23,7 @@ export default function Header() {
               <Nav.Link href="/">Startside</Nav.Link>
               <Nav.Link href="/Calendar">Kalender</Nav.Link>
               <Nav.Link href="/booking">Booking</Nav.Link>
+              <Nav.Link href="/edit">Edit</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </div>

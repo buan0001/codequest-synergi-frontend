@@ -5,6 +5,7 @@ import Booking from "./pages/Booking";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import CV from "./pages/CV";
+import Edit from "./pages/CKEditor";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Theory from "./pages/Theory";
 import Contact from "./pages/Contact";
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/about" element={<About />}></Route> {/* About page */}
         <Route path="/calendar" element={<Calendar />}></Route> {/* Calendar page */}
         <Route path="/booking" element={<Booking />}></Route> {/* Booking page */}
+        <Route path="/edit" element={<Edit />}></Route> {/* Booking page */}
         <Route path="/theory" element={<Theory />}></Route> {/* Teoretisk ståsted page */}
         <Route path="/cv" element={<CV />}></Route> {/* CV page */}
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}
