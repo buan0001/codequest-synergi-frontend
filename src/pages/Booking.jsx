@@ -6,7 +6,7 @@ import da from "date-fns/locale/da";
 import { setHours, setMinutes } from "date-fns";
 registerLocale("da", da);
 setDefaultLocale("da");
-setHours;
+
 
 export default function Booking() {
   const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 0));
@@ -16,6 +16,7 @@ export default function Booking() {
       <p>Welcome to the booking page!</p>
 
       <DatePicker
+        showIcon
         locale="da"
         selected={startDate}
         onChange={(date) => setStartDate(date)}
