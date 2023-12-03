@@ -5,7 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
 
-// der findes også fullcalender til react https://fullcalendar.io/docs/react 
+// der findes også fullcalender til react https://fullcalendar.io/docs/react
 
 const MyCalendar = () => {
   const [events, setEvents] = useState([
@@ -13,13 +13,13 @@ const MyCalendar = () => {
     {
       title: "Booked Slot 1",
       start: new Date(2023, 10, 15, 10, 0),
-      end: new Date(2023, 10, 15, 12, 0)
+      end: new Date(2023, 10, 15, 12, 0),
     },
     {
       title: "Booked Slot 2",
       start: new Date(2023, 10, 20, 14, 0),
-      end: new Date(2023, 10, 20, 16, 0)
-    }
+      end: new Date(2023, 10, 20, 16, 0),
+    },
   ]);
 
   const handleSelectSlot = ({ start, end }) => {
@@ -32,8 +32,8 @@ const MyCalendar = () => {
       {
         title: "New Booking",
         start,
-        end
-      }
+        end,
+      },
     ]);
   };
 
