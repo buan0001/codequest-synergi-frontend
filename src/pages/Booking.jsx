@@ -163,7 +163,6 @@ export default function Booking() {
               className="customDatePicker"
               todayButton="I dag"
               showIcon
-              locale="da"
               selectsRange={true}
               startDate={startDate}
               endDate={endDate}
@@ -173,6 +172,8 @@ export default function Booking() {
               filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
               isClearable={true}
               withPortal
+              locale="da"
+              dateFormat="dd-MM-yyyy"
               name="bookingDays"
               placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
               required
