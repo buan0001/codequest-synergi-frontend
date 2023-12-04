@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
 import Calendar from "./pages/Calendar";
-import Booking from "./pages/Booking";
+import Booking from "./pages/Booking.jsx";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import CV from "./pages/CV";
@@ -9,6 +9,7 @@ import Edit from "./pages/CKEditor";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Theory from "./pages/Theory";
 import Contact from "./pages/Contact";
+import Admin from "./pages/Admin";
 import "./App.css";
 // import calendar from "./pages/calendar";
 
@@ -31,7 +32,7 @@ export default function App() {
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}
         <Route path="*" element={<h1>Not Found</h1>}></Route>
         <Route path="/admin" element={<Admin/>}></Route>
-        <Route path="/bookings" element={<Bookings/>}></Route>
+        <Route path="/bookings" element={<Booking/>}></Route>
       </Routes>
       <ToastContainer /> {/* React Toastify Container */}
     </>
