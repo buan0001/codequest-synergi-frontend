@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import da from "date-fns/locale/da";
-// import { setHours, setMinutes } from "date-fns";
+import { isWeekend } from "date-fns";
 registerLocale("da", da);
 setDefaultLocale("da");
 
@@ -18,6 +18,23 @@ export default function Booking() {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [excludedTimes, setExcludedTimes] = useState([]);
+
+  const getNextDay = () => {
+    const today = new Date();
+    const nextDay = new Date(today);
+    nextDay.setDate(today.getDate() + 1);
+    return nextDay;
+  };
+
+  const excludeWeekends = (date) => {
+    // Returns false if the day is Saturday or Sunday
+    return !isWeekend(date);
+  };
+
+  const excludePastDatesAndToday = (date) => {
+    const today = new Date();
+    return date >= today;
+  };
 
   const handleStartTimeChange = (time) => {
     setStartTime(time);
@@ -52,8 +69,28 @@ export default function Booking() {
     formData.append("bookingTimeStart", startTimeValue);
     formData.append("bookingTimeEnd", endTimeValue);
 
-    const data = Object.fromEntries(formData.entries());
-    console.log("Form Data:", data);
+    const formEntries = Object.fromEntries(formData.entries());
+    console.log("Form Data", formEntries);
+
+    let combinedData = { ...formEntries };
+
+    if (startDate && endDate) {
+      const datesInRange = [];
+      let currentDate = new Date(startDate);
+
+      while (currentDate <= endDate) {
+        datesInRange.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      console.log("Selected Dates:", datesInRange);
+
+      combinedData.datesInRange = datesInRange.map((date) => date.toISOString());
+    } else {
+      console.log("Please select both start and end dates.");
+    }
+
+    console.log("Combined Data:", combinedData);
   };
 
   return (
@@ -68,6 +105,33 @@ export default function Booking() {
           </Form.Label>
           <Col sm={4}>
             <Form.Control type="text" name="bookingTitle" placeholder="Titel på booking" />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Fulde navn:
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Control type="text" name="bookingFullName" placeholder="Dit fulde navn" />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Email
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Control type="email" name="bookingEmail" placeholder="Din E-mail" />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Tlf. Nummer
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Control type="number" name="bookingPhoneNumber" placeholder="Dit tlf. nummer" />
           </Col>
         </Form.Group>
 
@@ -87,6 +151,8 @@ export default function Booking() {
           <Col sm={4}>
             <DatePicker
               className="customDatePicker"
+              todayButton="I dag"
+              // showYearDropdown
               showIcon
               locale="da"
               selectsRange={true}
@@ -95,9 +161,11 @@ export default function Booking() {
               onChange={(update) => {
                 setDateRange(update);
               }}
+              filterDate={(excludeWeekends, excludePastDatesAndToday)}
               isClearable={true}
               withPortal
               name="bookingDays"
+              placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
             />
           </Col>
         </Form.Group>
@@ -116,6 +184,8 @@ export default function Booking() {
             dateFormat="HH:mm"
             inline
             name="bookingTimeStart"
+            minTime={new Date().setHours(8, 0)}
+            maxTime={new Date().setHours(15, 0)}
           />
           <Form.Label column sm={2}>
             Vælg Sluttidspunkt
@@ -131,6 +201,8 @@ export default function Booking() {
             inline
             name="bookingTimeEnd"
             excludeTimes={excludedTimes}
+            minTime={new Date().setHours(8, 0)}
+            maxTime={new Date().setHours(16, 0)}
           />
         </Form.Group>
 
