@@ -110,7 +110,7 @@ function Edit() {
               // You can store the "editor" and use when it is needed.
               console.log("Editor is ready to use!", editor);
               editorReference.test(editor);
-              await fetchPage();
+              // await fetchPage();
             }}
             onChange={(event, editor) => {
               const data = editor.getData();
