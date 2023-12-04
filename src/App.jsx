@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
-import Booking from "./pages/Booking";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import CV from "./pages/CV";
@@ -9,6 +8,7 @@ import Booksandarticles from "./pages/BooksAndArticles";
 import Theory from "./pages/Theory";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
+import Booking from "./pages/Booking";
 import "./App.css";
 // import calendar from "./pages/calendar";
 
@@ -23,7 +23,7 @@ export default function App() {
         <Route path="/" element={<Home />}></Route> {/* Home page */}
         <Route path="/contact" element={<Contact />}></Route> {/* Contact page */}
         <Route path="/about" element={<About />}></Route> {/* About page */}
-        <Route path="/booking" element={<Booking />}></Route> Booking page
+        <Route path="/booking" element={<Booking />}></Route> {/*Booking page*/}
         <Route path="/edit" element={<Edit />}></Route> {/* Booking page */}
         <Route path="/theory" element={<Theory />}></Route> {/* Teoretisk ståsted page */}
         <Route path="/cv" element={<CV />}></Route> {/* CV page */}
