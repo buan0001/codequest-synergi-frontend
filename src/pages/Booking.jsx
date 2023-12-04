@@ -45,7 +45,6 @@ export default function Booking() {
             <DatePicker
               showIcon
               locale="da"
-              dateFormat="dd/MM/yyyy"
               closeOnScroll={true}
               selected={startDate}
               onChange={(date) => setStartDate(date)}
