@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
-import Calendar from "./pages/Calendar";
 import Booking from "./pages/Booking";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -23,7 +22,6 @@ export default function App() {
         <Route path="/" element={<Home />}></Route> {/* Home page */}
         <Route path="/contact" element={<Contact />}></Route> {/* Contact page */}
         <Route path="/about" element={<About />}></Route> {/* About page */}
-        <Route path="/calendar" element={<Calendar />}></Route> {/* Calendar page */}
         <Route path="/booking" element={<Booking />}></Route> {/* Booking page */}
         <Route path="/edit" element={<Edit />}></Route> {/* Booking page */}
         <Route path="/theory" element={<Theory />}></Route> {/* Teoretisk ståsted page */}
