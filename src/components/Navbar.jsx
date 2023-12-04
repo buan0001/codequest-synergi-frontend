@@ -1,9 +1,8 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-// import LogoutButton from "./LogoutButton";
+import LogoutButton from "./LogoutButton";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-// import { useAuth } from "./AuthContext";
 import logo from "../assets/synergi-hrm logo.png";
 
 // Funktionen hedder Header selvom det er en Navbar, pga. navngivningskonflikt med Navbar i React Bootstrap.
@@ -47,7 +46,7 @@ export default function Header() {
             </Nav>
           </Navbar.Collapse>
         </div>
-        {/* <LogoutButton loggedIn={loggedIn} /> */}
+        <LogoutButton />
       </Container>
     </Navbar>
   );
