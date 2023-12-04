@@ -61,6 +61,9 @@ export default function Booking() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // missing check if startDate, endDate, startTime, and endTime are selected
+
     const formData = new FormData(event.target);
 
     const startTimeValue = startTime.toLocaleTimeString("da");
@@ -72,6 +75,9 @@ export default function Booking() {
     const formEntries = Object.fromEntries(formData.entries());
     console.log("Form Data", formEntries);
 
+    //  The spread syntax (...) is used to create a new object
+    // 'combinedData' by copying all the enumerable own properties
+    // from the formEntries object.
     let combinedData = { ...formEntries };
 
     if (startDate && endDate) {
@@ -79,7 +85,11 @@ export default function Booking() {
       let currentDate = new Date(startDate);
 
       while (currentDate <= endDate) {
-        datesInRange.push(new Date(currentDate));
+        const dayOfWeek = currentDate.getDay();
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+          datesInRange.push(new Date(currentDate));
+        }
+
         currentDate.setDate(currentDate.getDate() + 1);
       }
 
@@ -104,7 +114,7 @@ export default function Booking() {
             Titel
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="text" name="bookingTitle" placeholder="Titel på booking" />
+            <Form.Control type="text" name="bookingTitle" placeholder="Titel på booking" required />
           </Col>
         </Form.Group>
 
@@ -113,7 +123,7 @@ export default function Booking() {
             Fulde navn:
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="text" name="bookingFullName" placeholder="Dit fulde navn" />
+            <Form.Control type="text" name="bookingFullName" placeholder="Dit fulde navn" required />
           </Col>
         </Form.Group>
 
@@ -122,7 +132,7 @@ export default function Booking() {
             Email
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="email" name="bookingEmail" placeholder="Din E-mail" />
+            <Form.Control type="email" name="bookingEmail" placeholder="Din E-mail" required />
           </Col>
         </Form.Group>
 
@@ -131,7 +141,7 @@ export default function Booking() {
             Tlf. Nummer
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="number" name="bookingPhoneNumber" placeholder="Dit tlf. nummer" />
+            <Form.Control type="number" name="bookingPhoneNumber" placeholder="Dit tlf. nummer" required />
           </Col>
         </Form.Group>
 
@@ -140,7 +150,7 @@ export default function Booking() {
             Besked
           </Form.Label>
           <Col sm={4}>
-            <Form.Control as="textarea" className="bg-light" name="bookingMessage" placeholder="Kort beskrivelse af grunden til du booker.." rows={4} />
+            <Form.Control as="textarea" className="bg-light" name="bookingMessage" placeholder="Kort beskrivelse af grunden til du booker.." rows={4} required />
           </Col>
         </Form.Group>
 
@@ -152,7 +162,6 @@ export default function Booking() {
             <DatePicker
               className="customDatePicker"
               todayButton="I dag"
-              // showYearDropdown
               showIcon
               locale="da"
               selectsRange={true}
@@ -161,11 +170,12 @@ export default function Booking() {
               onChange={(update) => {
                 setDateRange(update);
               }}
-              filterDate={(excludeWeekends, excludePastDatesAndToday)}
+              filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
               isClearable={true}
               withPortal
               name="bookingDays"
               placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+              required
             />
           </Col>
         </Form.Group>
