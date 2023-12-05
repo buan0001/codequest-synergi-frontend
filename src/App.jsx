@@ -9,6 +9,7 @@ import Edit from "./pages/CKEditor";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Theory from "./pages/Theory";
 import Contact from "./pages/Contact";
+import Footer from "./components/Footer";
 import "./App.css";
 // import calendar from "./pages/calendar";
 
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="*" element={<h1>Not Found</h1>}></Route>
       </Routes>
       <ToastContainer /> {/* React Toastify Container */}
+      <Footer />
     </>
   );
 }
