@@ -70,8 +70,8 @@ export default function Booking() {
     const startTimeValue = startTime.toLocaleTimeString("da");
     const endTimeValue = endTime.toLocaleTimeString("da");
 
-    formData.append("bookingTimeStart", startTimeValue);
-    formData.append("bookingTimeEnd", endTimeValue);
+    formData.append("timeStart", startTimeValue);
+    formData.append("timeEnd", endTimeValue);
 
     const formEntries = Object.fromEntries(formData.entries());
     console.log("Form Data", formEntries);
