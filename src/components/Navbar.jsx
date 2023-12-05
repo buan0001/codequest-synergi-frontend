@@ -1,8 +1,8 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import LogoutButton from "./LogoutButton";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import LogoutButton from "./LogoutButton";
 import logo from "../assets/synergi-hrm logo.png";
 
 // Funktionen hedder Header selvom det er en Navbar, pga. navngivningskonflikt med Navbar i React Bootstrap.
@@ -32,6 +32,7 @@ export default function Header() {
         <div>
           <Navbar.Collapse>
             <Nav>
+              <Nav.Link href="/kunder">Kunder</Nav.Link>
               {/* Om mig dropdown & Kontakt */}
               <NavDropdown title="Om mig" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/theory">Teoretisk ståsted</NavDropdown.Item>
