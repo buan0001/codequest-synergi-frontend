@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function FetchComponent() {
   const [data, setData] = useState(null);
@@ -6,17 +6,15 @@ function FetchComponent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3333/pages/Synergi Human Resource Management"
-        );
+        const response = await fetch("http://localhost:3333/pages/Synergi Human Resource Management");
         if (!response.ok) {
-          throw new Error('Der opstod en fejl ved fetch');
+          throw new Error("Der opstod en fejl ved fetch");
         }
         const result = await response.json();
         console.log(result);
         setData(result);
       } catch (error) {
-        console.error('Der opstod en fejl ved indlæsning af data:', error);
+        console.error("Der opstod en fejl ved indlæsning af data:", error);
       }
     };
 
@@ -28,16 +26,16 @@ function FetchComponent() {
       {data ? (
         <div>
           <h3>{data.pageTitle}</h3>
-          {data.pageBody.map((item) => (
-          <div key={item._id}>
+          {/* {data.pageBody.map((item) => (
+            <div key={item._id}>
               <h5>{item.title}</h5>
-              <p>{item.body}</p>
-            </div>
-          ))}
+              <p>{item.body}</p> */}
+          {/* </div> */}
+          {/* ))} */}
         </div>
-     ) : (
+      ) : (
         <p>Loading...</p> // Loading text hvis data ikke kan hentes
-    )}
+      )}
     </div>
   );
 }
