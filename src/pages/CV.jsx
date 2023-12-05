@@ -2,7 +2,8 @@
 import FetchPages from "../components/FetchPages";
 
 export default function CV() {
+  const prop = 'cv';
   return (
-    <FetchPages />
+    <FetchPages title={prop}/>
   );
 }

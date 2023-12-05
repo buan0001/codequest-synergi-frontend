@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 
-export default function FetchComponent() {
+export default function FetchComponent(prop) {
+  console.log(prop);
   const [data, setData] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3333/pages/cv`);
+        const response = await fetch(`http://localhost:3333/pages/${prop.title}`);
         if (!response.ok) {
           throw new Error("Der opstod en fejl ved fetch");
         }
@@ -20,7 +21,7 @@ export default function FetchComponent() {
     };
 
     fetchData();
-  }, []); // Dependency that decides how many times the effect runs
+  }, [prop]); // Dependency that decides how many times the effect runs
 
   return (
     <div>
