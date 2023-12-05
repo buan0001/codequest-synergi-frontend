@@ -13,12 +13,8 @@ registerLocale("da", da);
 setDefaultLocale("da");
 
 export default function Booking() {
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
-
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
-  const [excludedTimes, setExcludedTimes] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const getNextDay = () => {
     const today = new Date();
@@ -37,71 +33,17 @@ export default function Booking() {
     return date >= today;
   };
 
-  const handleStartTimeChange = (time) => {
-    setStartTime(time);
-    generateExcludedTimes(time);
-  };
-
-  const generateExcludedTimes = (selectedStartTime) => {
-    const excluded = [];
-    const current = new Date(selectedStartTime);
-    const startOfDay = new Date(selectedStartTime);
-    startOfDay.setHours(0, 0, 0);
-
-    while (current >= startOfDay) {
-      excluded.push(new Date(current));
-      current.setMinutes(current.getMinutes() - 15);
-    }
-
-    setExcludedTimes(excluded);
-  };
-
-  const handleEndTimeChange = (time) => {
-    setEndTime(time);
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
+    // console.log(startDate);
+    // console.log(endDate);
 
     // missing check if startDate, endDate, startTime, and endTime are selected
 
     const formData = new FormData(event.target);
 
-    const startTimeValue = startTime.toLocaleTimeString("da");
-    const endTimeValue = endTime.toLocaleTimeString("da");
-
-    formData.append("timeStart", startTimeValue);
-    formData.append("timeEnd", endTimeValue);
-
     const formEntries = Object.fromEntries(formData.entries());
     console.log("Form Data", formEntries);
-
-    //  The spread syntax (...) is used to create a new object
-    // 'combinedData' by copying all the enumerable own properties
-    // from the formEntries object.
-    let combinedData = { ...formEntries };
-
-    if (startDate && endDate) {
-      const datesInRange = [];
-      let currentDate = new Date(startDate);
-
-      while (currentDate <= endDate) {
-        const dayOfWeek = currentDate.getDay();
-        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-          datesInRange.push(new Date(currentDate));
-        }
-
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-
-      console.log("Selected Dates:", datesInRange);
-
-      combinedData.datesInRange = datesInRange.map((date) => date.toISOString());
-    } else {
-      console.log("Please select both start and end dates.");
-    }
-
-    console.log("Combined Data:", combinedData);
   };
 
   return (
@@ -143,10 +85,8 @@ export default function Booking() {
             Vælg ydelse:
           </Form.Label>
           <Col sm={4}>
-            <Form.Select aria-label="Default select example" name="chooseService" required>
-              <option disabled selected>
-                Vælg konsulent ydelse
-              </option>
+            <Form.Select aria-label="Default select example" name="chooseService" defaultValue="Vælg konsulent ydelse" required>
+              <option disabled>Vælg konsulent ydelse</option>
               <option value="Proceskonsultation">Proceskonsultation</option>
               <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
               <option value="Kreativ facilitering">Kreativ facilitering</option>
@@ -169,65 +109,63 @@ export default function Booking() {
 
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={2}>
-            Vælg Dato(-er)
+            Vælg Start Dato
           </Form.Label>
           <Col sm={4}>
             <DatePicker
-              className="customDatePicker"
               todayButton="I dag"
               showIcon
-              selectsRange={true}
-              startDate={startDate}
-              endDate={endDate}
-              onChange={(update) => {
-                setDateRange(update);
+              // startDate={startDate}
+              selected={startDate}
+              onChange={(date) => {
+                setStartDate(date);
               }}
-              filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
-              // isClearable={true} // den sætter sig over datoerne
+              // onChange={handleStartDateChange}
               withPortal
               locale="da"
-              dateFormat="dd-MM-yyyy"
-              name="firstAndLastDay"
+              dateFormat="dd-MM-yyyy HH:mm"
+              name="firstDay"
               placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+              showTimeSelect
+              // inline
+              timeIntervals={15}
+              filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
+              minTime={new Date().setHours(8, 0)}
+              maxTime={new Date().setHours(15, 0)}
               required
             />
           </Col>
         </Form.Group>
-
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={2}>
-            Vælg Starttidspunkt
+            Vælg Slut Dato
           </Form.Label>
-          <DatePicker
-            selected={startTime}
-            locale="da"
-            onChange={handleStartTimeChange}
-            showTimeSelect
-            showTimeSelectOnly
-            timeIntervals={15}
-            dateFormat="HH:mm"
-            inline
-            name="timeStart"
-            minTime={new Date().setHours(8, 0)}
-            maxTime={new Date().setHours(15, 0)}
-          />
-          <Form.Label column sm={2}>
-            Vælg Sluttidspunkt
-          </Form.Label>
-          <DatePicker
-            selected={endTime}
-            locale="da"
-            onChange={handleEndTimeChange}
-            showTimeSelect
-            showTimeSelectOnly
-            timeIntervals={15}
-            dateFormat="HH:mm"
-            inline
-            name="timeEnd"
-            excludeTimes={excludedTimes}
-            minTime={new Date().setHours(8, 0)}
-            maxTime={new Date().setHours(16, 0)}
-          />
+          <Col sm={4}>
+            <DatePicker
+              todayButton="I dag"
+              showIcon
+              // startDate={endDate}
+              selected={endDate}
+              onChange={(date) => {
+                setEndDate(date);
+              }}
+              withPortal
+              locale="da"
+              dateFormat="dd-MM-yyyy HH:mm"
+              name="lastDay"
+              placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+              showTimeSelect
+              // inline
+              timeIntervals={15}
+              filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
+              // endDate={endDate}
+              minDate={startDate}
+              minTime={startDate.toDateString() !== endDate.toDateString() ? new Date().setHours(8, 0) : new Date(startDate.getTime() + 15 * 60 * 1000)}
+              // new Date(startDate.getTime() + 15 * 60 * 1000)}
+              maxTime={new Date().setHours(16, 0)}
+              required
+            />
+          </Col>
         </Form.Group>
 
         <Form.Group className="text-center" controlId="formBasicButton">
