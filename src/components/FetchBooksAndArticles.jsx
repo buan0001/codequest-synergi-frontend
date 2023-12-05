@@ -6,7 +6,7 @@ export default function FetchComponent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3333/booksandarticles");
+        const response = await fetch("http://localhost:3333/pages/titles");
         if (!response.ok) {
           throw new Error("Der opstod en fejl ved fetch");
         }
