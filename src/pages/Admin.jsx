@@ -9,7 +9,7 @@ export default function AdminLogin() {
   if (loggedIn) {
     return (
       <div>
-        <h1>Velkommen</h1>
+        <h1>Du er nu logget ind som admin</h1>
       </div>
     );
   }
