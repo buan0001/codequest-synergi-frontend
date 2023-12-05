@@ -33,6 +33,15 @@ export default function Header() {
           <Navbar.Collapse>
             <Nav>
               <Nav.Link href="/kunder">Kunder</Nav.Link>
+              <NavDropdown title="Konsulentydelser" id="basic-nav-dropdown">
+                <NavDropdown.Item href="/proceskonsultation">Proceskonsultation</NavDropdown.Item>
+                <NavDropdown.Item href="/anerkendende coaching">Coaching af enkeltpersoner eller team</NavDropdown.Item>
+                <NavDropdown.Item href="/teamudvikling">Teamudvikling</NavDropdown.Item>
+                <NavDropdown.Item href="/netværksfacilitering">Netværksfacilitering</NavDropdown.Item>
+                <NavDropdown.Item href="/ledelsesudvikling">Ledelsesudvikling</NavDropdown.Item>
+                <NavDropdown.Item href="/4R ledelsesudvikling">4R Ledelsesudvikling</NavDropdown.Item>
+                <NavDropdown.Item href="/interne uddannelsesforløb">Interne uddannelsesforløb</NavDropdown.Item>
+              </NavDropdown>
               {/* Om mig dropdown & Kontakt */}
               <NavDropdown title="Om mig" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/theory">Teoretisk ståsted</NavDropdown.Item>
