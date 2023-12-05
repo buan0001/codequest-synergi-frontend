@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+// import FormSelect from "react-bootstrap/FormSelect";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -111,19 +112,11 @@ export default function Booking() {
       <Form onSubmit={handleSubmit}>
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={2}>
-            Titel
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control type="text" name="bookingTitle" placeholder="Titel på booking" required />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
             Fulde navn:
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="text" name="bookingFullName" placeholder="Dit fulde navn" required />
+            <Form.Control type="text" name="firstName" placeholder="Fornavn" required />
+            <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
           </Col>
         </Form.Group>
 
@@ -132,7 +125,7 @@ export default function Booking() {
             Email
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="email" name="bookingEmail" placeholder="Din E-mail" required />
+            <Form.Control type="email" name="email" placeholder="Din E-mail" required />
           </Col>
         </Form.Group>
 
@@ -141,7 +134,27 @@ export default function Booking() {
             Tlf. Nummer
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="number" name="bookingPhoneNumber" placeholder="Dit tlf. nummer" required />
+            <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" required />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Vælg ydelse:
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Select aria-label="Default select example" name="chooseService" required>
+              <option disabled selected>
+                Vælg konsulent ydelse
+              </option>
+              <option value="Proceskonsultation">Proceskonsultation</option>
+              <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
+              <option value="Kreativ facilitering">Kreativ facilitering</option>
+              <option value="Teamudvikling">Teamudvikling</option>
+              <option value="Facilitering af ledernetværk og træning">Facilitering af ledernetværk og træning</option>
+              <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
+              <option value="Interne skræddersyede uddannelses- og træningsforløb">Interne skræddersyede uddannelses- og træningsforløb</option>
+            </Form.Select>
           </Col>
         </Form.Group>
 
@@ -150,7 +163,7 @@ export default function Booking() {
             Besked
           </Form.Label>
           <Col sm={4}>
-            <Form.Control as="textarea" className="bg-light" name="bookingMessage" placeholder="Kort beskrivelse af grunden til du booker.." rows={4} required />
+            <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} required />
           </Col>
         </Form.Group>
 
@@ -170,11 +183,11 @@ export default function Booking() {
                 setDateRange(update);
               }}
               filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
-              isClearable={true}
+              // isClearable={true} // den sætter sig over datoerne
               withPortal
               locale="da"
               dateFormat="dd-MM-yyyy"
-              name="bookingDays"
+              name="firstAndLastDay"
               placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
               required
             />
@@ -194,7 +207,7 @@ export default function Booking() {
             timeIntervals={15}
             dateFormat="HH:mm"
             inline
-            name="bookingTimeStart"
+            name="timeStart"
             minTime={new Date().setHours(8, 0)}
             maxTime={new Date().setHours(15, 0)}
           />
@@ -210,7 +223,7 @@ export default function Booking() {
             timeIntervals={15}
             dateFormat="HH:mm"
             inline
-            name="bookingTimeEnd"
+            name="timeEnd"
             excludeTimes={excludedTimes}
             minTime={new Date().setHours(8, 0)}
             maxTime={new Date().setHours(16, 0)}
