@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
 
-function FetchComponent() {
-  const [data, setData] = useState(null);
+export default function FetchComponent() {
+  const [data, setData] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3333/pages/Synergi Human Resource Management"
+          `http://localhost:3333/pages/cv`
         );
         if (!response.ok) {
           throw new Error('Der opstod en fejl ved fetch');
         }
         const result = await response.json();
         console.log(result);
-        setData(result);
+        const body = <div dangerouslySetInnerHTML={{ __html: result.body }}/>;
+        setData(body);
       } catch (error) {
         console.error('Der opstod en fejl ved indlæsning af data:', error);
       }
@@ -23,23 +24,17 @@ function FetchComponent() {
     fetchData();
   }, []); // Dependency that decides how many times the effect runs
 
+
+
   return (
     <div>
       {data ? (
         <div>
-          <h3>{data.pageTitle}</h3>
-          {data.pageBody.map((item) => (
-          <div key={item._id}>
-              <h5>{item.title}</h5>
-              <p>{item.body}</p>
-            </div>
-          ))}
+          {data}
         </div>
      ) : (
-        <p>Loading...</p> // Loading text hvis data ikke kan hentes
+         <p>Loading...</p> // Loading text hvis data ikke kan hentes
     )}
     </div>
   );
 }
-
-export default FetchComponent;
