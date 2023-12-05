@@ -30,7 +30,7 @@ export default function Login() {
               Brugernavn
             </Form.Label>
             <Col sm={9}>
-              <Form.Control type="text" placeholder="Brugernavn" 
+              <Form.Control type="username" placeholder="Brugernavn" 
               onChange={(event) => {setUsername(event.target.value)}}/>
             </Col>
           </Form.Group>
@@ -44,7 +44,7 @@ export default function Login() {
               Password
             </Form.Label>
             <Col sm={9}>
-              <Form.Control type="text" placeholder="Password" 
+              <Form.Control type="password" placeholder="Password" 
               onChange={(event) => {setPassword(event.target.value)}}/>
             </Col>
           </Form.Group>

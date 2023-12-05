@@ -3,11 +3,16 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import da from "date-fns/locale/da";
+import { useSelector } from "react-redux";
+
 import { setHours, setMinutes } from "date-fns";
 registerLocale("da", da);
 setDefaultLocale("da");
 
 export default function Booking() {
+  const loggedIn = useSelector((state) => state.loginState.loggedIn);
+  console.log("login boolean:", loggedIn);
+  console.log('har den default?', useSelector((state) => state.loginState.ayobitch));
   const [startDate, setStartDate] = useState(
     setHours(setMinutes(new Date(), 0), 0)
   );

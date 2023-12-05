@@ -1,23 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+// import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import {configureStore} from '@reduxjs/toolkit'
 import {Provider} from 'react-redux'
-import loginStateReducer from './features/loginState'
+import store from "./store";
+import { BrowserRouter } from "react-router-dom";
 
-const store = configureStore({
-  reducer: {
-    loginState: loginStateReducer,
-  },
-})  
+
+
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
     <BrowserRouter>
+    <Provider store={store}>
       <App />
-    </BrowserRouter>
     </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );

@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 
 const initialStateValue = {
     loggedIn: false,
+    ayobitch: 'ayobitch',
     username: '',
     password: '',
 }
@@ -12,21 +13,28 @@ export const loginStateSlice = createSlice({
     },
     reducers: {
         login: (state, action) => {
-            if (action.payload.username == 'admin' && action.payload.password == 'admin') {
-                state.loggedIn = true
-                state.username = action.payload.username
-                state.password = action.payload.password
-                console.log('login successful');
-                console.log('login state', state.loggedIn);
-            } else {
+            const { username, password } = action.payload;
+            if (username == 'admin' && password == 'admin') {
+            console.log('login succeeded', action.payload.username, action.payload.password);
+                return {
+                ... state,
+                loggedIn: true,
+                username: action.payload.username,
+                password: action.payload.password,
+            }} else {
                 console.log('login failed');
+                return state
             }
         },
         logout: (state) => {
-        state.loggedIn = false
-        state.username = ''
-        state.password = ''
-        },
+        console.log('logout succeeded');
+        console.log('state:', state);
+        return {
+            ... state,
+        loggedIn: false,
+        username: '',
+        password: ''
+        }},
     },
     })
 
