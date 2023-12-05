@@ -21,7 +21,6 @@ export default function Header() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
               <Nav.Link href="/">Startside</Nav.Link>
-              <Nav.Link href="/Calendar">Kalender</Nav.Link>
               <Nav.Link href="/booking">Booking</Nav.Link>
               <Nav.Link href="/edit">Edit</Nav.Link>
             </Nav>
