@@ -1,11 +1,11 @@
-import FetchAll from "../components/FetchAll";
+import FetchBooksAndArticles from "../components/FetchBooksAndArticles";
 
 export default function Booksandarticles() {
   return (
     <>
       <h1>Come buy your books!</h1>
-      <p>We need your money, now!</p>
-      <FetchAll />
+      <p>Here you can buy books and articles!</p>
+      <FetchBooksAndArticles />
     </>
   );
 }

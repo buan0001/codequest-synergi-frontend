@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 
-function FetchComponent() {
+export default function FetchComponent() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3333/frontpage"
+          "http://localhost:3333/bookings"
         );
         if (!response.ok) {
           throw new Error('Der opstod en fejl ved fetch');
         }
         const result = await response.json();
         console.log(result);
-        setData(result[0].pagebody);
+        setData(result);
       } catch (error) {
         console.error('Der opstod en fejl ved indlæsning af data:', error);
       }
@@ -25,20 +25,23 @@ function FetchComponent() {
 
   return (
     <div>
-      {Array.isArray(data) && data.length > 0 ? (
+      {data ? (
         <div>
-          {data.map((item) => (
-            <div key={item.id}>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
+          <h3>{data.pageTitle}</h3>
+          {data.pageBody.map((item) => (
+          <div key={item._id}>
+              <h5>{item.firstName}</h5>
+              <p>{item.lastName}</p>
+              <p>{item.email}</p>
+              <p>{item.tlfnr}</p>
+              <p>{item.company}</p>
+              <p>{item.message}</p>
             </div>
           ))}
         </div>
-      ) : (
+     ) : (
         <p>Loading...</p> // Loading text hvis data ikke kan hentes
-      )}
+    )}
     </div>
   );
 }
-
-export default FetchComponent;
