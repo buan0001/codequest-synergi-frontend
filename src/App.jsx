@@ -9,6 +9,7 @@ import Theory from "./pages/Theory";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Booking from "./pages/Booking";
+import Footer from "./components/Footer";
 import "./App.css";
 // import calendar from "./pages/calendar";
 
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="/admin" element={<Admin/>}></Route>
       </Routes>
       <ToastContainer /> {/* React Toastify Container */}
+      <Footer />
     </>
   );
 }
