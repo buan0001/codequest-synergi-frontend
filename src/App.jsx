@@ -31,7 +31,7 @@ export default function App() {
         <Route path="/cv" element={<CV />}></Route> {/* CV page */}
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}
         <Route path="/kunder" element={<Kunder />}></Route> {/* Kunder page */}
-        <Route path="*" element={<h1>Not Found</h1>}></Route>
+        <Route path="*" element={<h1>Site Not Found</h1>}></Route>
         <Route path="/admin" element={<Admin />}></Route>
       </Routes>
       <ToastContainer /> {/* React Toastify Container */}
