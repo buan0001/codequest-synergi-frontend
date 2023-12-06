@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -12,9 +12,71 @@ import { isWeekend } from "date-fns";
 registerLocale("da", da);
 setDefaultLocale("da");
 
+// https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
+
 export default function Booking() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const roundToNearest15Minutes = (date) => {
+    const minutes = date.getMinutes();
+    const remainder = 15 - (minutes % 15); // Calculate the remainder to reach the next 15-minute interval
+    const roundedDate = new Date(date.getTime() + remainder * 60000); // Add milliseconds to round up
+
+    return roundedDate;
+  };
+
+  const nextAvailableDate = (date) => {
+    let today = new Date(date);
+    let availableDay = new Date(today);
+    availableDay.setDate(today.getDate() + 1);
+    availableDay = roundToNearest15Minutes(availableDay);
+    // let availableDay = new Date(date).setDate().getDate() + 1;
+
+    availableDay.getMinutes();
+
+    // Check if it's before 8 am
+    if (availableDay.getHours() < 8) {
+      availableDay.setHours(8, 0, 0, 0); // Set time to 8 am
+    } else if (availableDay.getHours() > 16) {
+      // If it's past 4 pm, move to the next day's 8 am
+      if (!isWeekend(availableDay)) {
+        availableDay.setDate(availableDay.getDate() + 1);
+        console.log("hejsa");
+      }
+      availableDay.setHours(8, 0, 0, 0); // Set time to 8 am
+    }
+
+    // Check if it's a weekend (Saturday or Sunday)
+    if (isWeekend(availableDay)) {
+      if (availableDay.getDay() === 0) {
+        // Sunday
+        // Move to the next day (Monday)
+        availableDay.setDate(availableDay.getDate() + 1);
+      } else if (availableDay.getDay() === 6) {
+        // Saturday
+        // Move to the following Monday
+        availableDay.setDate(availableDay.getDate() + 2);
+      }
+    }
+
+    return availableDay;
+  };
+
+  const addFifteenMinutes = (endDate) => {
+    const nextDay = new Date(endDate);
+    // nextDay.setDate(nextDay.getDate() + 1); // Adding 1 day
+
+    // Adding 15 minutes
+    nextDay.setTime(nextDay.getTime() + 15 * 60 * 1000);
+
+    return nextDay;
+  };
+
+  const [startDate, setStartDate] = useState(() => nextAvailableDate(new Date()));
+  const [endDate, setEndDate] = useState(() => addFifteenMinutes(startDate));
+
+  useEffect(() => {
+    // Update endDate whenever startDate changes
+    setEndDate(addFifteenMinutes(startDate));
+  }, [startDate]);
 
   const getNextDay = () => {
     const today = new Date();
@@ -115,12 +177,10 @@ export default function Booking() {
             <DatePicker
               todayButton="I dag"
               showIcon
-              // startDate={startDate}
               selected={startDate}
               onChange={(date) => {
                 setStartDate(date);
               }}
-              // onChange={handleStartDateChange}
               withPortal
               locale="da"
               dateFormat="dd-MM-yyyy HH:mm"
@@ -144,7 +204,6 @@ export default function Booking() {
             <DatePicker
               todayButton="I dag"
               showIcon
-              // startDate={endDate}
               selected={endDate}
               onChange={(date) => {
                 setEndDate(date);
@@ -158,10 +217,8 @@ export default function Booking() {
               // inline
               timeIntervals={15}
               filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
-              // endDate={endDate}
               minDate={startDate}
               minTime={startDate.toDateString() !== endDate.toDateString() ? new Date().setHours(8, 0) : new Date(startDate.getTime() + 15 * 60 * 1000)}
-              // new Date(startDate.getTime() + 15 * 60 * 1000)}
               maxTime={new Date().setHours(16, 0)}
               required
             />
