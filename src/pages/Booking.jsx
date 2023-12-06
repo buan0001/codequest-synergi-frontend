@@ -48,9 +48,6 @@ export default function Booking() {
 
   return (
     <>
-      <h1>Booking</h1>
-      <p>Welcome to the booking page!</p>
-
       <Form onSubmit={handleSubmit} className="mb-5">
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={2}>
