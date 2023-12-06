@@ -6,7 +6,7 @@ import { useState } from "react";
 function Edit() {
   const [textContent, setTextContent] = useState();
   // const [pageInfo, setPageInfo] = useState();
-  const [pageTitle, setTitle] = useState();
+  const [title, setTitle] = useState();
   const [editRef, setEditRef] = useState();
   const [routeToUse, setRouteToUse] = useState("pages")
   const editorReference = {
@@ -27,13 +27,13 @@ function Edit() {
       }
       const result = await response.json();
       console.log("FETCH DATA", result);
-      setTextContent(result.pageBody);
+      setTextContent(result.body);
       // setPageInfo(result);
-      setTitle(result.pageTitle);
+      setTitle(result.title);
 
       console.log("EDIT REF", editRef);
       console.log("REFERENCE", editorReference);
-      editorReference.editor?.setData(result.pageBody) || editRef?.setData(result.pageBody);
+      editorReference.editor?.setData(result.body) || editRef?.setData(result.body);
 
     } catch (error) {
       console.error("Der opstod en fejl ved indlæsning af data:", error);
@@ -41,7 +41,7 @@ function Edit() {
   }
 
   async function postContent() {
-    const data = { pageTitle: pageTitle, pageBody: textContent };
+    const data = { title: title, body: textContent };
     const response = await fetch(`http://localhost:3333/pages`, {
       method: "POST",
       body: JSON.stringify(data),
@@ -53,11 +53,11 @@ function Edit() {
   }
 
   async function patchContent() {
-    let propName = routeToUse === "pages" ? "pageBody" : "resume"
-    const data = { [propName]: textContent, pageTitle:pageTitle };
+    let propName = routeToUse === "pages" ? "body" : "resume"
+    const data = { [propName]: textContent, title:title };
     console.log("DATA",data);
     console.log("where to post", routeToUse);
-    console.log("page title:",pageTitle);
+    console.log("page title:",title);
     const response = await fetch(`http://localhost:3333/${routeToUse}`, {
       method: "PATCH",
       body: JSON.stringify(data),
@@ -77,7 +77,7 @@ function Edit() {
           <input
             type="text"
             placeholder="Name of page"
-            value={pageTitle}
+            value={title}
             onChange={e => {
               setTitle(e.target.value);
             }}
@@ -96,7 +96,7 @@ function Edit() {
           >
             Update page
           </button>
-          <button onClick={() => fetchPage(pageTitle)}>Get page with a given title</button>
+          <button onClick={() => fetchPage(title)}>Get page with a given title</button>
           <select name="" id="" onChange={(e) =>{setRouteToUse(e.target.value); console.log("where to post",routeToUse);} }>
             <option value="pages">Pages</option>
             <option value="books">Books</option>
@@ -110,7 +110,7 @@ function Edit() {
               // You can store the "editor" and use when it is needed.
               console.log("Editor is ready to use!", editor);
               editorReference.test(editor);
-              await fetchPage();
+              // await fetchPage();
             }}
             onChange={(event, editor) => {
               const data = editor.getData();

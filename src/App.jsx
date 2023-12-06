@@ -45,7 +45,7 @@ export default function App() {
         <Route path="/ledelsesudvikling" element={<ManagementDevelopment />}></Route> {/* Ledelsesudvikling page */}
         <Route path="/4R ledelsesudvikling" element={<FourR />}></Route> {/* 4R Ledelsesudvikling page */}
         <Route path="/interne uddannelsesforløb" element={<InternalTrainingCourses />}></Route> {/* Interne uddannelsesforløb page */}
-        <Route path="*" element={<h1>Not Found</h1>}></Route>
+        <Route path="*" element={<h1>Site Not Found</h1>}></Route>
         <Route path="/admin" element={<Admin />}></Route>
       </Routes>
       <ToastContainer /> {/* React Toastify Container */}
