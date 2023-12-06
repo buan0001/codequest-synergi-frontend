@@ -1,11 +1,12 @@
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
 import Home from "./pages/Home";
-import About from "./pages/About";
 import CV from "./pages/CV";
 import Edit from "./pages/CKEditor";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Theory from "./pages/Theory";
+import Kunder from "./pages/Kunder";
+import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Booking from "./pages/Booking";
@@ -29,8 +30,9 @@ export default function App() {
         <Route path="/theory" element={<Theory />}></Route> {/* Teoretisk ståsted page */}
         <Route path="/cv" element={<CV />}></Route> {/* CV page */}
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}
+        <Route path="/kunder" element={<Kunder />}></Route> {/* Kunder page */}
         <Route path="*" element={<h1>Not Found</h1>}></Route>
-        <Route path="/admin" element={<Admin/>}></Route>
+        <Route path="/admin" element={<Admin />}></Route>
       </Routes>
       <ToastContainer /> {/* React Toastify Container */}
       <Footer />

@@ -5,7 +5,6 @@ export default function AdminLogin() {
   
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
   console.log('login boolean:', loggedIn);
-
   if (loggedIn) {
     return (
       <div>
