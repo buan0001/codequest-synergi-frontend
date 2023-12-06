@@ -39,6 +39,7 @@ export default function App() {
         <Route path="/cv" element={<CV />}></Route> {/* CV page */}
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}
         <Route path="/kunder" element={<Kunder />}></Route> {/* Kunder page */}
+        {/* Konsulentydelser dropdown */}
         <Route path="/proceskonsultation" element={<Processconsultation />}></Route> {/* Proceskonsultation page */}
         <Route path="/anerkendende coaching" element={<Coaching />}></Route> {/* Coaching af enkeltpersoner eller team page */}
         <Route path="/teamudvikling" element={<Teamdevelopment />}></Route> {/* Teamudvikling page */}
