@@ -7,3 +7,7 @@ body {
   padding: 0px;
   text-align: center;
 }
+
+.customDatePicker {
+  width: 50px;
+}

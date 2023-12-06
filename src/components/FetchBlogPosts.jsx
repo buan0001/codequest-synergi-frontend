@@ -1,22 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-function FetchComponent() {
+export default function FetchComponent() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3333/frontpage"
-        );
+        const response = await fetch("http://localhost:3333/blogposts");
         if (!response.ok) {
-          throw new Error('Der opstod en fejl ved fetch');
+          throw new Error("Der opstod en fejl ved fetch");
         }
         const result = await response.json();
         console.log(result);
-        setData(result[0].pagebody);
+        setData(result);
       } catch (error) {
-        console.error('Der opstod en fejl ved indlæsning af data:', error);
+        console.error("Der opstod en fejl ved indlæsning af data:", error);
       }
     };
 
@@ -25,12 +23,15 @@ function FetchComponent() {
 
   return (
     <div>
-      {Array.isArray(data) && data.length > 0 ? (
+      {data ? (
         <div>
-          {data.map((item) => (
-            <div key={item.id}>
-              <h3>{item.title}</h3>
+          <h3>{data.pageTitle}</h3>
+          {data.pageBody.map((item) => (
+            <div key={item._id}>
+              <h5>{item.title}</h5>
               <p>{item.body}</p>
+                <p>{item.author}</p>
+                <p>{item.published}</p>
             </div>
           ))}
         </div>
@@ -40,5 +41,3 @@ function FetchComponent() {
     </div>
   );
 }
-
-export default FetchComponent;

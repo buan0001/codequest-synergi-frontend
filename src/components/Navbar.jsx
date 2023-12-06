@@ -1,11 +1,13 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
+import LogoutButton from "./LogoutButton";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import logo from "../assets/synergi-hrm logo.png";
 
 // Funktionen hedder Header selvom det er en Navbar, pga. navngivningskonflikt med Navbar i React Bootstrap.
 export default function Header() {
+  // const { loggedIn } = useAuth();
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container className="ms-0 mw-100">
@@ -44,6 +46,7 @@ export default function Header() {
             </Nav>
           </Navbar.Collapse>
         </div>
+        <LogoutButton />
       </Container>
     </Navbar>
   );

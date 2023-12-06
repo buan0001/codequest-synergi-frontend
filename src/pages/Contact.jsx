@@ -7,14 +7,19 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { toast } from "react-toastify";
+import {useSelector} from 'react-redux'
+
+
 
 export default function Contact() {
+  const loggedIn = useSelector((state) => state.loginState.loggedIn);
   // const {
   //   register,
   //   handleSubmit,
   //   formState: { errors },
   // } = useForm();
   //  console.log(errors);
+  console.log('state', loggedIn);
 
   const form = useRef();
 
