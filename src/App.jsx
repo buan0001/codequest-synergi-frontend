@@ -13,6 +13,7 @@ import Booking from "./pages/Booking";
 import Footer from "./components/Footer";
 import "./App.css";
 // import calendar from "./pages/calendar";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,7 +27,7 @@ import InternalTrainingCourses from "./pages/InternalTrainingCourses";
 
 export default function App() {
   return (
-    <>
+    <div className="d-flex flex-column bg-light" style={{ minHeight: "100vh" }}>
       <Header /> {/* Navbar */}
       <Routes>
         <Route path="/" element={<Home />}></Route> {/* Home page */}
@@ -50,6 +51,6 @@ export default function App() {
       </Routes>
       <ToastContainer /> {/* React Toastify Container */}
       <Footer />
-    </>
+    </div>
   );
 }
