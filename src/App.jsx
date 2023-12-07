@@ -35,7 +35,7 @@ export default function App() {
         {/* <Route path="/contact" element={<Contact />} title={"forside"}></Route> Contact page */}
         <Route path="/about" element={<About />}></Route> {/* About page */}
         <Route path="/booking" element={<Booking />}></Route> {/*Booking page*/}
-        <Route path="/theory" element={<StandardPage title={"teori"}/>}></Route> {/* Teoretisk ståsted page */}
+        <Route path="/theory" element={<StandardPage title={"ståsted"}/>}></Route> {/* Teoretisk ståsted page */}
         <Route path="/cv" element={<StandardPage title={"cv"}/>}></Route> {/* CV page */}
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}
         <Route path="/kunder" element={<StandardPage title={"kunder"}/>}></Route> {/* Kunder page */}
