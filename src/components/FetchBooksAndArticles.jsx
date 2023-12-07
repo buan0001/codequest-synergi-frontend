@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
 
 export default function FetchComponent() {
   const [data, setData] = useState("");
@@ -100,12 +101,12 @@ export default function FetchComponent() {
   return (
     <div style={{ padding: "10px" }}>
       <div>
-        <button onClick={() => handleSort("title")}>
+        <Button variant="outline-secondary" onClick={() => handleSort("title")}>
           Sorter efter titel {getSortArrow("title")}
-        </button>
-        <button onClick={() => handleSort("releaseYear")}>
+        </Button>
+        <Button variant="outline-secondary" onClick={() => handleSort("releaseYear")}>
           Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-        </button>
+        </Button>
       </div>
       <div style={{ padding: "10px" }}>
         <form
