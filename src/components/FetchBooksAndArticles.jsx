@@ -92,28 +92,68 @@ export default function FetchComponent() {
     }
   }
 
-  return loggedIn ? (
-    <div>
-      <div className="container">
-        <div className="row">
-          <div className="p-2 col-sm d-flex justify-content-center space-between">
-            <Button
-              onClick={() => handleSort("title")}
-              variant="outline-secondary"
-              className="mx-2"
-            >
-              Sorter efter titel {getSortArrow("title")}
-            </Button>
-            <Button
-              onClick={() => handleSort("releaseYear")}
-              variant="outline-secondary"
-              className="mx-2"
-            >
-              Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-            </Button>
-          </div>
+  const buttons = (
+    <div className="container">
+      <div className="row">
+        <div className="p-2 col-sm d-flex justify-content-center space-between">
+          <Button
+            onClick={() => handleSort("title")}
+            variant="outline-secondary"
+            className="mx-2"
+          >
+            Sorter efter titel {getSortArrow("title")}
+          </Button>
+          <Button
+            onClick={() => handleSort("releaseYear")}
+            variant="outline-secondary"
+            className="mx-2"
+          >
+            Sorter efter udgivelsesår {getSortArrow("releaseYear")}
+          </Button>
         </div>
       </div>
+    </div>
+  );
+  const articlesDisplay = (
+    <div>
+      {data ? (
+        <div>
+          {sortArticles(data).map((item) => (
+            <div key={item._id}>
+              <h3>Title {item.title}</h3>
+              {/* <p>Release {item.release}</p> */}
+              <p>Year {item.releaseYear}</p>
+              <p>Publisher {item.publisher}</p>
+              <div>
+                {" "}
+                Authors:
+                {item.authors.map((author) => {
+                  return (
+                    <p key={author._id}>
+                      First name: {author.firstName} Last name:{" "}
+                      {author.lastName}
+                    </p>
+                  );
+                })}
+              </div>
+              {/* <p>{item.author.lastName}</p> */}
+              <a>Link {item.link}</a>
+              {/* pay skal laves om */}
+              <p>Pay {item.pay == false ? "gratis" : "betalt"}</p>
+              <p>Resume {item.resume}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
+      )}
+    </div>
+  );
+
+
+  return loggedIn ? (
+    <div>
+    {buttons}
       <div style={{ padding: "10px" }}>
         <form
           style={{
@@ -224,88 +264,13 @@ export default function FetchComponent() {
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-        {data ? (
-          <div>
-            {sortArticles(data).map((item) => (
-              <div key={item._id}>
-                <h3>Title {item.title}</h3>
-                {/* <p>Release {item.release}</p> */}
-                <p>Year {item.releaseYear}</p>
-                <p>Publisher {item.publisher}</p>
-                <div>
-                  {" "}
-                  Authors:
-                  {item.authors.map((author) => {
-                    return (
-                      <p key={author._id}>
-                        First name: {author.firstName} Last name:{" "}
-                        {author.lastName}
-                      </p>
-                    );
-                  })}
-                </div>
-                {/* <p>{item.author.lastName}</p> */}
-                <a>Link {item.link}</a>
-                {/* pay skal laves om */}
-                <p>Pay {item.pay == false ? "gratis" : "betalt"}</p>
-                <p>Resume {item.resume}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
-        )}
+{articlesDisplay}
       </div>
     </div>
   ) : (
     <div>
-      <div className="p-2 col-sm d-flex justify-content-center space-between">
-        <Button
-          onClick={() => handleSort("title")}
-          variant="outline-secondary"
-          className="mx-2"
-        >
-          Sorter efter titel {getSortArrow("title")}
-        </Button>
-        <Button
-          onClick={() => handleSort("releaseYear")}
-          variant="outline-secondary"
-          className="mx-2"
-        >
-          Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-        </Button>
-      </div>
-      {data ? (
-        <div>
-          {sortArticles(data).map((item) => (
-            <div key={item._id}>
-              <h3>Title {item.title}</h3>
-              {/* <p>Release {item.release}</p> */}
-              <p>Year {item.releaseYear}</p>
-              <p>Publisher {item.publisher}</p>
-              <div>
-                {" "}
-                Authors:
-                {item.authors.map((author) => {
-                  return (
-                    <p key={author._id}>
-                      First name: {author.firstName} Last name:{" "}
-                      {author.lastName}
-                    </p>
-                  );
-                })}
-              </div>
-              {/* <p>{item.author.lastName}</p> */}
-              <a>Link {item.link}</a>
-              {/* pay skal laves om */}
-              <p>Pay {item.pay == false ? "gratis" : "betalt"}</p>
-              <p>Resume {item.resume}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
-      )}
+    {buttons}
+    {articlesDisplay}
     </div>
   );
 }
