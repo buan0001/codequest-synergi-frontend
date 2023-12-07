@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
 export default function FetchComponent() {
   const [data, setData] = useState("");
@@ -188,7 +188,14 @@ export default function FetchComponent() {
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-
+        <div>
+          <Button variant="outline-secondary" onClick={() => handleSort("title")}>
+            Sorter efter titel {getSortArrow("title")}
+          </Button>
+          <Button variant="outline-secondary" onClick={() => handleSort("releaseYear")}>
+            Sorter efter udgivelsesår {getSortArrow("releaseYear")}
+          </Button>
+        </div>
         {data ? (
           <div>
             {sortArticles(data).map((item) => (

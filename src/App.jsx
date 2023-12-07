@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
 import Home from "./pages/Home";
 import CV from "./pages/CV";
-import Edit from "./pages/CKEditor";
+import Edit from "./components/CKEditor";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Theory from "./pages/Theory";
 import Kunder from "./pages/Customers";
