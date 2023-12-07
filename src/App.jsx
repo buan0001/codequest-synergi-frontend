@@ -16,6 +16,13 @@ import "./App.css";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FourR from "./pages/4R";
+import Coaching from "./pages/Coaching";
+import Teamdevelopment from "./pages/Teamdevelopment";
+import NetworkFacilitation from "./pages/Networkfacilitation";
+import ManagementDevelopment from "./pages/ManagementDevelopment";
+import Processconsultation from "./pages/Processconsultation";
+import InternalTrainingCourses from "./pages/InternalTrainingCourses";
 
 export default function App() {
   return (
@@ -31,6 +38,13 @@ export default function App() {
         <Route path="/cv" element={<CV />}></Route> {/* CV page */}
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}
         <Route path="/kunder" element={<Kunder />}></Route> {/* Kunder page */}
+        <Route path="/proceskonsultation" element={<Processconsultation />}></Route> {/* Proceskonsultation page */}
+        <Route path="/anerkendende coaching" element={<Coaching />}></Route> {/* Coaching af enkeltpersoner eller team page */}
+        <Route path="/teamudvikling" element={<Teamdevelopment />}></Route> {/* Teamudvikling page */}
+        <Route path="/netværksfacilitering" element={<NetworkFacilitation />}></Route> {/* Netværksfacilitering page */}
+        <Route path="/ledelsesudvikling" element={<ManagementDevelopment />}></Route> {/* Ledelsesudvikling page */}
+        <Route path="/4R ledelsesudvikling" element={<FourR />}></Route> {/* 4R Ledelsesudvikling page */}
+        <Route path="/interne uddannelsesforløb" element={<InternalTrainingCourses />}></Route> {/* Interne uddannelsesforløb page */}
         <Route path="*" element={<h1>Site Not Found</h1>}></Route>
         <Route path="/admin" element={<Admin />}></Route>
       </Routes>
