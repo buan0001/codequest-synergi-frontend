@@ -12,8 +12,8 @@ export default function FetchComponent() {
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
 
-    const loggedIn = useSelector((state) => state.loginState.loggedIn);
-    console.log('login boolean:', loggedIn);
+  const loggedIn = useSelector((state) => state.loginState.loggedIn);
+  console.log("login boolean:", loggedIn);
 
   const handleSort = (key) => {
     if (sortBy === key) {
@@ -96,28 +96,20 @@ export default function FetchComponent() {
   }
 
   const sortButtons = (
-      {/* Sorter knapper */}
     <div className="container">
       <div className="row">
         <div className="p-2 col-sm d-flex justify-content-center space-between">
-          <Button
-            onClick={() => handleSort("title")}
-            variant="outline-secondary"
-            className="mx-2"
-          >
+          <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
             Sorter efter titel {getSortArrow("title")}
           </Button>
-          <Button
-            onClick={() => handleSort("releaseYear")}
-            variant="outline-secondary"
-            className="mx-2"
-          >
+          <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
             Sorter efter udgivelsesår {getSortArrow("releaseYear")}
           </Button>
         </div>
       </div>
     </div>
   );
+
   const articlesDisplay = (
     <div>
       {data ? (
@@ -127,15 +119,14 @@ export default function FetchComponent() {
               <h3>{item.title}</h3>
               {/* <p>Release {item.release}</p> */}
               <p>Udgivelsesår {item.releaseYear}</p>
-              <p>Publisher {item.publisher}</p>
+              <p>Forlag {item.publisher}</p>
               <div>
                 {" "}
                 Forfattere:
                 {item.authors.map((author) => {
                   return (
                     <p key={author._id}>
-                      Navn: {author.firstName}{" "}
-                      {author.lastName}
+                      Navn: {author.firstName} {author.lastName}
                     </p>
                   );
                 })}
@@ -143,7 +134,10 @@ export default function FetchComponent() {
               {/* <p>{item.author.lastName}</p> */}
               <a>Link {item.link}</a>
               {/* pay skal laves om */}
-              <p>Pris: {item.pay == false ? "gratis" : "betalt"}</p>
+              <p>
+                <b>Pris: </b>
+                {item.pay == false ? "Gratis" : "Betalt"}
+              </p>
               <p>Resume {item.resume}</p>
             </div>
           ))}
@@ -154,10 +148,9 @@ export default function FetchComponent() {
     </div>
   );
 
-
   return loggedIn ? (
     <div>
-    {sortButtons}
+      {sortButtons}
 
       {/* Form */}
       <div className="mt-4">
@@ -170,7 +163,11 @@ export default function FetchComponent() {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit(e);
+            console.log("target", new FormData(e.target));
+
+            const formEntries = Object.fromEntries(new FormData(e.target).entries());
+            console.log("form entries", formEntries);
+            handleSubmit(new FormData(e.target));
           }}
         >
           <div>
@@ -208,38 +205,51 @@ export default function FetchComponent() {
               console.log("author field", authorField);
               return (
                 <div key={field}>
-                  <label>
-                    Forfatter {index + 1}:
-                    <label>
-                      Fornavn{" "}
-                      <input type="text" name={"firstName" + index} required />
-                    </label>
-                    <label htmlFor={"lastName" + index}>
-                      Efternavn{" "}
-                      <input type="text" name={"lastName" + index} required />
-                    </label>
-                  </label>
+                  <div>
+                    <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+                      <Form.Label column sm={2}>
+                        Forfatter {index + 1}:
+                      </Form.Label>
+                      <Col sm={3}>
+                        <Form.Control type="text" name={"firstName" + index} className="bg-light" placeholder="Fornavn" required />
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Control type="text" name={"lastName" + index} className="bg-light" placeholder="Efternavn" required />
+                      </Col>
+                    </Form.Group>
+                  </div>
                 </div>
               );
             })}
-            <input
-              type="button"
-              onClick={() => {
-                setAuthorField([...authorField, authorField.length]);
-              }}
-              value={"Add new author"}
-            />
-            <input
-              type="button"
-              onClick={() => {
-                const newField = [...authorField];
-                if (newField.length > 1) {
-                  newField.pop();
-                  setAuthorField(newField);
-                }
-              }}
-              value={"Remove latest author"}
-            />
+          </div>
+
+          <div className="container">
+            <div className="row">
+              <div className="p-2 col-sm d-flex justify-content-center space-between">
+                <Button
+                  onClick={() => {
+                    setAuthorField([...authorField, authorField.length]);
+                  }}
+                  variant="outline-secondary"
+                  className="mx-2"
+                >
+                  Tilføj ny forfatter
+                </Button>
+                <Button
+                  onClick={() => {
+                    const newField = [...authorField];
+                    if (newField.length > 1) {
+                      newField.pop();
+                      setAuthorField(newField);
+                    }
+                  }}
+                  variant="outline-secondary"
+                  className="mx-2"
+                >
+                  Fjern seneste forfatter
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Link til artikel */}
@@ -248,7 +258,7 @@ export default function FetchComponent() {
               Link til artiklen
             </Form.Label>
             <Col sm={3}>
-              <Form.Control type="text" name="link" className="bg-light" placeholder="Link til artiklen" required />
+              <Form.Control type="text" name="link" className="bg-light" placeholder="Link til artiklen" />
             </Col>
           </Form.Group>
 
@@ -258,31 +268,33 @@ export default function FetchComponent() {
             </Form.Label>
           </Form.Group>
 
-          <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
+          <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupText">
             <Form.Label column sm={1}>
               Kort resume
             </Form.Label>
             <Col sm={4}>
-              <Form.Control as="textarea" className="bg-light" name="Resume" rows={4} />
+              <Form.Control as="textarea" className="bg-light" name="resume" rows={4} />
             </Col>
           </Form.Group>
 
-          <div>
-            <input type="submit" value={"Opret artikel"} />
-          </div>
+          <Form.Group className="mb-3 text-center" controlId="formBasicButton">
+            <Button type="submit" variant="outline-secondary" className="mx-2">
+              Opret artikel
+            </Button>
+          </Form.Group>
         </Form>
 
         {/* <div>{missingFields.length == 0 ? "" : "These fields must be filled"}</div>
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-{articlesDisplay}
+        {articlesDisplay}
       </div>
     </div>
   ) : (
     <div>
-    {sortButtons}
-    {articlesDisplay}
+      {sortButtons}
+      {articlesDisplay}
     </div>
   );
 }
