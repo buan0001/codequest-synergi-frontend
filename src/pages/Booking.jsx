@@ -31,31 +31,41 @@ export default function Booking() {
     const [hours, minutes] = timePart.split(":"); // Split hours and minutes
 
     // Create a new Date object using parsed values (month - 1 because months are 0-indexed in JavaScript)
-    return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
+    const parsedDate = new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
+
+    // Convert Date object to ISO date string
+    const isoDateString = parsedDate.toISOString();
+    console.log("ISO Date: " + isoDateString);
+
+    return isoDateString;
+
+    // Create a new Date object using parsed values (month - 1 because months are 0-indexed in JavaScript)
+    // console.log("hehehehehehe" + new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes)));
+    // return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
   };
 
-  const firstDay = parseDateString("11-12-2023 14:00");
-  const lastDay = parseDateString("15-12-2023 13:00");
+  // const firstDay = parseDateString("11-12-2023 14:00");
+  // const lastDay = parseDateString("15-12-2023 13:00");
 
   // // Convert date strings to Date objects
   // const firstDay = new Date("11-12-2023 14:00");
   // const lastDay = new Date("15-12-2023 13:00");
 
-  const generateDatesBetween = (startDate, endDate) => {
-    const dates = [];
-    let currentDate = new Date(startDate);
+  // const generateDatesBetween = (startDate, endDate) => {
+  //   const dates = [];
+  //   let currentDate = new Date(startDate);
 
-    while (currentDate <= endDate) {
-      dates.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+  //   while (currentDate <= endDate) {
+  //     dates.push(new Date(currentDate));
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
 
-    return dates;
-  };
+  //   return dates;
+  // };
 
-  const datesInRange = generateDatesBetween(firstDay, lastDay);
+  // const datesInRange = generateDatesBetween(firstDay, lastDay);
 
-  console.log(datesInRange);
+  // console.log(datesInRange);
 
   // // Function to generate dates between two dates
   // const getDatesBetweenDates = (startDate, endDate) => {
@@ -146,15 +156,26 @@ export default function Booking() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(startDate);
-    // console.log(endDate);
 
-    // missing check if startDate, endDate, startTime, and endTime are selected
+    const firstDayValue = event.target.elements.firstDay.value;
+    const lastDayValue = event.target.elements.lastDay.value;
 
+    // Parse date strings to ISO date strings using parseDateString function
+    const isoFirstDay = parseDateString(firstDayValue);
+    const isoLastDay = parseDateString(lastDayValue);
+
+    // Get other form data
     const formData = new FormData(event.target);
-
     const formEntries = Object.fromEntries(formData.entries());
-    console.log("Form Data", formEntries);
+
+    // Add ISO date strings to form data with the same key names
+    const updatedFormData = {
+      ...formEntries,
+      firstDay: isoFirstDay,
+      lastDay: isoLastDay
+    };
+
+    console.log("Form Data", updatedFormData);
   };
 
   return (
@@ -241,7 +262,8 @@ export default function Booking() {
               filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
               minTime={new Date().setHours(8, 0)}
               maxTime={new Date().setHours(15, 0)}
-              excludeDates={datesInRange}
+              // excludeDates={excludedDates.map((dateString) => new Date(dateString))}
+              // excludeDates={datesInRange}
               // excludeDateIntervals={[{ start: new Date("11-12-2023"), end: new Date("15-12-2023") }]}
               required
             />
