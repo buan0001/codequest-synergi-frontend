@@ -139,7 +139,7 @@ export default function FetchComponent() {
               {/* <p>{item.author.lastName}</p> */}
               <a>Link {item.link}</a>
               {/* pay skal laves om */}
-              <p>Pris: {item.pay == false ? "gratis" : "betalt"}</p>
+              <p>Pris: {item.pay == false ? "Gratis" : "Betalt"}</p>
               <p>Resume {item.resume}</p>
             </div>
           ))}
