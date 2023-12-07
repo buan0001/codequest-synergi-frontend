@@ -58,19 +58,17 @@ export default function FetchComponent() {
     fetchData();
   }, [newPost]); // Dependency that decides how many times the effect runs
 
-  async function handleSubmit(event) {
-    const form = event.target;
-
+  async function handleSubmit(form) {
     const newArticle = {
-      title: form.title.value,
-      releaseYear: form.releaseYear.value,
-      publisher: form.publisher.value,
+      title: form.title,
+      releaseYear: form.releaseYear,
+      publisher: form.publisher,
       authors: authorField.map((field) => {
-        return { firstName: form["firstName" + field].value, lastName: form["lastName" + field].value };
+        return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
       }),
-      link: form.link.value,
+      link: form.link,
       isPay: form.pay.checked,
-      resume: form.resume.value,
+      resume: form.resume,
     };
     console.log("new article", newArticle);
 
