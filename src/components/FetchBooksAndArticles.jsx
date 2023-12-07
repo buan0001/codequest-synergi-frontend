@@ -97,10 +97,18 @@ export default function FetchComponent() {
       <div className="container">
         <div className="row">
           <div className="p-2 col-sm d-flex justify-content-center space-between">
-            <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
+            <Button
+              onClick={() => handleSort("title")}
+              variant="outline-secondary"
+              className="mx-2"
+            >
               Sorter efter titel {getSortArrow("title")}
             </Button>
-            <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
+            <Button
+              onClick={() => handleSort("releaseYear")}
+              variant="outline-secondary"
+              className="mx-2"
+            >
               Sorter efter udgivelsesår {getSortArrow("releaseYear")}
             </Button>
           </div>
@@ -121,7 +129,15 @@ export default function FetchComponent() {
         >
           <div>
             <label htmlFor="title">Title</label>
-            <input type="text" name="title" required style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
+            <input
+              type="text"
+              name="title"
+              required
+              style={{ minWidth: "250px" }}
+              onKeyUp={(e) =>
+                (e.target.style.width = e.target.value.length + 1 + "ch")
+              }
+            />
           </div>
           <div>
             <label htmlFor="">
@@ -131,7 +147,15 @@ export default function FetchComponent() {
           </div>
           <label>
             Udgiver
-            <input type="text" name="publisher" required style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
+            <input
+              type="text"
+              name="publisher"
+              required
+              style={{ minWidth: "250px" }}
+              onKeyUp={(e) =>
+                (e.target.style.width = e.target.value.length + 1 + "ch")
+              }
+            />
           </label>
           <br />
           <div>
@@ -142,10 +166,12 @@ export default function FetchComponent() {
                   <label>
                     Forfatter {index + 1}:
                     <label>
-                      Fornavn <input type="text" name={"firstName" + index} required />
+                      Fornavn{" "}
+                      <input type="text" name={"firstName" + index} required />
                     </label>
                     <label htmlFor={"lastName" + index}>
-                      Efternavn <input type="text" name={"lastName" + index} required />
+                      Efternavn{" "}
+                      <input type="text" name={"lastName" + index} required />
                     </label>
                   </label>
                 </div>
@@ -173,7 +199,15 @@ export default function FetchComponent() {
           <br />
           <br />
           <label>
-            Link til artiklen <input type="link" name="link" style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
+            Link til artiklen{" "}
+            <input
+              type="link"
+              name="link"
+              style={{ minWidth: "250px" }}
+              onKeyUp={(e) =>
+                (e.target.style.width = e.target.value.length + 1 + "ch")
+              }
+            />
             {/* Link til artiklen <input type="link" name="link" style={{width:"50vw"}} /> */}
           </label>
           <label>
@@ -190,17 +224,6 @@ export default function FetchComponent() {
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-        <div>
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleSort("title")}
-          >
-            Sorter efter titel {getSortArrow("title")}
-          </Button>
-          <Button variant="outline-secondary" onClick={() => handleSort("releaseYear")}>
-            Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-          </Button>
-        </div>
         {data ? (
           <div>
             {sortArticles(data).map((item) => (
@@ -215,7 +238,8 @@ export default function FetchComponent() {
                   {item.authors.map((author) => {
                     return (
                       <p key={author._id}>
-                        First name: {author.firstName} Last name: {author.lastName}
+                        First name: {author.firstName} Last name:{" "}
+                        {author.lastName}
                       </p>
                     );
                   })}
@@ -235,13 +259,18 @@ export default function FetchComponent() {
     </div>
   ) : (
     <div>
-      <div>
-        <Button variant="outline-secondary" onClick={() => handleSort("title")}>
+      <div className="p-2 col-sm d-flex justify-content-center space-between">
+        <Button
+          onClick={() => handleSort("title")}
+          variant="outline-secondary"
+          className="mx-2"
+        >
           Sorter efter titel {getSortArrow("title")}
         </Button>
         <Button
-          variant="outline-secondary"
           onClick={() => handleSort("releaseYear")}
+          variant="outline-secondary"
+          className="mx-2"
         >
           Sorter efter udgivelsesår {getSortArrow("releaseYear")}
         </Button>
