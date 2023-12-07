@@ -1,6 +1,6 @@
 import FetchPages from "../components/FetchPages";
 
 export default function Processconsultation() {
-  const prop = "processkonsultation";
+  const prop = "proceskonsultation";
   return <FetchPages title={prop} />;
 }
