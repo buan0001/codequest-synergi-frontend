@@ -250,7 +250,6 @@ export default function FetchComponent() {
             </div>
           </div>
 
-          {/* Link til artikel */}
           <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
             <Form.Label column sm={2}>
               Link til artiklen

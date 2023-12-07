@@ -5,6 +5,7 @@ import Editor from "../components/CKEditor";
 export default function Kunder() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
   const prop = "kunder";
+
   return loggedIn ? (
     <div>
       <Editor title={prop} />

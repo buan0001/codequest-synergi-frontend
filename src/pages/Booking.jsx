@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 // import FormSelect from "react-bootstrap/FormSelect";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
-import da from "date-fns/locale/da";
 import { isWeekend } from "date-fns";
-import { useSelector } from "react-redux";
+import da from "date-fns/locale/da";
 registerLocale("da", da);
 setDefaultLocale("da");
 
@@ -202,7 +202,7 @@ export default function Booking() {
       ...formEntries,
       phoneNumber,
       firstDay: isoFirstDay,
-      lastDay: isoLastDay
+      lastDay: isoLastDay,
     };
 
     try {
@@ -210,9 +210,9 @@ export default function Booking() {
       const response = await fetch("http://localhost:3333/booking", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json" // Set the appropriate content type
+          "Content-Type": "application/json", // Set the appropriate content type
         },
-        body: JSON.stringify(updatedFormData) // Convert data to JSON format
+        body: JSON.stringify(updatedFormData), // Convert data to JSON format
       });
 
       if (!response.ok) {

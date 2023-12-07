@@ -1,9 +1,6 @@
-// import { useEffect, useState } from "react";
-// import { CVImage } from "../assets/CVImage";
-import FetchPages from "../components/FetchPages";
 import { useSelector } from "react-redux";
+import FetchPages from "../components/FetchPages";
 import Editor from "../components/CKEditor";
-// import FetchBooksAndArticles from "../components/FetchBooksAndArticles";
 
 export default function Home() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
