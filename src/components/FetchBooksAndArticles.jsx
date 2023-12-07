@@ -92,13 +92,11 @@ export default function FetchComponent() {
     <div>
       <div className="container">
         <div className="row">
-          <div className="p-2 col-sm">
-            <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mr-2">
+          <div className="p-2 col-sm d-flex justify-content-center space-between">
+            <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
               Sorter efter titel {getSortArrow("title")}
             </Button>
-          </div>
-          <div className="p-2 col-sm">
-            <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary">
+            <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
               Sorter efter udgivelsesår {getSortArrow("releaseYear")}
             </Button>
           </div>
