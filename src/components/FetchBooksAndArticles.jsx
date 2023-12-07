@@ -100,14 +100,6 @@ export default function FetchComponent() {
 
   return (
     <div style={{ padding: "10px" }}>
-      <div>
-        <Button variant="outline-secondary" onClick={() => handleSort("title")}>
-          Sorter efter titel {getSortArrow("title")}
-        </Button>
-        <Button variant="outline-secondary" onClick={() => handleSort("releaseYear")}>
-          Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-        </Button>
-      </div>
       <div style={{ padding: "10px" }}>
         <form
           style={{
@@ -218,7 +210,20 @@ export default function FetchComponent() {
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-
+        <div>
+          <Button
+            variant="outline-secondary"
+            onClick={() => handleSort("title")}
+          >
+            Sorter efter titel {getSortArrow("title")}
+          </Button>
+          <Button
+            variant="outline-secondary"
+            onClick={() => handleSort("releaseYear")}
+          >
+            Sorter efter udgivelsesår {getSortArrow("releaseYear")}
+          </Button>
+        </div>
         {data ? (
           <div>
             {sortArticles(data).map((item) => (
