@@ -46,7 +46,7 @@ export default function App() {
         <Route path="/netværksfacilitering" element={<StandardPage title={"netværksfacilitering"} />}></Route> {/* Netværksfacilitering page */}
         <Route path="/ledelsesudvikling" element={<StandardPage title={"ledelsesudvikling"} />}></Route> {/* Ledelsesudvikling page */}
         <Route path="/4R ledelsesudvikling" element={<StandardPage title={"4R ledelsesudvikling"} />}></Route> {/* 4R Ledelsesudvikling page */}
-        <Route path="/interne uddannelsesforløb" element={<StandardPage title={"nterne uddannelsesforløb"} />}></Route> {/* Interne uddannelsesforløb page */}
+        <Route path="/interne uddannelsesforløb" element={<StandardPage title={"interne uddannelsesforløb"} />}></Route> {/* Interne uddannelsesforløb page */}
         <Route path="*" element={<h1>Site Not Found</h1>}></Route>
         <Route path="/admin" element={<Admin />}></Route>
       </Routes>
