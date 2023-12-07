@@ -92,7 +92,7 @@ export default function FetchComponent() {
     }
   }
 
-  const buttons = (
+  const sortButtons = (
     <div className="container">
       <div className="row">
         <div className="p-2 col-sm d-flex justify-content-center space-between">
@@ -120,17 +120,17 @@ export default function FetchComponent() {
         <div>
           {sortArticles(data).map((item) => (
             <div key={item._id}>
-              <h3>Title {item.title}</h3>
+              <h3>{item.title}</h3>
               {/* <p>Release {item.release}</p> */}
-              <p>Year {item.releaseYear}</p>
+              <p>Udgivelsesår {item.releaseYear}</p>
               <p>Publisher {item.publisher}</p>
               <div>
                 {" "}
-                Authors:
+                Forfattere:
                 {item.authors.map((author) => {
                   return (
                     <p key={author._id}>
-                      First name: {author.firstName} Last name:{" "}
+                      Navn: {author.firstName}{" "}
                       {author.lastName}
                     </p>
                   );
@@ -139,7 +139,7 @@ export default function FetchComponent() {
               {/* <p>{item.author.lastName}</p> */}
               <a>Link {item.link}</a>
               {/* pay skal laves om */}
-              <p>Pay {item.pay == false ? "gratis" : "betalt"}</p>
+              <p>Pris: {item.pay == false ? "gratis" : "betalt"}</p>
               <p>Resume {item.resume}</p>
             </div>
           ))}
@@ -153,7 +153,7 @@ export default function FetchComponent() {
 
   return loggedIn ? (
     <div>
-    {buttons}
+    {sortButtons}
       <div style={{ padding: "10px" }}>
         <form
           style={{
@@ -269,7 +269,7 @@ export default function FetchComponent() {
     </div>
   ) : (
     <div>
-    {buttons}
+    {sortButtons}
     {articlesDisplay}
     </div>
   );
