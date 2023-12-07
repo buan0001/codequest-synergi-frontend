@@ -54,9 +54,9 @@ export default function Contact() {
   };
 
   return (
-    <div className="mt-4">
+    <div>
       {/* Kontakt Form */}
-      <Form ref={form} onSubmit={sendEmail} className="ms-4 mt-4 bg-white">
+      <Form ref={form} onSubmit={sendEmail} className="ms-4 mt-5">
         <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
           <Form.Label column sm={2}>
             Fornavn
@@ -116,7 +116,7 @@ export default function Contact() {
           </Col>
         </Form.Group>
 
-        <Form.Group className="text-center mb-4" controlId="formBasicButton">
+        <Form.Group className="text-center mb-5" controlId="formBasicButton">
           <Button variant="primary" type="submit" value="Send">
             Send
           </Button>

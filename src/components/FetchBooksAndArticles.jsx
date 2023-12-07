@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export default function FetchComponent() {
   const [data, setData] = useState("");
@@ -90,6 +93,7 @@ export default function FetchComponent() {
 
   return (
     <div>
+      {/* Sorter knapper */}
       <div className="container">
         <div className="row">
           <div className="p-2 col-sm d-flex justify-content-center space-between">
@@ -102,8 +106,10 @@ export default function FetchComponent() {
           </div>
         </div>
       </div>
-      <div style={{ padding: "10px" }}>
-        <form
+
+      {/* Form */}
+      <div className="mt-4">
+        <Form
           style={{
             display: "flex",
             padding: "5px",
@@ -116,20 +122,35 @@ export default function FetchComponent() {
           }}
         >
           <div>
-            <label htmlFor="title">Title</label>
-            <input type="text" name="title" required style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
+            {/* Titel, udgivelsesår, udgiver */}
+            <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+              <Form.Label column sm={2}>
+                Titel på bog
+              </Form.Label>
+              <Col sm={3}>
+                <Form.Control type="text" name="title" className="bg-light" placeholder="Bogens titel" required />
+              </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+              <Form.Label column sm={2}>
+                Udgivelsesår
+              </Form.Label>
+              <Col sm={3}>
+                <Form.Control type="number" name="releaseyear" className="bg-light" placeholder="Årstal" required />
+              </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+              <Form.Label column sm={2}>
+                Udgiver
+              </Form.Label>
+              <Col sm={3}>
+                <Form.Control type="text" name="publisher" className="bg-light" placeholder="Navn på udgiver" required />
+              </Col>
+            </Form.Group>
           </div>
-          <div>
-            <label htmlFor="">
-              Udgivelsesår
-              <input type="number" name="releaseYear" required />
-            </label>
-          </div>
-          <label>
-            Udgiver
-            <input type="text" name="publisher" required style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
-          </label>
-          <br />
+
           <div>
             {authorField.map((field, index) => {
               console.log("author field", authorField);
@@ -166,34 +187,42 @@ export default function FetchComponent() {
               value={"Remove latest author"}
             />
           </div>
-          <br />
-          <br />
-          <label>
-            Link til artiklen <input type="link" name="link" style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
-            {/* Link til artiklen <input type="link" name="link" style={{width:"50vw"}} /> */}
-          </label>
-          <label>
-            Betalingsartikel? <input type="checkbox" name="pay" />
-          </label>
-          <label>
-            Kort resume <textarea name="resume" />
-          </label>
+
+          {/* Link til artikel */}
+          <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+            <Form.Label column sm={2}>
+              Link til artiklen
+            </Form.Label>
+            <Col sm={3}>
+              <Form.Control type="text" name="link" className="bg-light" placeholder="Link til artiklen" required />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3 justify-content-center">
+            <Form.Label column sm={5}>
+              Betalingsartikel? <input type="checkbox" name="pay" />
+            </Form.Label>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
+            <Form.Label column sm={1}>
+              Kort resume
+            </Form.Label>
+            <Col sm={4}>
+              <Form.Control as="textarea" className="bg-light" name="Resume" rows={4} />
+            </Col>
+          </Form.Group>
+
           <div>
             <input type="submit" value={"Opret artikel"} />
           </div>
-        </form>
+        </Form>
+
         {/* <div>{missingFields.length == 0 ? "" : "These fields must be filled"}</div>
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-        <div>
-          <Button variant="outline-secondary" onClick={() => handleSort("title")}>
-            Sorter efter titel {getSortArrow("title")}
-          </Button>
-          <Button variant="outline-secondary" onClick={() => handleSort("releaseYear")}>
-            Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-          </Button>
-        </div>
+
         {data ? (
           <div>
             {sortArticles(data).map((item) => (

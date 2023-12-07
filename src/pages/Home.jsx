@@ -4,9 +4,11 @@ import FetchPages from "../components/FetchPages";
 // import FetchBooksAndArticles from "../components/FetchBooksAndArticles";
 
 export default function Home() {
-  const prop = 'forside';
+  const prop = "forside";
 
   return (
-      <FetchPages title={prop}/>
+    <div className="p-4">
+      <FetchPages title={prop} />
+    </div>
   );
 }
