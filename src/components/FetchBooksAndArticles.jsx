@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
 
 export default function FetchComponent() {
   const [data, setData] = useState("");
@@ -99,14 +100,6 @@ export default function FetchComponent() {
 
   return (
     <div style={{ padding: "10px" }}>
-      <div>
-        <button onClick={() => handleSort("title")}>
-          Sorter efter titel {getSortArrow("title")}
-        </button>
-        <button onClick={() => handleSort("releaseYear")}>
-          Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-        </button>
-      </div>
       <div style={{ padding: "10px" }}>
         <form
           style={{
@@ -217,7 +210,20 @@ export default function FetchComponent() {
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-
+        <div>
+          <Button
+            variant="outline-secondary"
+            onClick={() => handleSort("title")}
+          >
+            Sorter efter titel {getSortArrow("title")}
+          </Button>
+          <Button
+            variant="outline-secondary"
+            onClick={() => handleSort("releaseYear")}
+          >
+            Sorter efter udgivelsesår {getSortArrow("releaseYear")}
+          </Button>
+        </div>
         {data ? (
           <div>
             {sortArticles(data).map((item) => (
