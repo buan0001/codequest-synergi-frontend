@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import da from "date-fns/locale/da";
 import { isWeekend } from "date-fns";
+import { useSelector } from "react-redux";
 registerLocale("da", da);
 setDefaultLocale("da");
 
@@ -17,6 +18,25 @@ setDefaultLocale("da");
 // https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
 
 export default function Booking() {
+  const loggedIn = useSelector((state) => state.loginState.loggedIn);
+  console.log("login boolean:", loggedIn);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+
+  const handlePhoneNumberChange = (event) => {
+    const value = event.target.value;
+    setPhoneNumber(value);
+
+    // Validate phone number length (example: minLength = 8)
+    const minLength = 8;
+    if (value.length < minLength) {
+      setPhoneNumberError("Phone number should be at least 8 digits.");
+    } else {
+      setPhoneNumberError(""); // Clear the error message if the input is valid
+      console.log(phoneNumber);
+    }
+  };
+
   const roundToNearest15Minutes = (date) => {
     const minutes = date.getMinutes();
     const remainder = 15 - (minutes % 15); // Calculate the remainder to reach the next 15-minute interval
@@ -31,31 +51,41 @@ export default function Booking() {
     const [hours, minutes] = timePart.split(":"); // Split hours and minutes
 
     // Create a new Date object using parsed values (month - 1 because months are 0-indexed in JavaScript)
-    return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
+    const parsedDate = new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
+
+    // Convert Date object to ISO date string
+    const isoDateString = parsedDate.toISOString();
+    console.log("ISO Date: " + isoDateString);
+
+    return isoDateString;
+
+    // Create a new Date object using parsed values (month - 1 because months are 0-indexed in JavaScript)
+    // console.log("hehehehehehe" + new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes)));
+    // return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
   };
 
-  const firstDay = parseDateString("11-12-2023 14:00");
-  const lastDay = parseDateString("15-12-2023 13:00");
+  // const firstDay = parseDateString("11-12-2023 14:00");
+  // const lastDay = parseDateString("15-12-2023 13:00");
 
   // // Convert date strings to Date objects
   // const firstDay = new Date("11-12-2023 14:00");
   // const lastDay = new Date("15-12-2023 13:00");
 
-  const generateDatesBetween = (startDate, endDate) => {
-    const dates = [];
-    let currentDate = new Date(startDate);
+  // const generateDatesBetween = (startDate, endDate) => {
+  //   const dates = [];
+  //   let currentDate = new Date(startDate);
 
-    while (currentDate <= endDate) {
-      dates.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+  //   while (currentDate <= endDate) {
+  //     dates.push(new Date(currentDate));
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
 
-    return dates;
-  };
+  //   return dates;
+  // };
 
-  const datesInRange = generateDatesBetween(firstDay, lastDay);
+  // const datesInRange = generateDatesBetween(firstDay, lastDay);
 
-  console.log(datesInRange);
+  // console.log(datesInRange);
 
   // // Function to generate dates between two dates
   // const getDatesBetweenDates = (startDate, endDate) => {
@@ -144,17 +174,60 @@ export default function Booking() {
     return date >= today;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(startDate);
-    // console.log(endDate);
 
-    // missing check if startDate, endDate, startTime, and endTime are selected
+    // Check if phone number is valid before proceeding
+    if (phoneNumberError) {
+      console.error("Please correct the phone number."); // Log the error message
+      return; // Prevent form submission if there's an error
+    }
 
+    const firstDayValue = event.target.elements.firstDay.value;
+    const lastDayValue = event.target.elements.lastDay.value;
+
+    // Parse date strings to ISO date strings using parseDateString function
+    const isoFirstDay = parseDateString(firstDayValue);
+    const isoLastDay = parseDateString(lastDayValue);
+
+    // Get other form data
     const formData = new FormData(event.target);
-
     const formEntries = Object.fromEntries(formData.entries());
-    console.log("Form Data", formEntries);
+
+    // Convert phoneNumber to a number
+    const phoneNumber = Number(formData.get("phoneNumber"));
+
+    // Add ISO date strings to form data with the same key names
+    const updatedFormData = {
+      ...formEntries,
+      phoneNumber,
+      firstDay: isoFirstDay,
+      lastDay: isoLastDay
+    };
+
+    try {
+      // Send the form data to your backend endpoint using fetch
+      const response = await fetch("http://localhost:3333/booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json" // Set the appropriate content type
+        },
+        body: JSON.stringify(updatedFormData) // Convert data to JSON format
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // Handle the success response from the server if needed
+      const responseData = await response.json();
+      console.log("Server response:", responseData);
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle errors or show error messages to the user
+    }
+
+    console.log("Form Data", updatedFormData);
   };
 
   return (
@@ -184,7 +257,12 @@ export default function Booking() {
             Tlf. Nummer
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" required />
+            <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" onChange={handlePhoneNumberChange} aria-describedby="phoneNumberError" required />
+            {phoneNumberError && (
+              <div id="phoneNumberError" className="form-text text-danger">
+                {phoneNumberError}
+              </div>
+            )}
           </Col>
         </Form.Group>
 
@@ -238,7 +316,8 @@ export default function Booking() {
               filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
               minTime={new Date().setHours(8, 0)}
               maxTime={new Date().setHours(15, 0)}
-              excludeDates={datesInRange}
+              // excludeDates={excludedDates.map((dateString) => new Date(dateString))}
+              // excludeDates={datesInRange}
               // excludeDateIntervals={[{ start: new Date("11-12-2023"), end: new Date("15-12-2023") }]}
               required
             />

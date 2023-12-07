@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
+import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -10,6 +11,9 @@ export default function FetchComponent() {
   const [newPost, setNewPost] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
+
+    const loggedIn = useSelector((state) => state.loginState.loggedIn);
+    console.log('login boolean:', loggedIn);
 
   const handleSort = (key) => {
     if (sortBy === key) {
@@ -91,21 +95,69 @@ export default function FetchComponent() {
     }
   }
 
-  return (
-    <div>
+  const sortButtons = (
       {/* Sorter knapper */}
-      <div className="container">
-        <div className="row">
-          <div className="p-2 col-sm d-flex justify-content-center space-between">
-            <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
-              Sorter efter titel {getSortArrow("title")}
-            </Button>
-            <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
-              Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-            </Button>
-          </div>
+    <div className="container">
+      <div className="row">
+        <div className="p-2 col-sm d-flex justify-content-center space-between">
+          <Button
+            onClick={() => handleSort("title")}
+            variant="outline-secondary"
+            className="mx-2"
+          >
+            Sorter efter titel {getSortArrow("title")}
+          </Button>
+          <Button
+            onClick={() => handleSort("releaseYear")}
+            variant="outline-secondary"
+            className="mx-2"
+          >
+            Sorter efter udgivelsesår {getSortArrow("releaseYear")}
+          </Button>
         </div>
       </div>
+    </div>
+  );
+  const articlesDisplay = (
+    <div>
+      {data ? (
+        <div>
+          {sortArticles(data).map((item) => (
+            <div key={item._id}>
+              <h3>{item.title}</h3>
+              {/* <p>Release {item.release}</p> */}
+              <p>Udgivelsesår {item.releaseYear}</p>
+              <p>Publisher {item.publisher}</p>
+              <div>
+                {" "}
+                Forfattere:
+                {item.authors.map((author) => {
+                  return (
+                    <p key={author._id}>
+                      Navn: {author.firstName}{" "}
+                      {author.lastName}
+                    </p>
+                  );
+                })}
+              </div>
+              {/* <p>{item.author.lastName}</p> */}
+              <a>Link {item.link}</a>
+              {/* pay skal laves om */}
+              <p>Pris: {item.pay == false ? "gratis" : "betalt"}</p>
+              <p>Resume {item.resume}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
+      )}
+    </div>
+  );
+
+
+  return loggedIn ? (
+    <div>
+    {sortButtons}
 
       {/* Form */}
       <div className="mt-4">
@@ -159,10 +211,12 @@ export default function FetchComponent() {
                   <label>
                     Forfatter {index + 1}:
                     <label>
-                      Fornavn <input type="text" name={"firstName" + index} required />
+                      Fornavn{" "}
+                      <input type="text" name={"firstName" + index} required />
                     </label>
                     <label htmlFor={"lastName" + index}>
-                      Efternavn <input type="text" name={"lastName" + index} required />
+                      Efternavn{" "}
+                      <input type="text" name={"lastName" + index} required />
                     </label>
                   </label>
                 </div>
@@ -222,38 +276,13 @@ export default function FetchComponent() {
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-
-        {data ? (
-          <div>
-            {sortArticles(data).map((item) => (
-              <div key={item._id}>
-                <h3>Title {item.title}</h3>
-                {/* <p>Release {item.release}</p> */}
-                <p>Year {item.releaseYear}</p>
-                <p>Publisher {item.publisher}</p>
-                <div>
-                  {" "}
-                  Authors:
-                  {item.authors.map((author) => {
-                    return (
-                      <p key={author._id}>
-                        First name: {author.firstName} Last name: {author.lastName}
-                      </p>
-                    );
-                  })}
-                </div>
-                {/* <p>{item.author.lastName}</p> */}
-                <a>Link {item.link}</a>
-                {/* pay skal laves om */}
-                <p>Pay {item.pay == false ? "gratis" : "betalt"}</p>
-                <p>Resume {item.resume}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
-        )}
+{articlesDisplay}
       </div>
+    </div>
+  ) : (
+    <div>
+    {sortButtons}
+    {articlesDisplay}
     </div>
   );
 }
