@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export default function FetchComponent() {
   const [data, setData] = useState("");
@@ -9,8 +12,8 @@ export default function FetchComponent() {
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
 
-    const loggedIn = useSelector((state) => state.loginState.loggedIn);
-    console.log('login boolean:', loggedIn);
+  const loggedIn = useSelector((state) => state.loginState.loggedIn);
+  console.log("login boolean:", loggedIn);
 
   const handleSort = (key) => {
     if (sortBy === key) {
@@ -55,19 +58,17 @@ export default function FetchComponent() {
     fetchData();
   }, [newPost]); // Dependency that decides how many times the effect runs
 
-  async function handleSubmit(event) {
-    const form = event.target;
-
+  async function handleSubmit(form) {
     const newArticle = {
-      title: form.title.value,
-      releaseYear: form.releaseYear.value,
-      publisher: form.publisher.value,
+      title: form.title,
+      releaseYear: form.releaseYear,
+      publisher: form.publisher,
       authors: authorField.map((field) => {
-        return { firstName: form["firstName" + field].value, lastName: form["lastName" + field].value };
+        return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
       }),
-      link: form.link.value,
+      link: form.link,
       isPay: form.pay.checked,
-      resume: form.resume.value,
+      resume: form.resume,
     };
     console.log("new article", newArticle);
 
@@ -96,24 +97,17 @@ export default function FetchComponent() {
     <div className="container">
       <div className="row">
         <div className="p-2 col-sm d-flex justify-content-center space-between">
-          <Button
-            onClick={() => handleSort("title")}
-            variant="outline-secondary"
-            className="mx-2"
-          >
+          <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
             Sorter efter titel {getSortArrow("title")}
           </Button>
-          <Button
-            onClick={() => handleSort("releaseYear")}
-            variant="outline-secondary"
-            className="mx-2"
-          >
+          <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
             Sorter efter udgivelsesår {getSortArrow("releaseYear")}
           </Button>
         </div>
       </div>
     </div>
   );
+
   const articlesDisplay = (
     <div>
       {data ? (
@@ -123,15 +117,14 @@ export default function FetchComponent() {
               <h3>{item.title}</h3>
               {/* <p>Release {item.release}</p> */}
               <p>Udgivelsesår {item.releaseYear}</p>
-              <p>Publisher {item.publisher}</p>
+              <p>Forlag {item.publisher}</p>
               <div>
                 {" "}
                 Forfattere:
                 {item.authors.map((author) => {
                   return (
                     <p key={author._id}>
-                      Navn: {author.firstName}{" "}
-                      {author.lastName}
+                      Navn: {author.firstName} {author.lastName}
                     </p>
                   );
                 })}
@@ -139,7 +132,10 @@ export default function FetchComponent() {
               {/* <p>{item.author.lastName}</p> */}
               <a>Link {item.link}</a>
               {/* pay skal laves om */}
-              <p>Pris: {item.pay == false ? "Gratis" : "Betalt"}</p>
+              <p>
+                <b>Pris: </b>
+                {item.pay == false ? "Gratis" : "Betalt"}
+              </p>
               <p>Resume {item.resume}</p>
             </div>
           ))}
@@ -150,12 +146,13 @@ export default function FetchComponent() {
     </div>
   );
 
-
   return loggedIn ? (
     <div>
-    {sortButtons}
-      <div style={{ padding: "10px" }}>
-        <form
+      {sortButtons}
+
+      {/* Form */}
+      <div className="mt-4">
+        <Form
           style={{
             display: "flex",
             padding: "5px",
@@ -164,113 +161,138 @@ export default function FetchComponent() {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit(e);
+            console.log("target", new FormData(e.target));
+
+            const formEntries = Object.fromEntries(new FormData(e.target).entries());
+            console.log("form entries", formEntries);
+            handleSubmit(new FormData(e.target));
           }}
         >
           <div>
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              name="title"
-              required
-              style={{ minWidth: "250px" }}
-              onKeyUp={(e) =>
-                (e.target.style.width = e.target.value.length + 1 + "ch")
-              }
-            />
+            {/* Titel, udgivelsesår, udgiver */}
+            <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+              <Form.Label column sm={2}>
+                Titel på bog
+              </Form.Label>
+              <Col sm={3}>
+                <Form.Control type="text" name="title" className="bg-light" placeholder="Bogens titel" required />
+              </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+              <Form.Label column sm={2}>
+                Udgivelsesår
+              </Form.Label>
+              <Col sm={3}>
+                <Form.Control type="number" name="releaseyear" className="bg-light" placeholder="Årstal" required />
+              </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+              <Form.Label column sm={2}>
+                Udgiver
+              </Form.Label>
+              <Col sm={3}>
+                <Form.Control type="text" name="publisher" className="bg-light" placeholder="Navn på udgiver" required />
+              </Col>
+            </Form.Group>
           </div>
-          <div>
-            <label htmlFor="">
-              Udgivelsesår
-              <input type="number" name="releaseYear" required />
-            </label>
-          </div>
-          <label>
-            Udgiver
-            <input
-              type="text"
-              name="publisher"
-              required
-              style={{ minWidth: "250px" }}
-              onKeyUp={(e) =>
-                (e.target.style.width = e.target.value.length + 1 + "ch")
-              }
-            />
-          </label>
-          <br />
+
           <div>
             {authorField.map((field, index) => {
               console.log("author field", authorField);
               return (
                 <div key={field}>
-                  <label>
-                    Forfatter {index + 1}:
-                    <label>
-                      Fornavn{" "}
-                      <input type="text" name={"firstName" + index} required />
-                    </label>
-                    <label htmlFor={"lastName" + index}>
-                      Efternavn{" "}
-                      <input type="text" name={"lastName" + index} required />
-                    </label>
-                  </label>
+                  <div>
+                    <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+                      <Form.Label column sm={2}>
+                        Forfatter {index + 1}:
+                      </Form.Label>
+                      <Col sm={3}>
+                        <Form.Control type="text" name={"firstName" + index} className="bg-light" placeholder="Fornavn" required />
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Control type="text" name={"lastName" + index} className="bg-light" placeholder="Efternavn" required />
+                      </Col>
+                    </Form.Group>
+                  </div>
                 </div>
               );
             })}
-            <input
-              type="button"
-              onClick={() => {
-                setAuthorField([...authorField, authorField.length]);
-              }}
-              value={"Add new author"}
-            />
-            <input
-              type="button"
-              onClick={() => {
-                const newField = [...authorField];
-                if (newField.length > 1) {
-                  newField.pop();
-                  setAuthorField(newField);
-                }
-              }}
-              value={"Remove latest author"}
-            />
           </div>
-          <br />
-          <br />
-          <label>
-            Link til artiklen{" "}
-            <input
-              type="link"
-              name="link"
-              style={{ minWidth: "250px" }}
-              onKeyUp={(e) =>
-                (e.target.style.width = e.target.value.length + 1 + "ch")
-              }
-            />
-            {/* Link til artiklen <input type="link" name="link" style={{width:"50vw"}} /> */}
-          </label>
-          <label>
-            Betalingsartikel? <input type="checkbox" name="pay" />
-          </label>
-          <label>
-            Kort resume <textarea name="resume" />
-          </label>
-          <div>
-            <input type="submit" value={"Opret artikel"} />
+
+          <div className="container">
+            <div className="row">
+              <div className="p-2 col-sm d-flex justify-content-center space-between">
+                <Button
+                  onClick={() => {
+                    setAuthorField([...authorField, authorField.length]);
+                  }}
+                  variant="outline-secondary"
+                  className="mx-2"
+                >
+                  Tilføj ny forfatter
+                </Button>
+                <Button
+                  onClick={() => {
+                    const newField = [...authorField];
+                    if (newField.length > 1) {
+                      newField.pop();
+                      setAuthorField(newField);
+                    }
+                  }}
+                  variant="outline-secondary"
+                  className="mx-2"
+                >
+                  Fjern seneste forfatter
+                </Button>
+              </div>
+            </div>
           </div>
-        </form>
+
+          {/* Link til artikel */}
+          <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
+            <Form.Label column sm={2}>
+              Link til artiklen
+            </Form.Label>
+            <Col sm={3}>
+              <Form.Control type="text" name="link" className="bg-light" placeholder="Link til artiklen" />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3 justify-content-center">
+            <Form.Label column sm={5}>
+              Betalingsartikel? <input type="checkbox" name="pay" />
+            </Form.Label>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupText">
+            <Form.Label column sm={1}>
+              Kort resume
+            </Form.Label>
+            <Col sm={4}>
+              <Form.Control as="textarea" className="bg-light" name="resume" rows={4} />
+            </Col>
+          </Form.Group>
+
+          <Form.Group className="mb-3 text-center" controlId="formBasicButton">
+            <Button type="submit" variant="outline-secondary" className="mx-2">
+              Opret artikel
+            </Button>
+          </Form.Group>
+        </Form>
+
         {/* <div>{missingFields.length == 0 ? "" : "These fields must be filled"}</div>
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-{articlesDisplay}
+        {articlesDisplay}
       </div>
     </div>
   ) : (
     <div>
-    {sortButtons}
-    {articlesDisplay}
+      {sortButtons}
+      {articlesDisplay}
     </div>
   );
 }
