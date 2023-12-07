@@ -1,5 +1,5 @@
 import FetchPages from "../components/FetchPages";
 export default function About() {
-  const prop = "/om";
+  const prop = "/about";
   return <FetchPages title={prop} />;
 }
