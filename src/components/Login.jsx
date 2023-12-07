@@ -58,7 +58,9 @@ export default function Login() {
               />
             </Col>
           </Form.Group>
-          <Form.Group as={Row} className="mb-3" >
+          <Form.Group
+            as={Row}
+            className="mb-3">
             <Col sm={{ span: 9, offset: 3 }}>
               <Button
                 type="button"
