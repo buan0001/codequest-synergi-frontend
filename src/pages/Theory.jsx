@@ -1,8 +1,10 @@
-import FetchPages from '../components/FetchPages';
+import FetchPages from "../components/FetchPages";
 
 export default function Theory() {
-  const prop = 'ståsted';
+  const prop = "ståsted";
   return (
-    <FetchPages title={prop}/>
+    <div className="p-4">
+      <FetchPages title={prop} />
+    </div>
   );
 }
