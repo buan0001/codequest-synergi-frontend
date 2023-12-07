@@ -159,7 +159,7 @@ export default function Booking() {
 
   return (
     <>
-      <Form onSubmit={handleSubmit} className="mb-5">
+      <Form onSubmit={handleSubmit} className="mb-5 mt-5">
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={2}>
             Fulde navn:

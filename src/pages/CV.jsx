@@ -4,9 +4,11 @@ import { useSelector } from "react-redux";
 
 export default function CV() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  console.log('login boolean:', loggedIn);
-  const prop = 'cv';
+  console.log("login boolean:", loggedIn);
+  const prop = "cv";
   return (
-    <FetchPages title={prop}/>
+    <div className="p-4">
+      <FetchPages title={prop} />
+    </div>
   );
 }

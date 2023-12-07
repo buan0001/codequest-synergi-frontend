@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 export default function FetchComponent() {
   const [data, setData] = useState("");
   const [authorField, setAuthorField] = useState([0]);
-  const [newPost, setNewPost] = useState("")
+  const [newPost, setNewPost] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
 
@@ -25,17 +25,9 @@ export default function FetchComponent() {
 
   const sortArticles = (articles) => {
     if (sortBy === "title") {
-      return articles.sort((a, b) =>
-        sortOrder === "asc"
-          ? a.title.localeCompare(b.title)
-          : b.title.localeCompare(a.title)
-      );
+      return articles.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
     } else if (sortBy === "releaseYear") {
-      return articles.sort((a, b) =>
-        sortOrder === "asc"
-          ? a.releaseYear - b.releaseYear
-          : b.releaseYear - a.releaseYear
-      );
+      return articles.sort((a, b) => (sortOrder === "asc" ? a.releaseYear - b.releaseYear : b.releaseYear - a.releaseYear));
     } else {
       return articles;
     }
@@ -59,16 +51,14 @@ export default function FetchComponent() {
     fetchData();
   }, [newPost]); // Dependency that decides how many times the effect runs
 
-
   async function handleSubmit(event) {
-
     const form = event.target;
-    
+
     const newArticle = {
       title: form.title.value,
       releaseYear: form.releaseYear.value,
       publisher: form.publisher.value,
-      authors: authorField.map(field => {
+      authors: authorField.map((field) => {
         return { firstName: form["firstName" + field].value, lastName: form["lastName" + field].value };
       }),
       link: form.link.value,
@@ -90,7 +80,7 @@ export default function FetchComponent() {
         throw new Error("Der opstod en fejl ved fetch");
       }
       const result = await response.json();
-      setNewPost(result)
+      setNewPost(result);
       console.log(result);
       // setData(result);
     } catch (error) {
@@ -99,7 +89,19 @@ export default function FetchComponent() {
   }
 
   return (
-    <div style={{ padding: "10px" }}>
+    <div>
+      <div className="container">
+        <div className="row">
+          <div className="p-2 col-sm d-flex justify-content-center space-between">
+            <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
+              Sorter efter titel {getSortArrow("title")}
+            </Button>
+            <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
+              Sorter efter udgivelsesår {getSortArrow("releaseYear")}
+            </Button>
+          </div>
+        </div>
+      </div>
       <div style={{ padding: "10px" }}>
         <form
           style={{
@@ -115,15 +117,7 @@ export default function FetchComponent() {
         >
           <div>
             <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              name="title"
-              required
-              style={{ minWidth: "250px" }}
-              onKeyUp={(e) =>
-                (e.target.style.width = e.target.value.length + 1 + "ch")
-              }
-            />
+            <input type="text" name="title" required style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
           </div>
           <div>
             <label htmlFor="">
@@ -133,15 +127,7 @@ export default function FetchComponent() {
           </div>
           <label>
             Udgiver
-            <input
-              type="text"
-              name="publisher"
-              required
-              style={{ minWidth: "250px" }}
-              onKeyUp={(e) =>
-                (e.target.style.width = e.target.value.length + 1 + "ch")
-              }
-            />
+            <input type="text" name="publisher" required style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
           </label>
           <br />
           <div>
@@ -152,12 +138,10 @@ export default function FetchComponent() {
                   <label>
                     Forfatter {index + 1}:
                     <label>
-                      Fornavn{" "}
-                      <input type="text" name={"firstName" + index} required />
+                      Fornavn <input type="text" name={"firstName" + index} required />
                     </label>
                     <label htmlFor={"lastName" + index}>
-                      Efternavn{" "}
-                      <input type="text" name={"lastName" + index} required />
+                      Efternavn <input type="text" name={"lastName" + index} required />
                     </label>
                   </label>
                 </div>
@@ -185,15 +169,7 @@ export default function FetchComponent() {
           <br />
           <br />
           <label>
-            Link til artiklen{" "}
-            <input
-              type="link"
-              name="link"
-              style={{ minWidth: "250px" }}
-              onKeyUp={(e) =>
-                (e.target.style.width = e.target.value.length + 1 + "ch")
-              }
-            />
+            Link til artiklen <input type="link" name="link" style={{ minWidth: "250px" }} onKeyUp={(e) => (e.target.style.width = e.target.value.length + 1 + "ch")} />
             {/* Link til artiklen <input type="link" name="link" style={{width:"50vw"}} /> */}
           </label>
           <label>
@@ -211,16 +187,10 @@ export default function FetchComponent() {
         return <div key={field}>{field}</div>
       })}</div> */}
         <div>
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleSort("title")}
-          >
+          <Button variant="outline-secondary" onClick={() => handleSort("title")}>
             Sorter efter titel {getSortArrow("title")}
           </Button>
-          <Button
-            variant="outline-secondary"
-            onClick={() => handleSort("releaseYear")}
-          >
+          <Button variant="outline-secondary" onClick={() => handleSort("releaseYear")}>
             Sorter efter udgivelsesår {getSortArrow("releaseYear")}
           </Button>
         </div>
@@ -238,8 +208,7 @@ export default function FetchComponent() {
                   {item.authors.map((author) => {
                     return (
                       <p key={author._id}>
-                        First name: {author.firstName} Last name:{" "}
-                        {author.lastName}
+                        First name: {author.firstName} Last name: {author.lastName}
                       </p>
                     );
                   })}
