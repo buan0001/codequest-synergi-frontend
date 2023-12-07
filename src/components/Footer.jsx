@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="p-2 bg-dark text-center text-lg-start position-absolute w-100">
+    <div className="footer py-3 bg-dark text-center text-lg-start w-100">
       <div className="text-center p-3 text-light">
         <a className="text-light" href="http://www.linkedin.com/in/peterskovmoes">
           {" "}

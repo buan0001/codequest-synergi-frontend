@@ -159,16 +159,13 @@ export default function Booking() {
 
   return (
     <>
-      <h1>Booking</h1>
-      <p>Welcome to the booking page!</p>
-
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} className="mb-5">
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={2}>
             Fulde navn:
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="text" name="firstName" placeholder="Fornavn" required />
+            <Form.Control type="text" name="firstName" placeholder="Fornavn" required className="mb-3" />
             <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
           </Col>
         </Form.Group>
