@@ -9,6 +9,7 @@ export default function AdminLogin() {
     return (
       <div>
         <h1>Du er nu logget ind som admin</h1>
+        <p>Naviger til de andre sider for at redigere.</p>
       </div>
     );
   }

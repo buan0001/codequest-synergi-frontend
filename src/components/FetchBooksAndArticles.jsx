@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
+import { useSelector } from "react-redux";
 
 export default function FetchComponent() {
   const [data, setData] = useState("");
@@ -7,6 +8,9 @@ export default function FetchComponent() {
   const [newPost, setNewPost] = useState("")
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
+
+    const loggedIn = useSelector((state) => state.loginState.loggedIn);
+    console.log('login boolean:', loggedIn);
 
   const handleSort = (key) => {
     if (sortBy === key) {
@@ -98,7 +102,7 @@ export default function FetchComponent() {
     }
   }
 
-  return (
+  return loggedIn ? (
     <div style={{ padding: "10px" }}>
       <div style={{ padding: "10px" }}>
         <form
@@ -256,6 +260,51 @@ export default function FetchComponent() {
           <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
         )}
       </div>
+    </div>
+  ) : (
+    <div>
+      <div>
+        <Button variant="outline-secondary" onClick={() => handleSort("title")}>
+          Sorter efter titel {getSortArrow("title")}
+        </Button>
+        <Button
+          variant="outline-secondary"
+          onClick={() => handleSort("releaseYear")}
+        >
+          Sorter efter udgivelsesår {getSortArrow("releaseYear")}
+        </Button>
+      </div>
+      {data ? (
+        <div>
+          {sortArticles(data).map((item) => (
+            <div key={item._id}>
+              <h3>Title {item.title}</h3>
+              {/* <p>Release {item.release}</p> */}
+              <p>Year {item.releaseYear}</p>
+              <p>Publisher {item.publisher}</p>
+              <div>
+                {" "}
+                Authors:
+                {item.authors.map((author) => {
+                  return (
+                    <p key={author._id}>
+                      First name: {author.firstName} Last name:{" "}
+                      {author.lastName}
+                    </p>
+                  );
+                })}
+              </div>
+              {/* <p>{item.author.lastName}</p> */}
+              <a>Link {item.link}</a>
+              {/* pay skal laves om */}
+              <p>Pay {item.pay == false ? "gratis" : "betalt"}</p>
+              <p>Resume {item.resume}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
+      )}
     </div>
   );
 }
