@@ -3,7 +3,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import "../App.css";
 import { useState } from "react";
 
-function Edit() {
+function Edit(prop) {
   const [textContent, setTextContent] = useState();
   // const [pageInfo, setPageInfo] = useState();
   const [title, setTitle] = useState();
@@ -21,7 +21,7 @@ function Edit() {
     console.log("what to fetch",whatToFetch);
     console.log("route to use",routeToUse);
     try {
-      const response = await fetch(`http://localhost:3333/${routeToUse}/${whatToFetch}`);
+      const response = await fetch(`http://localhost:3333/${routeToUse}/${prop.title}`);
       if (!response.ok) {
         throw new Error("Der opstod en fejl ved fetch");
       }
@@ -72,7 +72,7 @@ function Edit() {
   return (
     <>
       <div className="App">
-        <h2>Using CKEditor 5 from online builder in React</h2>
+        <h2>Placeholder</h2>
         <div style={{ color: "black" }}>
           <input
             type="text"
@@ -110,7 +110,8 @@ function Edit() {
               // You can store the "editor" and use when it is needed.
               console.log("Editor is ready to use!", editor);
               editorReference.test(editor);
-              // await fetchPage();
+
+              await fetchPage();
             }}
             onChange={(event, editor) => {
               const data = editor.getData();

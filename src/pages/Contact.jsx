@@ -7,8 +7,12 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 export default function Contact() {
+  const loggedIn = useSelector((state) => state.loginState.loggedIn);
+  console.log("state", loggedIn);
+
   const form = useRef();
 
   // EmailJS funktionalitet
@@ -50,7 +54,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="bg-dark">
+    <div className="mt-4">
       {/* Kontakt Form */}
       <Form ref={form} onSubmit={sendEmail} className="ms-4 mt-4 bg-white">
         <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
@@ -59,6 +63,7 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="text" className="bg-light" placeholder="Fornavn" name="fornavn" required />
+            {/* <span style={{ color: "red" }}>{errors.firstname?.message}</span> */}
           </Col>
         </Form.Group>
 
@@ -68,6 +73,7 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="text" className="bg-light" placeholder="Efternavn" name="efternavn" required />
+            {/* <span>{errors.lastname?.message}</span> */}
           </Col>
         </Form.Group>
 
@@ -77,6 +83,7 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="email" className="bg-light" placeholder="Email" name="email" required />
+            {/* <span>{errors.email?.message}</span> */}
           </Col>
         </Form.Group>
 
@@ -86,6 +93,7 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="number" className="bg-light" placeholder="Telefon nummer" name="telefon" required />
+            {/* <span>{errors.phone?.message}</span> */}
           </Col>
         </Form.Group>
 
@@ -95,6 +103,7 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="text" className="bg-light" placeholder="Virksomhedens navn (valgfrit)" name="virksomhed" />
+            {/* <span>{errors.company?.message}</span> */}
           </Col>
         </Form.Group>
 
@@ -107,7 +116,7 @@ export default function Contact() {
           </Col>
         </Form.Group>
 
-        <Form.Group className="text-center" controlId="formBasicButton">
+        <Form.Group className="text-center mb-4" controlId="formBasicButton">
           <Button variant="primary" type="submit" value="Send">
             Send
           </Button>

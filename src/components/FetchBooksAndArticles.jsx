@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import { useSelector } from "react-redux";
 
 export default function FetchComponent() {
   const [data, setData] = useState("");
   const [authorField, setAuthorField] = useState([0]);
-  const [newPost, setNewPost] = useState("")
+  const [newPost, setNewPost] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
+
+    const loggedIn = useSelector((state) => state.loginState.loggedIn);
+    console.log('login boolean:', loggedIn);
 
   const handleSort = (key) => {
     if (sortBy === key) {
@@ -24,17 +29,9 @@ export default function FetchComponent() {
 
   const sortArticles = (articles) => {
     if (sortBy === "title") {
-      return articles.sort((a, b) =>
-        sortOrder === "asc"
-          ? a.title.localeCompare(b.title)
-          : b.title.localeCompare(a.title)
-      );
+      return articles.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
     } else if (sortBy === "releaseYear") {
-      return articles.sort((a, b) =>
-        sortOrder === "asc"
-          ? a.releaseYear - b.releaseYear
-          : b.releaseYear - a.releaseYear
-      );
+      return articles.sort((a, b) => (sortOrder === "asc" ? a.releaseYear - b.releaseYear : b.releaseYear - a.releaseYear));
     } else {
       return articles;
     }
@@ -58,16 +55,14 @@ export default function FetchComponent() {
     fetchData();
   }, [newPost]); // Dependency that decides how many times the effect runs
 
-
   async function handleSubmit(event) {
-
     const form = event.target;
-    
+
     const newArticle = {
       title: form.title.value,
       releaseYear: form.releaseYear.value,
       publisher: form.publisher.value,
-      authors: authorField.map(field => {
+      authors: authorField.map((field) => {
         return { firstName: form["firstName" + field].value, lastName: form["lastName" + field].value };
       }),
       link: form.link.value,
@@ -89,7 +84,7 @@ export default function FetchComponent() {
         throw new Error("Der opstod en fejl ved fetch");
       }
       const result = await response.json();
-      setNewPost(result)
+      setNewPost(result);
       console.log(result);
       // setData(result);
     } catch (error) {
@@ -97,16 +92,68 @@ export default function FetchComponent() {
     }
   }
 
-  return (
-    <div style={{ padding: "10px" }}>
-      <div>
-        <button onClick={() => handleSort("title")}>
-          Sorter efter titel {getSortArrow("title")}
-        </button>
-        <button onClick={() => handleSort("releaseYear")}>
-          Sorter efter udgivelsesår {getSortArrow("releaseYear")}
-        </button>
+  const sortButtons = (
+    <div className="container">
+      <div className="row">
+        <div className="p-2 col-sm d-flex justify-content-center space-between">
+          <Button
+            onClick={() => handleSort("title")}
+            variant="outline-secondary"
+            className="mx-2"
+          >
+            Sorter efter titel {getSortArrow("title")}
+          </Button>
+          <Button
+            onClick={() => handleSort("releaseYear")}
+            variant="outline-secondary"
+            className="mx-2"
+          >
+            Sorter efter udgivelsesår {getSortArrow("releaseYear")}
+          </Button>
+        </div>
       </div>
+    </div>
+  );
+  const articlesDisplay = (
+    <div>
+      {data ? (
+        <div>
+          {sortArticles(data).map((item) => (
+            <div key={item._id}>
+              <h3>{item.title}</h3>
+              {/* <p>Release {item.release}</p> */}
+              <p>Udgivelsesår {item.releaseYear}</p>
+              <p>Publisher {item.publisher}</p>
+              <div>
+                {" "}
+                Forfattere:
+                {item.authors.map((author) => {
+                  return (
+                    <p key={author._id}>
+                      Navn: {author.firstName}{" "}
+                      {author.lastName}
+                    </p>
+                  );
+                })}
+              </div>
+              {/* <p>{item.author.lastName}</p> */}
+              <a>Link {item.link}</a>
+              {/* pay skal laves om */}
+              <p>Pris: {item.pay == false ? "gratis" : "betalt"}</p>
+              <p>Resume {item.resume}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
+      )}
+    </div>
+  );
+
+
+  return loggedIn ? (
+    <div>
+    {sortButtons}
       <div style={{ padding: "10px" }}>
         <form
           style={{
@@ -217,39 +264,13 @@ export default function FetchComponent() {
       <div style={{display:"flex", gap:"10px"}}>{missingFields.length == 0 ? "" : missingFields.map(field =>{
         return <div key={field}>{field}</div>
       })}</div> */}
-
-        {data ? (
-          <div>
-            {sortArticles(data).map((item) => (
-              <div key={item._id}>
-                <h3>Title {item.title}</h3>
-                {/* <p>Release {item.release}</p> */}
-                <p>Year {item.releaseYear}</p>
-                <p>Publisher {item.publisher}</p>
-                <div>
-                  {" "}
-                  Authors:
-                  {item.authors.map((author) => {
-                    return (
-                      <p key={author._id}>
-                        First name: {author.firstName} Last name:{" "}
-                        {author.lastName}
-                      </p>
-                    );
-                  })}
-                </div>
-                {/* <p>{item.author.lastName}</p> */}
-                <a>Link {item.link}</a>
-                {/* pay skal laves om */}
-                <p>Pay {item.pay == false ? "gratis" : "betalt"}</p>
-                <p>Resume {item.resume}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
-        )}
+{articlesDisplay}
       </div>
+    </div>
+  ) : (
+    <div>
+    {sortButtons}
+    {articlesDisplay}
     </div>
   );
 }
