@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
 import Home from "./pages/Home";
 import CV from "./pages/CV";
-import Edit from "./components/CKEditor";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Theory from "./pages/Theory";
 import Kunder from "./pages/Kunder";
@@ -34,7 +33,6 @@ export default function App() {
         <Route path="/contact" element={<Contact />}></Route> {/* Contact page */}
         <Route path="/about" element={<About />}></Route> {/* About page */}
         <Route path="/booking" element={<Booking />}></Route> {/*Booking page*/}
-        <Route path="/edit" element={<Edit />}></Route> {/* Booking page */}
         <Route path="/theory" element={<Theory />}></Route> {/* Teoretisk ståsted page */}
         <Route path="/cv" element={<CV />}></Route> {/* CV page */}
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}

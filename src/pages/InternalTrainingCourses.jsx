@@ -8,7 +8,7 @@ export default function InternalTrainingCourses() {
   const prop = "interne uddannelsesforløb";
   return loggedIn ? (
     <div>
-      <Editor />
+      <Editor title={prop}/>
       <div className="p-4">
         <FetchPages title={prop} />
       </div>
