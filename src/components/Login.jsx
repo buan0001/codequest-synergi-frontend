@@ -12,7 +12,7 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const handleLogin = (event) => {
-    event.preventDefault();
+    event?.preventDefault();
     console.log("Logging in...");
     dispatch(login({ username, password }));
   };
@@ -34,6 +34,7 @@ export default function Login() {
                 onChange={(event) => {
                   setUsername(event.target.value);
                 }}
+                onKeyDown={(e) => {if (e.code === "Enter"){console.log("enter pressed"),handleLogin()}}}
               />
             </Col>
           </Form.Group>
@@ -53,6 +54,7 @@ export default function Login() {
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}
+                onKeyDown={(e) => {if (e.code === "Enter"){console.log("enter pressed"), handleLogin()}}}
               />
             </Col>
           </Form.Group>
