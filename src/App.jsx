@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import CV from "./pages/CV";
 import Booksandarticles from "./pages/BooksAndArticles";
 import Theory from "./pages/Theory";
-import Kunder from "./pages/Kunder";
+import Kunder from "./pages/Customers";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
@@ -26,7 +26,7 @@ import InternalTrainingCourses from "./pages/InternalTrainingCourses";
 
 export default function App() {
   return (
-    <div className="d-flex flex-column bg-light" style={{ minHeight: "100vh" }}>
+    <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
       <Header /> {/* Navbar */}
       <Routes>
         <Route path="/" element={<Home />}></Route> {/* Home page */}
