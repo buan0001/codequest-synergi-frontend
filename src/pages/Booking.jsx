@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import da from "date-fns/locale/da";
 import { isWeekend } from "date-fns";
+import { useSelector } from "react-redux";
 registerLocale("da", da);
 setDefaultLocale("da");
 
@@ -17,6 +18,8 @@ setDefaultLocale("da");
 // https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
 
 export default function Booking() {
+  const loggedIn = useSelector((state) => state.loginState.loggedIn);
+  console.log("login boolean:", loggedIn);
   const roundToNearest15Minutes = (date) => {
     const minutes = date.getMinutes();
     const remainder = 15 - (minutes % 15); // Calculate the remainder to reach the next 15-minute interval
@@ -159,7 +162,7 @@ export default function Booking() {
 
   return (
     <>
-      <Form onSubmit={handleSubmit} className="mb-5">
+      <Form onSubmit={handleSubmit} className="mb-5 mt-5">
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={2}>
             Fulde navn:

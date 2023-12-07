@@ -72,7 +72,7 @@ function Edit(prop) {
   return (
     <>
       <div className="App">
-        <h2>Using CKEditor 5 from online builder in React</h2>
+        <h2>Placeholder</h2>
         <div style={{ color: "black" }}>
           <input
             type="text"
