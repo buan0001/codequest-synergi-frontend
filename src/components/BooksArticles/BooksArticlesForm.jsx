@@ -8,9 +8,9 @@ import Col from "react-bootstrap/Col";
 import tryCatch from "../TryCatch";
 
 export default function BookArticleForm(props) {
-  const [changedPost, setChangedPost] = useState("");
-  const [showBorA, setShowBorA] = useState("articles");
-  const [isPay, setIsPay] = useState(false);
+//   const [changedPost, setChangedPost] = useState("");
+//   const [showBorA, setShowBorA] = useState("articles");
+//   const [isPay, setIsPay] = useState(false);
   const [formCreateType, setFormCreateType] = useState("articles");
   const [authorField, setAuthorField] = useState([0]);
   const [formData, setFormData] = useState("");
@@ -27,7 +27,7 @@ export default function BookArticleForm(props) {
         return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
       }),
       link: form.link,
-      isPay: isPay,
+      isPay: form.isPay,
       resume: form.resume,
     };
     console.log("new article", newArticleOrBook);
@@ -39,9 +39,9 @@ export default function BookArticleForm(props) {
         "Content-Type": "application/json",
       },
     });
-    console.log(result);
+    console.log(response);
     if (response) {
-      setChangedPost(response);
+      props.newSubmit.setChangedPost(response)
     }
   }
 
@@ -76,13 +76,13 @@ export default function BookArticleForm(props) {
           {/* Titel, udgivelsesår, udgiver */}
           <Form.Group as={Row} className="mb-3 justify-content-center">
             <Form.Select
-              defaultValue={showBorA}
+              defaultValue={props.formData.showBorA}
               name="bookOrArticle"
               className="justify-content-center"
               style={{ width: "30vw" }}
-              onChange={(e) => {
-                setFormCreateType(e.target.value);
-              }}
+            //   onChange={(e) => {
+            //     setFormCreateType(e.target.value);
+            //   }}
             >
               <option value="articles">Artikel</option>
               <option value="books">Bog</option>
@@ -93,7 +93,7 @@ export default function BookArticleForm(props) {
               Titel
             </Form.Label>
             <Col sm={3}>
-              <Form.Control type="text" name="title" className="bg-light" placeholder="Titel" required defaultValue={props.publisher} />
+              <Form.Control type="text" name="title" className="bg-light" placeholder="Titel" required defaultValue={props.formData.title} />
             </Col>
           </Form.Group>
 
@@ -102,7 +102,7 @@ export default function BookArticleForm(props) {
               Udgivelsesår
             </Form.Label>
             <Col sm={3}>
-              <Form.Control type="number" name="releaseYear" className="bg-light" placeholder="Årstal" required defaultValue={props.publisher} />
+              <Form.Control type="number" name="releaseYear" className="bg-light" placeholder="Årstal" required defaultValue={props.formData.releaseYear} />
             </Col>
           </Form.Group>
 
@@ -111,7 +111,7 @@ export default function BookArticleForm(props) {
               Udgiver
             </Form.Label>
             <Col sm={3}>
-              <Form.Control type="text" name="publisher" className="bg-light" placeholder="Navn på udgiver" required defaultValue={props.publisher} />
+              <Form.Control type="text" name="publisher" className="bg-light" placeholder="Navn på udgiver" required defaultValue={props.formData.publisher} />
             </Col>
           </Form.Group>
         </div>
@@ -184,11 +184,11 @@ export default function BookArticleForm(props) {
             Betalt adgang?
             <Form.Select
               defaultValue={formData.pay || ""}
-              name=""
+              name="isPay"
               id=""
-              onChange={(e) => {
-                setIsPay(e.target.value === "true");
-              }}
+            //   onChange={(e) => {
+            //     setIsPay(e.target.value === "true");
+            //   }}
             >
               <option value="false">Gratis</option>
               <option value="true">Betalt</option>
