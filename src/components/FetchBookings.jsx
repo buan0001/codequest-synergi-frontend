@@ -7,7 +7,7 @@ export default function FetchComponent() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3333/bookings"
+          "http://localhost:3333/booking"
         );
         if (!response.ok) {
           throw new Error('Der opstod en fejl ved fetch');
