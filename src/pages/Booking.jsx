@@ -10,6 +10,8 @@ import { registerLocale, setDefaultLocale } from "react-datepicker";
 import da from "date-fns/locale/da";
 import { isWeekend } from "date-fns";
 import { useSelector } from "react-redux";
+import FetchBookings from "../components/FetchBookings";
+
 registerLocale("da", da);
 setDefaultLocale("da");
 
@@ -51,7 +53,13 @@ export default function Booking() {
     const [hours, minutes] = timePart.split(":"); // Split hours and minutes
 
     // Create a new Date object using parsed values (month - 1 because months are 0-indexed in JavaScript)
-    const parsedDate = new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
+    const parsedDate = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      Number(hours),
+      Number(minutes)
+    );
 
     // Convert Date object to ISO date string
     const isoDateString = parsedDate.toISOString();
@@ -149,7 +157,9 @@ export default function Booking() {
     return nextDay;
   };
 
-  const [startDate, setStartDate] = useState(() => nextAvailableDate(new Date()));
+  const [startDate, setStartDate] = useState(() =>
+    nextAvailableDate(new Date())
+  );
   const [endDate, setEndDate] = useState(() => addFifteenMinutes(startDate));
 
   useEffect(() => {
@@ -202,7 +212,7 @@ export default function Booking() {
       ...formEntries,
       phoneNumber,
       firstDay: isoFirstDay,
-      lastDay: isoLastDay
+      lastDay: isoLastDay,
     };
 
     try {
@@ -210,9 +220,9 @@ export default function Booking() {
       const response = await fetch("http://localhost:3333/booking", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json" // Set the appropriate content type
+          "Content-Type": "application/json", // Set the appropriate content type
         },
-        body: JSON.stringify(updatedFormData) // Convert data to JSON format
+        body: JSON.stringify(updatedFormData), // Convert data to JSON format
       });
 
       if (!response.ok) {
@@ -230,134 +240,341 @@ export default function Booking() {
     console.log("Form Data", updatedFormData);
   };
 
+  const BookingForm = (
+    <div>
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Fulde navn:
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control
+            type="text"
+            name="firstName"
+            placeholder="Fornavn"
+            required
+            className="mb-3"
+          />
+          <Form.Control
+            type="text"
+            name="lastName"
+            placeholder="Efternavn"
+            required
+          />
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Email
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control
+            type="email"
+            name="email"
+            placeholder="Din E-mail"
+            required
+          />
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Tlf. Nummer
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control
+            type="number"
+            name="phoneNumber"
+            placeholder="Dit tlf. nummer"
+            onChange={handlePhoneNumberChange}
+            aria-describedby="phoneNumberError"
+            required
+          />
+          {phoneNumberError && (
+            <div id="phoneNumberError" className="form-text text-danger">
+              {phoneNumberError}
+            </div>
+          )}
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Vælg ydelse:
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Select
+            aria-label="Default select example"
+            name="chooseService"
+            defaultValue="Vælg konsulent ydelse"
+            required
+          >
+            <option disabled>Vælg konsulent ydelse</option>
+            <option value="Proceskonsultation">Proceskonsultation</option>
+            <option value="Coaching af enkeltpersoner eller grupper">
+              Coaching af enkeltpersoner eller grupper
+            </option>
+            <option value="Kreativ facilitering">Kreativ facilitering</option>
+            <option value="Teamudvikling">Teamudvikling</option>
+            <option value="Facilitering af ledernetværk og træning">
+              Facilitering af ledernetværk og træning
+            </option>
+            <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
+            <option value="Interne skræddersyede uddannelses- og træningsforløb">
+              Interne skræddersyede uddannelses- og træningsforløb
+            </option>
+          </Form.Select>
+        </Col>
+      </Form.Group>
+
+      <Form.Group
+        as={Row}
+        className="mb-3 justify-content-center"
+        controlId="exampleFormControlTextarea1"
+      >
+        <Form.Label column sm={2}>
+          Besked
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control
+            as="textarea"
+            className="bg-light"
+            name="message"
+            placeholder="Kort uddybning af grunden til du booker.."
+            rows={4}
+            required
+          />
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Vælg Start Dato
+        </Form.Label>
+        <Col sm={4}>
+          <DatePicker
+            todayButton="I dag"
+            showIcon
+            selected={startDate}
+            onChange={(date) => {
+              setStartDate(date);
+            }}
+            withPortal
+            locale="da"
+            dateFormat="dd-MM-yyyy HH:mm"
+            name="firstDay"
+            placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+            showTimeSelect
+            // inline
+            timeIntervals={15}
+            filterDate={(date) =>
+              excludeWeekends(date) && excludePastDatesAndToday(date)
+            }
+            minTime={new Date().setHours(8, 0)}
+            maxTime={new Date().setHours(15, 0)}
+            // excludeDates={excludedDates.map((dateString) => new Date(dateString))}
+            // excludeDates={datesInRange}
+            excludeDateIntervals={[
+              { start: new Date("11-12-2023"), end: new Date("15-12-2023") },
+            ]}
+            required
+          />
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Vælg Slut Dato
+        </Form.Label>
+        <Col sm={4}>
+          <DatePicker
+            todayButton="I dag"
+            showIcon
+            selected={endDate}
+            onChange={(date) => {
+              setEndDate(date);
+            }}
+            withPortal
+            locale="da"
+            dateFormat="dd-MM-yyyy HH:mm"
+            name="lastDay"
+            placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+            showTimeSelect
+            inline
+            timeIntervals={15}
+            filterDate={(date) =>
+              excludeWeekends(date) && excludePastDatesAndToday(date)
+            }
+            minDate={startDate}
+            minTime={
+              startDate.toDateString() !== endDate.toDateString()
+                ? new Date().setHours(8, 0)
+                : new Date(startDate.getTime() + 15 * 60 * 1000)
+            }
+            maxTime={new Date().setHours(16, 0)}
+            required
+          />
+        </Col>
+      </Form.Group>
+
+      <Form.Group className="text-center" controlId="formBasicButton">
+        <Button variant="primary" type="submit" value="book">
+          Book
+        </Button>
+      </Form.Group>
+    </div>
+  );
+
   return (
     <>
-      <Form onSubmit={handleSubmit} className="mb-5 mt-5">
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Fulde navn:
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control type="text" name="firstName" placeholder="Fornavn" required className="mb-3" />
-            <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Email
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control type="email" name="email" placeholder="Din E-mail" required />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Tlf. Nummer
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" onChange={handlePhoneNumberChange} aria-describedby="phoneNumberError" required />
-            {phoneNumberError && (
-              <div id="phoneNumberError" className="form-text text-danger">
-                {phoneNumberError}
-              </div>
-            )}
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Vælg ydelse:
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Select aria-label="Default select example" name="chooseService" defaultValue="Vælg konsulent ydelse" required>
-              <option disabled>Vælg konsulent ydelse</option>
-              <option value="Proceskonsultation">Proceskonsultation</option>
-              <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
-              <option value="Kreativ facilitering">Kreativ facilitering</option>
-              <option value="Teamudvikling">Teamudvikling</option>
-              <option value="Facilitering af ledernetværk og træning">Facilitering af ledernetværk og træning</option>
-              <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
-              <option value="Interne skræddersyede uddannelses- og træningsforløb">Interne skræddersyede uddannelses- og træningsforløb</option>
-            </Form.Select>
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
-          <Form.Label column sm={2}>
-            Besked
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} required />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Vælg Start Dato
-          </Form.Label>
-          <Col sm={4}>
-            <DatePicker
-              todayButton="I dag"
-              showIcon
-              selected={startDate}
-              onChange={(date) => {
-                setStartDate(date);
-              }}
-              withPortal
-              locale="da"
-              dateFormat="dd-MM-yyyy HH:mm"
-              name="firstDay"
-              placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
-              showTimeSelect
-              // inline
-              timeIntervals={15}
-              filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
-              minTime={new Date().setHours(8, 0)}
-              maxTime={new Date().setHours(15, 0)}
-              // excludeDates={excludedDates.map((dateString) => new Date(dateString))}
-              // excludeDates={datesInRange}
-              // excludeDateIntervals={[{ start: new Date("11-12-2023"), end: new Date("15-12-2023") }]}
-              required
-            />
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Vælg Slut Dato
-          </Form.Label>
-          <Col sm={4}>
-            <DatePicker
-              todayButton="I dag"
-              showIcon
-              selected={endDate}
-              onChange={(date) => {
-                setEndDate(date);
-              }}
-              withPortal
-              locale="da"
-              dateFormat="dd-MM-yyyy HH:mm"
-              name="lastDay"
-              placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
-              showTimeSelect
-              // inline
-              timeIntervals={15}
-              filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
-              minDate={startDate}
-              minTime={startDate.toDateString() !== endDate.toDateString() ? new Date().setHours(8, 0) : new Date(startDate.getTime() + 15 * 60 * 1000)}
-              maxTime={new Date().setHours(16, 0)}
-              required
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group className="text-center" controlId="formBasicButton">
-          <Button variant="primary" type="submit" value="book">
-            Book
-          </Button>
-        </Form.Group>
-      </Form>
+      {loggedIn ? (
+        <div className="row">
+          <div className="col-md-6">
+            <Form onSubmit={handleSubmit} className="mb-5 mt-5">
+              {BookingForm}
+            </Form>
+          </div>
+          <div className="col-md-6">
+            <FetchBookings />
+          </div>
+        </div>
+      ) : (
+        <Form onSubmit={handleSubmit} className="mb-5 mt-5">
+          {BookingForm}
+        </Form>
+      )}
     </>
   );
 }
+
+  // return (
+  //   <>
+  //     <Form onSubmit={handleSubmit} className="mb-5 mt-5">
+  //       <Form.Group as={Row} className="mb-3 justify-content-center">
+  //         <Form.Label column sm={2}>
+  //           Fulde navn:
+  //         </Form.Label>
+  //         <Col sm={4}>
+  //           <Form.Control type="text" name="firstName" placeholder="Fornavn" required className="mb-3" />
+  //           <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
+  //         </Col>
+  //       </Form.Group>
+
+  //       <Form.Group as={Row} className="mb-3 justify-content-center">
+  //         <Form.Label column sm={2}>
+  //           Email
+  //         </Form.Label>
+  //         <Col sm={4}>
+  //           <Form.Control type="email" name="email" placeholder="Din E-mail" required />
+  //         </Col>
+  //       </Form.Group>
+
+  //       <Form.Group as={Row} className="mb-3 justify-content-center">
+  //         <Form.Label column sm={2}>
+  //           Tlf. Nummer
+  //         </Form.Label>
+  //         <Col sm={4}>
+  //           <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" onChange={handlePhoneNumberChange} aria-describedby="phoneNumberError" required />
+  //           {phoneNumberError && (
+  //             <div id="phoneNumberError" className="form-text text-danger">
+  //               {phoneNumberError}
+  //             </div>
+  //           )}
+  //         </Col>
+  //       </Form.Group>
+
+  //       <Form.Group as={Row} className="mb-3 justify-content-center">
+  //         <Form.Label column sm={2}>
+  //           Vælg ydelse:
+  //         </Form.Label>
+  //         <Col sm={4}>
+  //           <Form.Select aria-label="Default select example" name="chooseService" defaultValue="Vælg konsulent ydelse" required>
+  //             <option disabled>Vælg konsulent ydelse</option>
+  //             <option value="Proceskonsultation">Proceskonsultation</option>
+  //             <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
+  //             <option value="Kreativ facilitering">Kreativ facilitering</option>
+  //             <option value="Teamudvikling">Teamudvikling</option>
+  //             <option value="Facilitering af ledernetværk og træning">Facilitering af ledernetværk og træning</option>
+  //             <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
+  //             <option value="Interne skræddersyede uddannelses- og træningsforløb">Interne skræddersyede uddannelses- og træningsforløb</option>
+  //           </Form.Select>
+  //         </Col>
+  //       </Form.Group>
+
+  //       <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
+  //         <Form.Label column sm={2}>
+  //           Besked
+  //         </Form.Label>
+  //         <Col sm={4}>
+  //           <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} required />
+  //         </Col>
+  //       </Form.Group>
+
+  //       <Form.Group as={Row} className="mb-3 justify-content-center">
+  //         <Form.Label column sm={2}>
+  //           Vælg Start Dato
+  //         </Form.Label>
+  //         <Col sm={4}>
+  //           <DatePicker
+  //             todayButton="I dag"
+  //             showIcon
+  //             selected={startDate}
+  //             onChange={(date) => {
+  //               setStartDate(date);
+  //             }}
+  //             withPortal
+  //             locale="da"
+  //             dateFormat="dd-MM-yyyy HH:mm"
+  //             name="firstDay"
+  //             placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+  //             showTimeSelect
+  //             // inline
+  //             timeIntervals={15}
+  //             filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
+  //             minTime={new Date().setHours(8, 0)}
+  //             maxTime={new Date().setHours(15, 0)}
+  //             // excludeDates={excludedDates.map((dateString) => new Date(dateString))}
+  //             // excludeDates={datesInRange}
+  //             // excludeDateIntervals={[{ start: new Date("11-12-2023"), end: new Date("15-12-2023") }]}
+  //             required
+  //           />
+  //         </Col>
+  //       </Form.Group>
+  //       <Form.Group as={Row} className="mb-3 justify-content-center">
+  //         <Form.Label column sm={2}>
+  //           Vælg Slut Dato
+  //         </Form.Label>
+  //         <Col sm={4}>
+  //           <DatePicker
+  //             todayButton="I dag"
+  //             showIcon
+  //             selected={endDate}
+  //             onChange={(date) => {
+  //               setEndDate(date);
+  //             }}
+  //             withPortal
+  //             locale="da"
+  //             dateFormat="dd-MM-yyyy HH:mm"
+  //             name="lastDay"
+  //             placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+  //             showTimeSelect
+  //             // inline
+  //             timeIntervals={15}
+  //             filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
+  //             minDate={startDate}
+  //             minTime={startDate.toDateString() !== endDate.toDateString() ? new Date().setHours(8, 0) : new Date(startDate.getTime() + 15 * 60 * 1000)}
+  //             maxTime={new Date().setHours(16, 0)}
+  //             required
+  //           />
+  //         </Col>
+  //       </Form.Group>
+
+  //       <Form.Group className="text-center" controlId="formBasicButton">
+  //         <Button variant="primary" type="submit" value="book">
+  //           Book
+  //         </Button>
+  //       </Form.Group>
+  //     </Form>
+
+  //     <FetchBookings />
+  //   </>
+  // );
