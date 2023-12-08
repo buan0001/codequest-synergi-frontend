@@ -17,11 +17,11 @@ function Edit(prop) {
     },
   };
 
-  async function fetchPage(whatToFetch = "test title1") {
+  async function fetchPage(whatToFetch = prop.title) {
     console.log("what to fetch",whatToFetch);
     console.log("route to use",routeToUse);
     try {
-      const response = await fetch(`http://localhost:3333/${routeToUse}/${prop.title}`);
+      const response = await fetch(`http://localhost:3333/${routeToUse}/${whatToFetch}`);
       if (!response.ok) {
         throw new Error("Der opstod en fejl ved fetch");
       }
