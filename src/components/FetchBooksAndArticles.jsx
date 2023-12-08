@@ -116,27 +116,35 @@ export default function FetchComponent() {
             <div key={item._id}>
               <h3>{item.title}</h3>
               {/* <p>Release {item.release}</p> */}
-              <p>Udgivelsesår {item.releaseYear}</p>
-              <p>Forlag {item.publisher}</p>
+              <p>
+                <b>Udgivelsesår:</b> {item.releaseYear}
+              </p>
+              <p>
+                <b>Forlag:</b> {item.publisher}
+              </p>
               <div>
                 {" "}
-                Forfattere:
+                <b>Forfattere:</b>
                 {item.authors.map((author) => {
                   return (
                     <p key={author._id}>
-                      Navn: {author.firstName} {author.lastName}
+                      <i>Navn:</i> {author.firstName} {author.lastName}
                     </p>
                   );
                 })}
               </div>
               {/* <p>{item.author.lastName}</p> */}
-              <a>Link {item.link}</a>
+              <a>
+                <b>Link:</b> {item.link}
+              </a>
               {/* pay skal laves om */}
               <p>
                 <b>Pris: </b>
                 {item.pay == false ? "Gratis" : "Betalt"}
               </p>
-              <p>Resume {item.resume}</p>
+              <p>
+                <b>Resume:</b> {item.resume}
+              </p>
             </div>
           ))}
         </div>
