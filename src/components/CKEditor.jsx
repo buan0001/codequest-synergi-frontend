@@ -102,8 +102,10 @@ function Edit(prop) {
             <option value="books">Books</option>
             <option value="articles">Articles</option>
           </select>
-
+          <div style={{ display:"flex", justifyContent:"center"}}>
+          <div style={{width:"85vw"}}>
           <CKEditor
+          
             editor={ClassicEditor}
             config={{ toolbar: { removeItems: ["insertTable", "insertImage"] } }}
             onReady={async editor => {
@@ -118,7 +120,10 @@ function Edit(prop) {
               setTextContent(data);
             }}
           />
+          </div>
         </div>
+        </div>
+        <div style={{border:"black 7px solid"}}></div>
       </div>
     </>
   );
