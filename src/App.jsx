@@ -27,7 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
-    <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
+    <div className="d-flex flex-column bg-info bg-gradient opacity-sm-100" style={{ minHeight: "100vh" }}>
       <Header /> {/* Navbar */}
       <Routes>
         <Route path="/" element={<StandardPage title={"forside"}/>} ></Route> {/* Home page */}
