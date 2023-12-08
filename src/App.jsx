@@ -32,7 +32,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<StandardPage title={"forside"} />}></Route> {/* Home page */}
         <Route path="/contact" element={<Contact />}></Route> {/* Contact page */}
-        {/* <Route path="/contact" element={<Contact />} title={"forside"}></Route> Contact page */}
         <Route path="/about" element={<About />}></Route> {/* About page */}
         <Route path="/booking" element={<Booking />}></Route> {/*Booking page*/}
         <Route path="/theory" element={<StandardPage title={"teori"} />}></Route> {/* Teoretisk ståsted page */}
