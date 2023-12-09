@@ -7,18 +7,21 @@ import Col from "react-bootstrap/Col";
 // import tryCatch from "../components/TryCatch";
 import tryCatch from "../TryCatch";
 
-export default function BookArticleForm(props) {
-//   const [changedPost, setChangedPost] = useState("");
-//   const [showBorA, setShowBorA] = useState("articles");
-//   const [isPay, setIsPay] = useState(false);
+export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST" }) {
+  //   const [changedPost, setChangedPost] = useState("");
+  //   const [showBorA, setShowBorA] = useState("articles");
+  //   const [isPay, setIsPay] = useState(false);
   const [formCreateType, setFormCreateType] = useState("articles");
   const [authorField, setAuthorField] = useState([0]);
-  const [formData, setFormData] = useState("");
+  // const [formData, setFormData] = useState("");
+  const thingToMap = methodToUse === "POST" ? authorField : formData.authors;
+  console.log("author field", authorField);
 
-  async function handleSubmit(form, methodToUse = "POST") {
-    console.log("PROPS", props);
+  async function handleSubmit(form) {
+    // console.log("PROPS", props);
     console.log("form,", form);
-    console.log("book or article?", formCreateType);
+    console.log("method to use,", methodToUse);
+    // console.log("book or article?", formCreateType);
     const newArticleOrBook = {
       title: form.title,
       releaseYear: form.releaseYear,
@@ -31,7 +34,8 @@ export default function BookArticleForm(props) {
       resume: form.resume,
     };
     console.log("new article", newArticleOrBook);
-    let path = methodToUse === "POST" ? formCreateType : `${formCreateType}/${props._id}`;
+    let path = methodToUse === "POST" ? form.bookOrArticle : `${form.bookOrArticle}/${formData._id}`;
+    console.log("path", path);
     const response = await tryCatch(path, {
       method: methodToUse,
       body: JSON.stringify(newArticleOrBook),
@@ -41,7 +45,7 @@ export default function BookArticleForm(props) {
     });
     console.log(response);
     if (response) {
-      props.newSubmit.setChangedPost(response)
+      newSubmit.setChangedPost(response);
     }
   }
 
@@ -54,6 +58,7 @@ export default function BookArticleForm(props) {
           gap: "10px",
           flexDirection: "column",
         }}
+        className="bg-muted"
         onSubmit={(e) => {
           e.preventDefault();
           console.log("target", new FormData(e.target));
@@ -76,13 +81,13 @@ export default function BookArticleForm(props) {
           {/* Titel, udgivelsesår, udgiver */}
           <Form.Group as={Row} className="mb-3 justify-content-center">
             <Form.Select
-              defaultValue={props.formData.showBorA}
+              defaultValue={formData.showBorA}
               name="bookOrArticle"
               className="justify-content-center"
               style={{ width: "30vw" }}
-            //   onChange={(e) => {
-            //     setFormCreateType(e.target.value);
-            //   }}
+              onChange={(e) => {
+                setFormCreateType(e.target.value);
+              }}
             >
               <option value="articles">Artikel</option>
               <option value="books">Bog</option>
@@ -93,7 +98,7 @@ export default function BookArticleForm(props) {
               Titel
             </Form.Label>
             <Col sm={3}>
-              <Form.Control type="text" name="title" className="bg-light" placeholder="Titel" required defaultValue={props.formData.title} />
+              <Form.Control type="text" name="title" className="bg-light" placeholder="Titel" required defaultValue={formData.title} />
             </Col>
           </Form.Group>
 
@@ -102,7 +107,7 @@ export default function BookArticleForm(props) {
               Udgivelsesår
             </Form.Label>
             <Col sm={3}>
-              <Form.Control type="number" name="releaseYear" className="bg-light" placeholder="Årstal" required defaultValue={props.formData.releaseYear} />
+              <Form.Control type="number" name="releaseYear" className="bg-light" placeholder="Årstal" required defaultValue={formData.releaseYear} />
             </Col>
           </Form.Group>
 
@@ -111,26 +116,40 @@ export default function BookArticleForm(props) {
               Udgiver
             </Form.Label>
             <Col sm={3}>
-              <Form.Control type="text" name="publisher" className="bg-light" placeholder="Navn på udgiver" required defaultValue={props.formData.publisher} />
+              <Form.Control type="text" name="publisher" className="bg-light" placeholder="Navn på udgiver" required defaultValue={formData.publisher} />
             </Col>
           </Form.Group>
         </div>
 
         <div>
-          {authorField.map((field, index) => {
-            console.log("author field", authorField);
+          {thingToMap.map((field, index) => {
+            console.log("mapping");
             return (
-              <div key={field}>
+              <div key={index}>
                 <div>
                   <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
                     <Form.Label column sm={2}>
                       Forfatter {index + 1}:
                     </Form.Label>
                     <Col sm={3}>
-                      <Form.Control type="text" name={"firstName" + index} className="bg-light" placeholder="Fornavn" required />
+                      <Form.Control
+                        type="text"
+                        name={"firstName" + index}
+                        className="bg-light"
+                        placeholder="Fornavn"
+                        defaultValue={formData === "" ? "" : formData.authors[index]?.firstName}
+                        required
+                      />
                     </Col>
                     <Col sm={3}>
-                      <Form.Control type="text" name={"lastName" + index} className="bg-light" placeholder="Efternavn" required />
+                      <Form.Control
+                        type="text"
+                        name={"lastName" + index}
+                        className="bg-light"
+                        placeholder="Efternavn"
+                        defaultValue={formData === "" ? "" : formData.authors[index]?.lastName}
+                        required
+                      />
                     </Col>
                   </Form.Group>
                 </div>
@@ -186,9 +205,9 @@ export default function BookArticleForm(props) {
               defaultValue={formData.pay || ""}
               name="isPay"
               id=""
-            //   onChange={(e) => {
-            //     setIsPay(e.target.value === "true");
-            //   }}
+              //   onChange={(e) => {
+              //     setIsPay(e.target.value === "true");
+              //   }}
             >
               <option value="false">Gratis</option>
               <option value="true">Betalt</option>
@@ -207,8 +226,8 @@ export default function BookArticleForm(props) {
         </Form.Group>
 
         <Form.Group className="mb-3 text-center" controlId="formBasicButton">
-          <Button type="submit" variant="outline-secondary" className="mx-2">
-            Opret {formCreateType === "articles" ? "artikel" : "bog"}
+          <Button type="submit" variant="outline-secondary" className="mx-2 btn-dark text-warning">
+            {methodToUse === "POST" ? "Opret" : "Opdater"} {formCreateType === "articles" ? "artikel" : "bog"}
           </Button>
         </Form.Group>
       </Form>

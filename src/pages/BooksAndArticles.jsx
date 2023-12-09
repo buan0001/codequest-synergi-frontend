@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Modal from "react-bootstrap/Modal";
+// import Form from "react-bootstrap/Form";
+// import Row from "react-bootstrap/Row";
+// import Col from "react-bootstrap/Col";
+// import Modal from "react-bootstrap/Modal";
 import tryCatch from "../components/TryCatch";
 import BookArticleForm from "../components/BooksArticles/BooksArticlesForm";
 import UpdateModal from "../components/BooksArticles/UpdateModal";
@@ -60,35 +60,35 @@ export default function FetchComponent() {
     fetchData();
   }, [changedPost, showBorA]); // Dependency that decides how many times the effect runs
 
-  async function handleSubmit(form, methodToUse = "POST", id) {
-    console.log("form,", form);
-    console.log("form entries", form.entries);
-    console.log("book or article?", formCreateType);
-    const newArticleOrBook = {
-      title: form.title,
-      releaseYear: form.releaseYear,
-      publisher: form.publisher,
-      authors: authorField.map((field) => {
-        return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
-      }),
-      link: form.link,
-      isPay: isPay,
-      resume: form.resume,
-    };
-    console.log("new article", newArticleOrBook);
-    let path = methodToUse === "POST" ? formCreateType : `${formCreateType}/${id}`;
-    const response = await tryCatch(path, {
-      method: methodToUse,
-      body: JSON.stringify(newArticleOrBook),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(result);
-    if (response) {
-      setChangedPost(response);
-    }
-  }
+  // async function handleSubmit(form, methodToUse = "POST", id) {
+  //   console.log("form,", form);
+  //   console.log("form entries", form.entries);
+  //   console.log("book or article?", formCreateType);
+  //   const newArticleOrBook = {
+  //     title: form.title,
+  //     releaseYear: form.releaseYear,
+  //     publisher: form.publisher,
+  //     authors: authorField.map((field) => {
+  //       return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
+  //     }),
+  //     link: form.link,
+  //     isPay: isPay,
+  //     resume: form.resume,
+  //   };
+  //   console.log("new article", newArticleOrBook);
+  //   let path = methodToUse === "POST" ? formCreateType : `${formCreateType}/${id}`;
+  //   const response = await tryCatch(path, {
+  //     method: methodToUse,
+  //     body: JSON.stringify(newArticleOrBook),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   console.log(result);
+  //   if (response) {
+  //     setChangedPost(response);
+  //   }
+  // }
 
   async function deleteClicked(e) {
     const id = e.target.id;
@@ -220,15 +220,13 @@ export default function FetchComponent() {
       {" "}
       {loggedIn ? (
         <div>
-        
           <UpdateModal showModal={showModal} showBorA={showBorA} setChangedPost={setChangedPost} setShowModal={setShowModal} formData={formData}></UpdateModal>
-
 
           <div>
             {sortAndShowButtons}
 
             {/* Form */}
-            <BookArticleForm formData={""}></BookArticleForm>
+            <BookArticleForm formData ={""} newSubmit={setChangedPost}></BookArticleForm>
             <div className="mt-4">{contentDisplay}</div>
           </div>
         </div>
