@@ -192,12 +192,23 @@ export default function Booking() {
 
   const BookingForm = (
     <div>
+      <div className="text-center mb-5">
+        <h3>Booking af konsulentydelse</h3>
+      </div>
       <Form.Group as={Row} className="mb-3 justify-content-center">
         <Form.Label column sm={2}>
-          Fulde navn:
+          Fornavn:
         </Form.Label>
         <Col sm={4}>
-          <Form.Control type="text" name="firstName" placeholder="Fornavn" required className="mb-3" />
+          <Form.Control type="text" name="firstName" placeholder="Fornavn" required />
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Efternavn:
+        </Form.Label>
+        <Col sm={4}>
           <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
         </Col>
       </Form.Group>
@@ -245,7 +256,7 @@ export default function Booking() {
 
       <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
         <Form.Label column sm={2}>
-          Besked
+          Besked (valgfrit)
         </Form.Label>
         <Col sm={4}>
           <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} required />
@@ -254,7 +265,7 @@ export default function Booking() {
 
       <Form.Group as={Row} className="mb-3 justify-content-center">
         <Form.Label column sm={2}>
-          Vælg Dato
+          Vælg Dato:
         </Form.Label>
         <Col sm={4}>
           <DatePicker
@@ -277,7 +288,7 @@ export default function Booking() {
         </Col>
       </Form.Group>
 
-      <Form.Group className="text-center" controlId="formBasicButton">
+      <Form.Group className="text-center mb-5" controlId="formBasicButton">
         <Button variant="primary" type="submit" value="book">
           Book
         </Button>

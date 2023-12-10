@@ -23,12 +23,11 @@ export default function Contact() {
     emailjs.sendForm(`service_mo1481e`, `template_3x3y7gc`, form.current, `QennLeEfNjWQd9kMQ`).then(
       (result) => {
         console.log(result.text);
-
         SuccessMessage("Din besked er sendt!");
+        e.target.reset();
       },
       (error) => {
         console.log(error.text);
-
         ErrorMessage("Din besked blev ikke sendt, prøv igen!");
       }
     );
