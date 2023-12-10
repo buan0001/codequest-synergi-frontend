@@ -6,8 +6,9 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import SuccessMessage from "../components/SuccessMessage";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function Contact() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
@@ -23,32 +24,12 @@ export default function Contact() {
       (result) => {
         console.log(result.text);
 
-        // Success toast - React Toastify library
-        toast.success("Din besked er sendt!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        SuccessMessage("Din besked er sendt!");
       },
       (error) => {
         console.log(error.text);
 
-        // Error toast - React Toastify library
-        toast.error("Din besked blev ikke sendt, prøv igen!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        ErrorMessage("Din besked blev ikke sendt, prøv igen!");
       }
     );
   };
