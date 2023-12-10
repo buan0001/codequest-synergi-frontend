@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -15,9 +15,14 @@ import FetchBookings from "../components/FetchBookings";
 registerLocale("da", da);
 setDefaultLocale("da");
 
+// console.log(excludeBookedDates);
+
 // https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
 
 export default function Booking() {
+  // const excludeDatess = new Date("2023-12-08T10:00:00.000Z");
+  // console.log(excludeDatess);
+
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
   console.log("login boolean:", loggedIn);
 
@@ -38,6 +43,14 @@ export default function Booking() {
     }
   };
 
+  const roundToNearest15Minutes = (date) => {
+    const minutes = date.getMinutes();
+    const remainder = 15 - (minutes % 15); // Calculate the remainder to reach the next 15-minute interval
+    const roundedDate = new Date(date.getTime() + remainder * 60000); // Add milliseconds to round up
+
+    return roundedDate;
+  };
+
   const parseDateString = (dateString) => {
     const [datePart, timePart] = dateString.split(" "); // Split date and time
     const [day, month, year] = datePart.split("-"); // Split day, month, and year
@@ -48,15 +61,73 @@ export default function Booking() {
 
     // Convert Date object to ISO date string
     const isoDateString = parsedDate.toISOString();
-    // console.log("ISO Date: " + isoDateString);
+    console.log("ISO Date: " + isoDateString);
 
     return isoDateString;
+
+    // Create a new Date object using parsed values (month - 1 because months are 0-indexed in JavaScript)
+    // console.log("hehehehehehe" + new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes)));
+    // return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
   };
+
+  // const firstDay = parseDateString("11-12-2023 14:00");
+  // const lastDay = parseDateString("15-12-2023 13:00");
+
+  // // Convert date strings to Date objects
+  // const firstDay = new Date("11-12-2023 14:00");
+  // const lastDay = new Date("15-12-2023 13:00");
+
+  // const generateDatesBetween = (startDate, endDate) => {
+  //   const dates = [];
+  //   let currentDate = new Date(startDate);
+
+  //   while (currentDate <= endDate) {
+  //     dates.push(new Date(currentDate));
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
+
+  //   return dates;
+  // };
+
+  // const datesInRange = generateDatesBetween(firstDay, lastDay);
+
+  // console.log(datesInRange);
+
+  // // Function to generate dates between two dates
+  // const getDatesBetweenDates = (startDate, endDate) => {
+  //   const dates = [];
+  //   let currentDate = new Date(startDate);
+
+  //   while (currentDate <= endDate) {
+  //     dates.push(new Date(currentDate));
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
+  //   return dates;
+  // };
+
+  // // Get the dates between firstDay and lastDay
+  // const excludedDates = getDatesBetweenDates(firstDay, lastDay);
 
   const nextAvailableDate = (date) => {
     let today = new Date(date);
     let availableDay = new Date(today);
     availableDay.setDate(today.getDate() + 1);
+    availableDay = roundToNearest15Minutes(availableDay);
+    // let availableDay = new Date(date).setDate().getDate() + 1;
+
+    availableDay.getMinutes();
+
+    // Check if it's before 8 am
+    if (availableDay.getHours() < 8) {
+      availableDay.setHours(8, 0, 0, 0); // Set time to 8 am
+    } else if (availableDay.getHours() > 16) {
+      // If it's past 4 pm, move to the next day's 8 am
+      if (!isWeekend(availableDay)) {
+        availableDay.setDate(availableDay.getDate() + 1);
+        console.log("hejsa");
+      }
+      availableDay.setHours(8, 0, 0, 0); // Set time to 8 am
+    }
 
     // Check if it's a weekend (Saturday or Sunday)
     if (isWeekend(availableDay)) {
@@ -74,14 +145,47 @@ export default function Booking() {
     return availableDay;
   };
 
-  // to test it takes the next right date use this date format in new Date("12-09-2023") --> mm-dd-yyyy;
-  const [startDate, setStartDate] = useState(() => nextAvailableDate(new Date()));
+  const addFifteenMinutes = (endDate) => {
+    const nextDay = new Date(endDate);
+    // nextDay.setDate(nextDay.getDate() + 1); // Adding 1 day
 
-  // const [endDate, setEndDate] = useState(() => nextAvailableDate(new Date()));
-  // useEffect(() => {
-  //   // Update endDate whenever startDate changes
-  //   setEndDate(startDate);
-  // }, [startDate]);
+    // Adding 15 minutes
+    nextDay.setTime(nextDay.getTime() + 15 * 60 * 1000);
+
+    return nextDay;
+  };
+  // // Convert date strings to Date objects
+  const firstDay = new Date("12-11-2023 14:00");
+  const lastDay = new Date("12-14-2023 09:00");
+
+  // const firstDay = parseDateString("11-12-2023 14:00");
+  // const lastDay = parseDateString("15-12-2023 13:00");
+
+  const generateDatesBetween = (startDate, endDate) => {
+    const dates = [];
+    let currentDate = new Date(startDate);
+    console.log(currentDate);
+
+    while (currentDate <= endDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    console.log(dates);
+    return dates;
+  };
+
+  const datesInRange = generateDatesBetween(firstDay, lastDay);
+
+  console.log("hej", datesInRange);
+
+  const [startDate, setStartDate] = useState(() => nextAvailableDate(new Date()));
+  const [endDate, setEndDate] = useState(() => addFifteenMinutes(startDate));
+
+  useEffect(() => {
+    // Update endDate whenever startDate changes
+    setEndDate(addFifteenMinutes(startDate));
+  }, [startDate]);
 
   const getNextDay = () => {
     const today = new Date();
@@ -92,6 +196,7 @@ export default function Booking() {
 
   const excludeWeekends = (date) => {
     // Returns false if the day is Saturday or Sunday
+    // console.log(!isWeekend(date));
     return !isWeekend(date);
   };
 
@@ -101,8 +206,31 @@ export default function Booking() {
     return date >= today;
   };
 
+  const excludeBookings = (date, bookedDates) => {
+    const formattedDate = date.toISOString().slice(0, 10); // Format date as 'YYYY-MM-DD'
+
+    return bookedDates.includes(formattedDate);
+  };
+
+  // const excludeDatess = new Date("2023-12-21T10:00:00.000Z");
+  // console.log(excludeDatess);
+
+  const bookedDates1 = [new Date("2023-12-25"), new Date("2023-12-26"), new Date("2023-12-27")];
+  // const bookedDates2 = [{start: subDays(new Date("2023-12-25"), 0), end: addDays(new Date("2023-12-27"), 0)}, ]
+
   const filterDate = (date) => {
-    return excludeWeekends(date) && excludePastDatesAndToday(date);
+    // Example excluded date
+    const excludeDatess = new Date("2023-12-19T10:00:00.000Z");
+
+    // Example array of booked dates
+    const bookedDates = ["2023-10-25", "2023-10-26", "2023-10-27"];
+
+    return (
+      excludeWeekends(date) &&
+      excludePastDatesAndToday(date) &&
+      !excludeBookings(date, bookedDates) && // Exclude dates that are booked
+      !date.toISOString().includes(excludeDatess.toISOString().slice(0, 10)) // Check if the date is the excluded date
+    );
   };
 
   const handleSubmit = async (event) => {
@@ -225,50 +353,64 @@ export default function Booking() {
 
       <Form.Group as={Row} className="mb-3 justify-content-center">
         <Form.Label column sm={2}>
-          Vælg Dato
+          Vælg Start Dato
         </Form.Label>
         <Col sm={4}>
           <DatePicker
             todayButton="I dag"
-            // showIcon
+            showIcon
             selected={startDate}
             onChange={(date) => {
               setStartDate(date);
             }}
             withPortal
             locale="da"
-            dateFormat="dd-MM-yyyy"
+            dateFormat="dd-MM-yyyy HH:mm"
             name="firstDay"
             placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
-            inline
+            showTimeSelect
+            // inline
+            timeIntervals={30}
+            excludeDates={bookedDates1}
+            // filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
             filterDate={filterDate}
+            minTime={new Date().setHours(8, 0)}
+            maxTime={new Date().setHours(15, 0)}
+            // excludeDates={excludedDates.map((dateString) => new Date(dateString))}
+            // excludeDates={datesInRange}
+            // excludeDateIntervals={[{ start: new Date("11-12-2023"), end: new Date("15-12-2023") }]}
+            required
           />
         </Col>
       </Form.Group>
-      {/* <Form.Group as={Row} className="mb-3 justify-content-center">
+      <Form.Group as={Row} className="mb-3 justify-content-center">
         <Form.Label column sm={2}>
           Vælg Slut Dato
         </Form.Label>
         <Col sm={4}>
           <DatePicker
             todayButton="I dag"
-            // showIcon
+            showIcon
             selected={endDate}
             onChange={(date) => {
               setEndDate(date);
             }}
             withPortal
             locale="da"
-            dateFormat="dd-MM-yyyy"
+            dateFormat="dd-MM-yyyy HH:mm"
             name="lastDay"
             placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+            showTimeSelect
             // inline
-
+            timeIntervals={30}
             filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
             minDate={startDate}
+            minTime={startDate.toDateString() !== endDate.toDateString() ? new Date().setHours(8, 0) : new Date(startDate.getTime() + 15 * 60 * 1000)}
+            maxTime={new Date().setHours(16, 0)}
+            required
           />
         </Col>
-      </Form.Group> */}
+      </Form.Group>
 
       <Form.Group className="text-center" controlId="formBasicButton">
         <Button variant="primary" type="submit" value="book">
