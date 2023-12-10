@@ -24,9 +24,9 @@ export default function FetchComponent() {
     const options = {
       year: "numeric",
       month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
+      day: "numeric"
+      // hour: "numeric",
+      // minute: "numeric",
     };
     return new Date(dateTime).toLocaleString("da-DK", options);
   };
@@ -41,8 +41,7 @@ export default function FetchComponent() {
             <thead>
               <tr>
                 <th>Navn</th>
-                <th>Starttid</th>
-                <th>Sluttid</th>
+                <th>Dato</th>
                 <th>Besked</th>
                 <th>Service</th>
                 <th>Email</th>
@@ -55,8 +54,7 @@ export default function FetchComponent() {
                   <td>
                     {item.contactInfo.firstName} {item.contactInfo.lastName}
                   </td>
-                  <td>{formatDateTime(item.appointmentInfo.firstDay)}</td>
-                  <td>{formatDateTime(item.appointmentInfo.lastDay)}</td>
+                  <td>{formatDateTime(item.appointmentInfo.date)}</td>
                   <td>{item.appointmentInfo.message}</td>
                   <td>{item.appointmentInfo.service}</td>
                   <td>{item.contactInfo.email}</td>
