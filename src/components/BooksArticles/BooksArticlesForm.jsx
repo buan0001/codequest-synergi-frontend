@@ -12,10 +12,21 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
   //   const [showBorA, setShowBorA] = useState("articles");
   //   const [isPay, setIsPay] = useState(false);
   const [formCreateType, setFormCreateType] = useState("articles");
-  const [authorField, setAuthorField] = useState([0]);
+  const [authorField, setAuthorField] = useState(
+    methodToUse === "POST"
+      ? [{ placement: 0 }]
+      : formData.authors.map((author) => {
+          return { firstName: author.firstName, lastName: author.lastName };
+        })
+  );
   // const [formData, setFormData] = useState("");
-  const thingToMap = methodToUse === "POST" ? authorField : formData.authors;
+  // const thingToMap = methodToUse === "POST" ? authorField : formData.authors;
+  // if (methodToUse === "PATCH"){setAuthorField(formData.authors.map(author => {
+  //   return {firstName: author.firstName, lastName: author.lastName}
+  // }))}
   console.log("author field", authorField);
+  console.log("form data",formData);
+  console.log("methodToUse", methodToUse);
 
   async function handleSubmit(form) {
     // console.log("PROPS", props);
@@ -122,7 +133,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
         </div>
 
         <div>
-          {thingToMap.map((field, index) => {
+          {authorField.map((field, index) => {
             console.log("mapping");
             return (
               <div key={index}>
@@ -140,6 +151,26 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                         defaultValue={formData === "" ? "" : formData.authors[index]?.firstName}
                         required
                       />
+                      <Button
+                        id={index}
+                        onClick={(e) => {
+                          const id = Number(e.target.id)
+                          console.log("ID",id);
+                          const newField = authorField.filter(entry =>{console.log("entry.placement",entry); return entry.placement !== id})
+                          newField.forEach((entry, index) => {console.log("index",index);entry.placement = index})
+                          // const newField = id > 0 ? [...authorField].splice([id - 1], [id]) : [...authorField].splice([id], [id+1]);
+                          console.log("newField",newField);
+                          console.log("newField length",newField.length);
+                          if (newField.length !== 0) {
+                            // newField.pop();
+                            setAuthorField(newField);
+                          }
+                        }}
+                        variant="outline-danger"
+                        className="mx-2"
+                      >
+                        Fjern forfatter
+                      </Button>
                     </Col>
                     <Col sm={3}>
                       <Form.Control
@@ -163,7 +194,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
             <div className="p-2 col-sm d-flex justify-content-center space-between">
               <Button
                 onClick={() => {
-                  setAuthorField([...authorField, authorField.length]);
+                  setAuthorField([...authorField, {placement:authorField.length}]);
                 }}
                 variant="outline-secondary"
                 className="mx-2"

@@ -18,7 +18,6 @@ export default function UpdateModal({showModal, showBorA, setChangedPost, setSho
             </Modal.Header>
             <Modal.Body>
               <BookArticleForm formData={formData} newSubmit={setChangedPost} methodToUse={"PATCH"}></BookArticleForm>
-              {/* <p>Modal body text goes here.</p> */}
             </Modal.Body>
 
             <Modal.Footer>

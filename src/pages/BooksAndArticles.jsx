@@ -220,13 +220,15 @@ export default function FetchComponent() {
       {" "}
       {loggedIn ? (
         <div>
-          <UpdateModal showModal={showModal} showBorA={showBorA} setChangedPost={setChangedPost} setShowModal={setShowModal} formData={formData}></UpdateModal>
+          {showModal ? (
+            <UpdateModal showModal={showModal} showBorA={showBorA} setChangedPost={setChangedPost} setShowModal={setShowModal} formData={formData}></UpdateModal>
+          ) : (
+            <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm>
+          )}
 
           <div>
             {sortAndShowButtons}
 
-            {/* Form */}
-            <BookArticleForm formData ={""} newSubmit={setChangedPost}></BookArticleForm>
             <div className="mt-4">{contentDisplay}</div>
           </div>
         </div>
