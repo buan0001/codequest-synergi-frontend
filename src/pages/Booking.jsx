@@ -45,7 +45,6 @@ export default function Booking() {
       console.error("Error fetching dates:", error);
     }
   };
-
   console.log(datesArray);
 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -81,6 +80,7 @@ export default function Booking() {
 
   const nextAvailableDate = (date) => {
     let today = new Date(date);
+
     let availableDay = new Date(today);
     availableDay.setDate(today.getDate() + 1);
 
@@ -120,6 +120,7 @@ export default function Booking() {
 
   const excludePastDatesAndToday = (date) => {
     const today = new Date();
+    // console.log(date);
     // console.log(today);
     return date >= today;
   };
@@ -194,6 +195,12 @@ export default function Booking() {
     <div>
       <div className="text-center mb-5">
         <h3>Booking af konsulentydelse</h3>
+        <p>
+          Ved ændring af booking, kontakt Peter gennem{" "}
+          <a href="/contact" style={{ color: "black" }}>
+            kontaktformularen
+          </a>
+        </p>
       </div>
       <Form.Group as={Row} className="mb-3 justify-content-center">
         <Form.Label column sm={2}>
