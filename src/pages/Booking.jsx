@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
+
+// Bootstrap
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import DatePicker from "react-datepicker";
+
+// Datepicker
 import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
-import da from "date-fns/locale/da";
 import { isWeekend } from "date-fns";
+import da from "date-fns/locale/da";
+
+// Redux
 import { useSelector } from "react-redux";
-import FetchBookings from "../components/FetchBookings";
+
+// Components
+import Bookings from "../components/Bookings";
 import errorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
 
@@ -153,7 +161,7 @@ export default function Booking() {
     const updatedFormData = {
       ...formEntries,
       phoneNumber,
-      date: isoDate,
+      date: isoDate
       // lastDay: isoLastDay,
     };
 
@@ -162,9 +170,9 @@ export default function Booking() {
       const response = await fetch("http://localhost:3333/booking", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(updatedFormData),
+        body: JSON.stringify(updatedFormData)
       });
 
       const responseData = await response.json();
@@ -179,7 +187,9 @@ export default function Booking() {
       } else {
         SuccessMessage("Din booking er gennemført!");
         event.target.reset(); // Reset the form on successful booking
-        fetchData(); // Fetch updated booking dates after successful booking
+        // if (loggedIn) {
+        //   fetchBookings();
+        // }
       }
     } catch (error) {
       console.error("Error:", error);
@@ -266,7 +276,7 @@ export default function Booking() {
           Besked (valgfrit)
         </Form.Label>
         <Col sm={4}>
-          <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} required />
+          <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} />
         </Col>
       </Form.Group>
 
@@ -314,7 +324,7 @@ export default function Booking() {
           </div>
 
           <div className="col-md-6">
-            <FetchBookings />
+            <Bookings />
           </div>
         </div>
       ) : (

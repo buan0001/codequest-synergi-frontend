@@ -1,29 +1,35 @@
-import FetchPages from "../components/FetchPages";
+import InfoPages from "../components/InfoPages";
 import { useSelector } from "react-redux";
 import Editor from "../components/CKEditor";
 import { useState } from "react";
 
 export default function Coaching(prop) {
-    // console.log(prop);
-    console.log(prop.title);
-    const title = prop.title
-  const [showEditor, setShowEditor] = useState(false)
+  // console.log(prop);
+  console.log(prop.title);
+  const title = prop.title;
+  const [showEditor, setShowEditor] = useState(false);
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-//   const prop = "anerkendende coaching";
+  //   const prop = "anerkendende coaching";
   function handleEditor() {
-    setShowEditor(!showEditor)
+    setShowEditor(!showEditor);
   }
-return loggedIn ? (
-  <div>
-    <button onClick={() => {handleEditor()}}>Toggle editor</button>
-    {showEditor ?<Editor title={title} /> : <div></div>}  
-    <div className="p-4">
-      <FetchPages title={title} />
+  return loggedIn ? (
+    <div>
+      <button
+        onClick={() => {
+          handleEditor();
+        }}
+      >
+        Toggle editor
+      </button>
+      {showEditor ? <Editor title={title} /> : <div></div>}
+      <div className="p-4">
+        <InfoPages title={title} />
+      </div>
     </div>
-  </div>
-) : (
-  <div className="p-4">
-    <FetchPages title={title} />
-  </div>
-);
+  ) : (
+    <div className="p-4">
+      <InfoPages title={title} />
+    </div>
+  );
 }

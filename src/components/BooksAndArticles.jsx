@@ -16,10 +16,10 @@ export default function FetchComponent() {
   const [isPay, setIsPay] = useState(false);
   // const [style, setStyle] = useState({ width: inputRef.current ? inputRef.current.value.length + 'ch' : 'auto' })
 
-  const loggedIn = useSelector(state => state.loginState.loggedIn);
+  const loggedIn = useSelector((state) => state.loginState.loggedIn);
   console.log("login boolean:", loggedIn);
 
-  const handleSort = key => {
+  const handleSort = (key) => {
     if (sortBy === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -27,14 +27,14 @@ export default function FetchComponent() {
       setSortOrder("desc");
     }
   };
-  const getSortArrow = key => {
+  const getSortArrow = (key) => {
     if (sortBy === key) {
       return sortOrder === "asc" ? "↑" : "↓";
     }
     return null;
   };
 
-  const sortArticles = articles => {
+  const sortArticles = (articles) => {
     if (sortBy === "title") {
       return articles.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
     } else if (sortBy === "releaseYear") {
@@ -46,9 +46,11 @@ export default function FetchComponent() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await tryCatch(bookOrArticle)
-      console.log("response",response);
-      if (response){setData(response)}
+      const response = await tryCatch(bookOrArticle);
+      console.log("response", response);
+      if (response) {
+        setData(response);
+      }
     }
 
     fetchData();
@@ -62,30 +64,31 @@ export default function FetchComponent() {
       title: form.title,
       releaseYear: form.releaseYear,
       publisher: form.publisher,
-      authors: authorField.map(field => {
+      authors: authorField.map((field) => {
         return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
       }),
       link: form.link,
       isPay: isPay,
-      resume: form.resume,
+      resume: form.resume
     };
     console.log("new article", newArticleOrBook);
-      const response = await tryCatch(bookOrArticle, {
-        method: "POST",
-        body: JSON.stringify(newArticleOrBook),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response);
-      if (response){setNewPost(response)}
-      // setData(result);
+    const response = await tryCatch(bookOrArticle, {
+      method: "POST",
+      body: JSON.stringify(newArticleOrBook),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    console.log(response);
+    if (response) {
+      setNewPost(response);
     }
-  
+    // setData(result);
+  }
 
   function editClicked(e) {
-    console.log("event id",e.target.id);
-    tryCatch(``)
+    console.log("event id", e.target.id);
+    tryCatch(``);
     // console.log("event",e.target.key);
     // console.log("event",e.key);
   }
@@ -95,7 +98,7 @@ export default function FetchComponent() {
       <div className="row">
         <div className="p-2 col-sm d-flex justify-content-center space-between">
           <select
-            onChange={e => {
+            onChange={(e) => {
               setBookOrArticle(e.target.value);
             }}
           >
@@ -116,7 +119,7 @@ export default function FetchComponent() {
     <div>
       {data ? (
         <div style={{ margin: "10px" }}>
-          {sortArticles(data).map(item => (
+          {sortArticles(data).map((item) => (
             <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
               {/* <div key={item._id} className="p-2 col-sm d-flex justify-content-center space-between"> */}
               <div className="row gx-4 ">
@@ -129,7 +132,15 @@ export default function FetchComponent() {
                       </button>
                     </div>
                     <div className="col-sm-1">
-                      <button className="btn btn-primary" id={item._id} onClick={(e) => {editClicked(e)}}>Rediger</button>
+                      <button
+                        className="btn btn-primary"
+                        id={item._id}
+                        onClick={(e) => {
+                          editClicked(e);
+                        }}
+                      >
+                        Rediger
+                      </button>
                     </div>
                     <div className="col-sm-1"></div>
                   </>
@@ -192,9 +203,9 @@ export default function FetchComponent() {
                 display: "flex",
                 padding: "5px",
                 gap: "10px",
-                flexDirection: "column",
+                flexDirection: "column"
               }}
-              onSubmit={e => {
+              onSubmit={(e) => {
                 e.preventDefault();
                 console.log("target", new FormData(e.target));
                 const formEntries = Object.fromEntries(new FormData(e.target).entries());
@@ -202,7 +213,7 @@ export default function FetchComponent() {
                 handleSubmit(formEntries);
               }}
               // onFocus={(e) =>console.log("on focus event",e)}
-              onChange={e => {
+              onChange={(e) => {
                 const element = e.target;
                 console.log("element", element);
                 console.log("element", element.type);
@@ -222,7 +233,7 @@ export default function FetchComponent() {
               <select
                 className="justify-content-center"
                 style={{ width: "30vw" }}
-                onChange={e => {
+                onChange={(e) => {
                   changeBookArticle(e);
                 }}
               >
@@ -328,7 +339,7 @@ export default function FetchComponent() {
                   <select
                     name=""
                     id=""
-                    onChange={e => {
+                    onChange={(e) => {
                       changePay(e);
                     }}
                   >
@@ -369,5 +380,5 @@ export default function FetchComponent() {
         </div>
       )}
     </div>
-  )
+  );
 }

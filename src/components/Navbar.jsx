@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "./Logout";
 import logo from "../assets/synergi-hrm logo.png";
 
 // Funktionen hedder Header selvom det er en Navbar, pga. navngivningskonflikt med Navbar i React Bootstrap.

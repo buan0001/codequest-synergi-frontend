@@ -22,7 +22,7 @@ export default function LogoutButton() {
             handleLogout(event);
           }}
         >
-          Logout
+          Log ud
         </Button>
       </div>
     );
