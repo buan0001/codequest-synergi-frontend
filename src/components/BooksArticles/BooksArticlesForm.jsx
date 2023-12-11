@@ -219,12 +219,12 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                 onClick={() => {
                   setAuthorField([...authorField, { placement: authorField.length }]);
                 }}
-                variant="outline-secondary"
+                variant="primary"
                 className="mx-2"
               >
                 Tilføj ny forfatter
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => {
                   const newField = [...authorField];
                   if (newField.length > 1) {
@@ -236,7 +236,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                 className="mx-2"
               >
                 Fjern seneste forfatter
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

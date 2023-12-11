@@ -22,6 +22,7 @@ export default function FetchComponent() {
   const [showBorA, setShowBorA] = useState("articles");
   const [formData, setFormData] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showForm, setShowForm] = useState(false)
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
   const handleSort = (key) => {
