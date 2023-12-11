@@ -1,5 +1,7 @@
+// import { useEffect, useState } from "react";
+// import { CVImage } from "../assets/CVImage";
+import FetchPages from "../components/InfoPages";
 import { useSelector } from "react-redux";
-import FetchPages from "../components/FetchPages";
 import Editor from "../components/CKEditor";
 
 export default function Home() {

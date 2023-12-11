@@ -1,11 +1,10 @@
-import FetchPages from "../components/FetchPages";
+import FetchPages from "../components/InfoPages";
 import { useSelector } from "react-redux";
 import Editor from "../components/CKEditor";
 
 export default function Teamdevelopment() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
   const prop = "teamudvikling";
-
   return loggedIn ? (
     <div>
       <Editor title={prop} />

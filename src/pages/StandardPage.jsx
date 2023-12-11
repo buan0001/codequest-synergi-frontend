@@ -1,4 +1,4 @@
-import FetchPages from "../components/FetchPages";
+import InfoPages from "../components/InfoPages";
 import { useSelector } from "react-redux";
 import Editor from "../components/CKEditor";
 import { useState } from "react";
@@ -13,7 +13,6 @@ export default function Coaching(prop) {
   function handleEditor() {
     setShowEditor(!showEditor);
   }
-
   return loggedIn ? (
     <div>
       <button
@@ -25,12 +24,12 @@ export default function Coaching(prop) {
       </button>
       {showEditor ? <Editor title={title} /> : <div></div>}
       <div className="p-4">
-        <FetchPages title={title} />
+        <InfoPages title={title} />
       </div>
     </div>
   ) : (
     <div className="p-4">
-      <FetchPages title={title} />
+      <InfoPages title={title} />
     </div>
   );
 }

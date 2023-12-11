@@ -1,4 +1,4 @@
-import FetchPages from "../components/FetchPages";
+import FetchPages from "../components/InfoPages";
 import { useSelector } from "react-redux";
 import Editor from "../components/CKEditor";
 import { useState } from "react";
@@ -11,7 +11,6 @@ export default function Coaching() {
   function handleEditor() {
     setShowEditor(!showEditor);
   }
-
   return loggedIn ? (
     <div>
       <button

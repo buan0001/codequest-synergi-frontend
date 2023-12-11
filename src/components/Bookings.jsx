@@ -12,8 +12,7 @@ export default function FetchComponent() {
     const fetchData = async () => {
       const response = await tryCatch("booking");
       if (response) {
-        const sortedData = response.sort((a, b) => new Date(a.appointmentInfo.date) - new Date(b.appointmentInfo.date));
-        setData(sortedData);
+        setData(response);
       }
     };
 
@@ -29,18 +28,38 @@ export default function FetchComponent() {
     return new Date(dateTime).toLocaleString("da-DK", options);
   };
 
+  const fetchDataAgain = async () => {
+    try {
+      const response = await fetch("http://localhost:3333/booking", {
+        method: "GET",
+      });
+
+      if (response.ok) {
+        const data = await response.json(); // Parse response body as JSON
+        setData(data); // Update state with fetched data
+      } else {
+        console.error("Failed to fetch data.");
+      }
+    } catch (error) {
+      console.error("Error occurred while fetching data:", error);
+    }
+  };
+
   const handleDelete = async () => {
     try {
       const response = await fetch(`http://localhost:3333/booking/${selectedId}`, {
         method: "DELETE",
-        // Add headers if needed, such as authorization headers
+        body: JSON.stringify({}),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       if (response.ok) {
         console.log(`Item with ID ${selectedId} deleted successfully.`);
         // Update the data after successful deletion (remove the deleted item from the list)
         setData(data.filter((item) => item.id !== selectedId));
-        // fetchData();
+        fetchDataAgain(); // Refetch the data after deletion
       } else {
         console.error("Failed to delete item.");
       }
@@ -113,17 +132,17 @@ export default function FetchComponent() {
             <div>
               <p>Er du sikker på du vil slette denne booking?</p>
               <p>
-                {selectedItem.contactInfo.firstName} {selectedItem.contactInfo.lastName}, {selectedItem.appointmentInfo.service}
+                {selectedItem.contactInfo.firstName} {selectedItem.contactInfo.lastName}, {selectedItem.appointmentInfo.service} d. {formatDateTime(selectedItem.appointmentInfo.date)}
               </p>
             </div>
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleNo}>
-            No
-          </Button>
           <Button variant="primary" onClick={handleDelete}>
             Yes
+          </Button>
+          <Button variant="secondary" onClick={handleNo}>
+            No
           </Button>
         </Modal.Footer>
       </Modal>
