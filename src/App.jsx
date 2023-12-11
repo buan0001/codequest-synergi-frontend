@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
 // import Home from "./pages/Home";
@@ -10,10 +11,9 @@ import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Booking from "./pages/Booking";
 import Footer from "./components/Footer";
-import StandardPage from "./pages/StandardPage"
+import StandardPage from "./pages/StandardPage";
 import "./App.css";
 // import calendar from "./pages/calendar";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -30,15 +30,14 @@ export default function App() {
     <div className="d-flex flex-column bg-info bg-gradient opacity-sm-100" style={{ minHeight: "100vh" }}>
       <Header /> {/* Navbar */}
       <Routes>
-        <Route path="/" element={<StandardPage title={"forside"}/>} ></Route> {/* Home page */}
+        <Route path="/" element={<StandardPage title={"forside"} />}></Route> {/* Home page */}
         <Route path="/contact" element={<Contact />}></Route> {/* Contact page */}
-        {/* <Route path="/contact" element={<Contact />} title={"forside"}></Route> Contact page */}
         <Route path="/about" element={<About />}></Route> {/* About page */}
         <Route path="/booking" element={<Booking />}></Route> {/*Booking page*/}
-        <Route path="/theory" element={<StandardPage title={"ståsted"}/>}></Route> {/* Teoretisk ståsted page */}
-        <Route path="/cv" element={<StandardPage title={"cv"}/>}></Route> {/* CV page */}
+        <Route path="/theory" element={<StandardPage title={"ståsted"} />}></Route> {/* Teoretisk ståsted page */}
+        <Route path="/cv" element={<StandardPage title={"cv"} />}></Route> {/* CV page */}
         <Route path="/booksandarticles" element={<Booksandarticles />}></Route> {/* Bøger og artikler page */}
-        <Route path="/kunder" element={<StandardPage title={"kunder"}/>}></Route> {/* Kunder page */}
+        <Route path="/kunder" element={<StandardPage title={"kunder"} />}></Route> {/* Kunder page */}
         {/* Konsulentydelser dropdown */}
         <Route path="/proceskonsultation" element={<StandardPage title={"proceskonsultation"} />}></Route> {/* Proceskonsultation page */}
         <Route path="/anerkendende coaching" element={<StandardPage title={"anerkendende coaching"} />}></Route> {/* Coaching af enkeltpersoner eller team page */}

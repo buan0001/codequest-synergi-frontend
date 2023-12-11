@@ -5,6 +5,7 @@ import Editor from "../components/CKEditor";
 export default function InternalTrainingCourses() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
   const prop = "interne uddannelsesforløb";
+
   return loggedIn ? (
     <div>
       <Editor title={prop} />
