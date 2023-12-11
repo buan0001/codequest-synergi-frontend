@@ -25,7 +25,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
   //   return {firstName: author.firstName, lastName: author.lastName}
   // }))}
   console.log("author field", authorField);
-  console.log("form data",formData);
+  console.log("form data", formData);
   console.log("methodToUse", methodToUse);
 
   async function handleSubmit(form) {
@@ -62,6 +62,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
 
   return (
     <div className="mt-4">
+      <h2 className="text-center">Tilføj bog eller artikel</h2>
       <Form
         style={{
           display: "flex",
@@ -215,7 +216,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
             <div className="p-2 col-sm d-flex justify-content-center space-between">
               <Button
                 onClick={() => {
-                  setAuthorField([...authorField, {placement:authorField.length}]);
+                  setAuthorField([...authorField, { placement: authorField.length }]);
                 }}
                 variant="outline-secondary"
                 className="mx-2"
