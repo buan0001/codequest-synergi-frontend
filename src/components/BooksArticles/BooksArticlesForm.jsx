@@ -165,16 +165,15 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                           const id = Number(e.target.id);
                           console.log("ID", id);
                           const newField = authorField.filter((entry) => {
-                            console.log("entry.placement", entry);
+                            // console.log("entry.placement", entry);
                             return entry.placement !== id;
                           });
                           newField.forEach((entry, index) => {
-                            console.log("index", index);
+                            // console.log("index", index);
                             entry.placement = index;
                           });
-                          // const newField = id > 0 ? [...authorField].splice([id - 1], [id]) : [...authorField].splice([id], [id+1]);
-                          console.log("newField", newField);
-                          console.log("newField length", newField.length);
+                          // console.log("newField", newField);
+                          // console.log("newField length", newField.length);
                           if (newField.length !== 0) {
                             // newField.pop();
                             setAuthorField(newField);
