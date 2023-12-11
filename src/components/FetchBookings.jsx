@@ -12,7 +12,8 @@ export default function FetchComponent() {
     const fetchData = async () => {
       const response = await tryCatch("booking");
       if (response) {
-        setData(response);
+        const sortedData = response.sort((a, b) => new Date(a.appointmentInfo.date) - new Date(b.appointmentInfo.date));
+        setData(sortedData);
       }
     };
 
@@ -23,7 +24,7 @@ export default function FetchComponent() {
     const options = {
       year: "numeric",
       month: "short",
-      day: "numeric"
+      day: "numeric",
     };
     return new Date(dateTime).toLocaleString("da-DK", options);
   };
@@ -31,7 +32,7 @@ export default function FetchComponent() {
   const handleDelete = async () => {
     try {
       const response = await fetch(`http://localhost:3333/booking/${selectedId}`, {
-        method: "DELETE"
+        method: "DELETE",
         // Add headers if needed, such as authorization headers
       });
 
