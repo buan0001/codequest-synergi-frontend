@@ -1,65 +1,39 @@
-import { useState, useEffect } from "react";
-import tryCatch from "./TryCatch";
+import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-export default function FetchComponent() {
-  const [data, setData] = useState(null);
+export default function FetchComponent({bookings}) {
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await tryCatch("booking");
-      if (response) {
-        setData(response);
-      }
-    };
-
-    fetchData();
-  }, []);
+  console.log("bookings:", bookings);
 
   const formatDateTime = (dateTime) => {
     const options = {
       year: "numeric",
       month: "short",
-      day: "numeric"
+      day: "numeric",
     };
     return new Date(dateTime).toLocaleString("da-DK", options);
   };
 
-  const fetchDataAgain = async () => {
-    try {
-      const response = await fetch("http://localhost:3333/booking", {
-        method: "GET"
-      });
-
-      if (response.ok) {
-        const data = await response.json(); // Parse response body as JSON
-        setData(data); // Update state with fetched data
-      } else {
-        console.error("Failed to fetch data.");
-      }
-    } catch (error) {
-      console.error("Error occurred while fetching data:", error);
-    }
-  };
-
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:3333/booking/${selectedId}`, {
-        method: "DELETE",
-        body: JSON.stringify({}),
-        headers: {
-          "Content-Type": "application/json"
+      const response = await fetch(
+        `http://localhost:3333/booking/${selectedId}`,
+        {
+          method: "DELETE",
+          body: JSON.stringify({}),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
 
       if (response.ok) {
         console.log(`Item with ID ${selectedId} deleted successfully.`);
         // Update the data after successful deletion (remove the deleted item from the list)
-        setData(data.filter((item) => item.id !== selectedId));
-        fetchDataAgain(); // Refetch the data after deletion
+        bookings.filter((item) => item.id !== selectedId);
       } else {
         console.error("Failed to delete item.");
       }
@@ -76,7 +50,7 @@ export default function FetchComponent() {
   };
 
   const handleShowModal = (id) => {
-    const selectedItem = data.find((item) => item._id === id);
+    const selectedItem = bookings.find((item) => item._id === id);
     setSelectedId(id);
     setShowModal(true);
     setSelectedItem(selectedItem);
@@ -84,7 +58,7 @@ export default function FetchComponent() {
 
   return (
     <div>
-      {data ? (
+      {bookings ? (
         <div>
           <h2>Kunde Bookinger</h2>
           <table className="table">
@@ -100,7 +74,7 @@ export default function FetchComponent() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {bookings.map((item) => (
                 <tr key={item._id}>
                   <td>
                     {item.contactInfo.firstName} {item.contactInfo.lastName}{" "}
@@ -111,7 +85,9 @@ export default function FetchComponent() {
                   <td>{item.contactInfo.email}</td>
                   <td>{item.contactInfo.phoneNumber}</td>
                   <td>
-                    <Button onClick={() => handleShowModal(item._id)}>Delete</Button>
+                    <Button onClick={() => handleShowModal(item._id)}>
+                      Delete
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -132,7 +108,10 @@ export default function FetchComponent() {
             <div>
               <p>Er du sikker på du vil slette denne booking?</p>
               <p>
-                {selectedItem.contactInfo.firstName} {selectedItem.contactInfo.lastName}, {selectedItem.appointmentInfo.service} d. {formatDateTime(selectedItem.appointmentInfo.date)}
+                {selectedItem.contactInfo.firstName}{" "}
+                {selectedItem.contactInfo.lastName},{" "}
+                {selectedItem.appointmentInfo.service} d.{" "}
+                {formatDateTime(selectedItem.appointmentInfo.date)}
               </p>
             </div>
           )}
