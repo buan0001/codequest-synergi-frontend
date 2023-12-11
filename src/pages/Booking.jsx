@@ -153,7 +153,7 @@ export default function Booking() {
     const updatedFormData = {
       ...formEntries,
       phoneNumber,
-      date: isoDate,
+      date: isoDate
       // lastDay: isoLastDay,
     };
 
@@ -162,9 +162,9 @@ export default function Booking() {
       const response = await fetch("http://localhost:3333/booking", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(updatedFormData),
+        body: JSON.stringify(updatedFormData)
       });
 
       const responseData = await response.json();
@@ -180,6 +180,9 @@ export default function Booking() {
         SuccessMessage("Din booking er gennemført!");
         event.target.reset(); // Reset the form on successful booking
         fetchData(); // Fetch updated booking dates after successful booking
+        // if (loggedIn) {
+        //   FetchBookings();
+        // }
       }
     } catch (error) {
       console.error("Error:", error);
@@ -266,7 +269,7 @@ export default function Booking() {
           Besked (valgfrit)
         </Form.Label>
         <Col sm={4}>
-          <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} required />
+          <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} />
         </Col>
       </Form.Group>
 
