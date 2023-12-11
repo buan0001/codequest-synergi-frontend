@@ -46,9 +46,11 @@ export default function FetchComponent() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await tryCatch(bookOrArticle)
-      console.log("response",response);
-      if (response){setData(response)}
+      const response = await tryCatch(bookOrArticle);
+      console.log("response", response);
+      if (response) {
+        setData(response);
+      }
     }
 
     fetchData();
@@ -67,25 +69,26 @@ export default function FetchComponent() {
       }),
       link: form.link,
       isPay: isPay,
-      resume: form.resume,
+      resume: form.resume
     };
     console.log("new article", newArticleOrBook);
-      const response = await tryCatch(bookOrArticle, {
-        method: "POST",
-        body: JSON.stringify(newArticleOrBook),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response);
-      if (response){setNewPost(response)}
-      // setData(result);
+    const response = await tryCatch(bookOrArticle, {
+      method: "POST",
+      body: JSON.stringify(newArticleOrBook),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    console.log(response);
+    if (response) {
+      setNewPost(response);
     }
-
+    // setData(result);
+  }
 
   function editClicked(e) {
-    console.log("event id",e.target.id);
-    tryCatch(``)
+    console.log("event id", e.target.id);
+    tryCatch(``);
     // console.log("event",e.target.key);
     // console.log("event",e.key);
   }
@@ -129,7 +132,15 @@ export default function FetchComponent() {
                       </button>
                     </div>
                     <div className="col-sm-1">
-                      <button className="btn btn-primary" id={item._id} onClick={(e) => {editClicked(e)}}>Rediger</button>
+                      <button
+                        className="btn btn-primary"
+                        id={item._id}
+                        onClick={(e) => {
+                          editClicked(e);
+                        }}
+                      >
+                        Rediger
+                      </button>
                     </div>
                     <div className="col-sm-1"></div>
                   </>
@@ -192,7 +203,7 @@ export default function FetchComponent() {
                 display: "flex",
                 padding: "5px",
                 gap: "10px",
-                flexDirection: "column",
+                flexDirection: "column"
               }}
               onSubmit={(e) => {
                 e.preventDefault();
