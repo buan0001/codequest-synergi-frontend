@@ -15,8 +15,8 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
   const [authorField, setAuthorField] = useState(
     methodToUse === "POST"
       ? [{ placement: 0 }]
-      : formData.authors.map((author) => {
-          return { firstName: author.firstName, lastName: author.lastName };
+      : formData.authors.map((author, index) => {
+          return { firstName: author.firstName, lastName: author.lastName, placement: index };
         })
   );
   // const [formData, setFormData] = useState("");
@@ -145,22 +145,36 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                     <Col sm={3}>
                       <Form.Control
                         type="text"
+                        id={index}
                         name={"firstName" + index}
                         className="bg-light"
                         placeholder="Fornavn"
                         defaultValue={formData === "" ? "" : formData.authors[index]?.firstName}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          const newArray = [...authorField];
+                          newArray[index].firstName = value;
+                          setAuthorField(newArray);
+                        }}
+                        value={[...authorField][index].firstName}
                         required
                       />
                       <Button
                         id={index}
                         onClick={(e) => {
-                          const id = Number(e.target.id)
-                          console.log("ID",id);
-                          const newField = authorField.filter(entry =>{console.log("entry.placement",entry); return entry.placement !== id})
-                          newField.forEach((entry, index) => {console.log("index",index);entry.placement = index})
+                          const id = Number(e.target.id);
+                          console.log("ID", id);
+                          const newField = authorField.filter((entry) => {
+                            console.log("entry.placement", entry);
+                            return entry.placement !== id;
+                          });
+                          newField.forEach((entry, index) => {
+                            console.log("index", index);
+                            entry.placement = index;
+                          });
                           // const newField = id > 0 ? [...authorField].splice([id - 1], [id]) : [...authorField].splice([id], [id+1]);
-                          console.log("newField",newField);
-                          console.log("newField length",newField.length);
+                          console.log("newField", newField);
+                          console.log("newField length", newField.length);
                           if (newField.length !== 0) {
                             // newField.pop();
                             setAuthorField(newField);
@@ -179,6 +193,13 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                         className="bg-light"
                         placeholder="Efternavn"
                         defaultValue={formData === "" ? "" : formData.authors[index]?.lastName}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          const newArray = [...authorField];
+                          newArray[index].lastName = value;
+                          setAuthorField(newArray);
+                        }}
+                        value={[...authorField][index].lastName}
                         required
                       />
                     </Col>
