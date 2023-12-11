@@ -1,6 +1,6 @@
 // import { useEffect, useState } from "react";
 // import { CVImage } from "../assets/CVImage";
-import FetchPages from "../components/FetchPages";
+import FetchPages from "../components/InfoPages";
 import { useSelector } from "react-redux";
 import Editor from "../components/CKEditor";
 // import FetchBooksAndArticles from "../components/FetchBooksAndArticles";

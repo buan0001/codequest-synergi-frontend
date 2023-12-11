@@ -17,7 +17,7 @@ import da from "date-fns/locale/da";
 import { useSelector } from "react-redux";
 
 // Components
-import FetchBookings from "../components/FetchBookings";
+import Bookings from "../components/Bookings";
 import errorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
 
@@ -187,9 +187,8 @@ export default function Booking() {
       } else {
         SuccessMessage("Din booking er gennemført!");
         event.target.reset(); // Reset the form on successful booking
-        fetchData(); // Fetch updated booking dates after successful booking
         // if (loggedIn) {
-        //   FetchBookings();
+        //   fetchBookings();
         // }
       }
     } catch (error) {
@@ -325,7 +324,7 @@ export default function Booking() {
           </div>
 
           <div className="col-md-6">
-            <FetchBookings />
+            <Bookings />
           </div>
         </div>
       ) : (
