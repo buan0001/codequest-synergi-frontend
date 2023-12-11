@@ -33,7 +33,7 @@ export default function Booking() {
           </div>
 
           <div className="col-md-6">
-            <Bookings bookings={bookings}/>
+            <Bookings bookings={bookings} fetchBookings={fetchBookings}/>
           </div>
         </div>
       ) : (

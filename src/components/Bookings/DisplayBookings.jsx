@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-export default function FetchComponent({bookings}) {
+export default function FetchComponent({bookings, fetchBookings}) {
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -33,7 +33,8 @@ export default function FetchComponent({bookings}) {
       if (response.ok) {
         console.log(`Item with ID ${selectedId} deleted successfully.`);
         // Update the data after successful deletion (remove the deleted item from the list)
-        bookings.filter((item) => item.id !== selectedId);
+        // bookings.filter((item) => item.id !== selectedId);
+        fetchBookings();
       } else {
         console.error("Failed to delete item.");
       }
