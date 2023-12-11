@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
-// import Form from "react-bootstrap/Form";
+import Form from "react-bootstrap/Form";
 // import Row from "react-bootstrap/Row";
 // import Col from "react-bootstrap/Col";
 // import Modal from "react-bootstrap/Modal";
@@ -21,6 +21,7 @@ export default function FetchComponent() {
   const [sortOrder, setSortOrder] = useState("desc");
   const [showBorA, setShowBorA] = useState("articles");
   const [formData, setFormData] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
   const handleSort = (key) => {
@@ -116,19 +117,20 @@ export default function FetchComponent() {
     <div className="container">
       <div className="row">
         <div className="p-2 col-sm d-flex justify-content-center space-between">
-          <select
+          <Form.Select size="medium"
             onChange={(e) => {
               setShowBorA(e.target.value);
             }}
           >
             <option value="articles">Artikler</option> <option value="books">Bøger</option>
-          </select>
+          </Form.Select>
           <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
             Sorter efter titel {getSortArrow("title")}
           </Button>
           <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
             Sorter efter udgivelsesår {getSortArrow("releaseYear")}
           </Button>
+          <Form.Control type="text" placeholder="Søg på bøger/artikler" onChange={(e) => setSearchTerm(e.target.value)}/>
         </div>
       </div>
     </div>
@@ -138,67 +140,90 @@ export default function FetchComponent() {
     <div>
       {data ? (
         <div style={{ margin: "10px" }}>
-          {sortArticles(data).map((item) => (
-            <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
-              {/* <div key={item._id} className="p-2 col-sm d-flex justify-content-center space-between"> */}
-              <div className="row gx-4 ">
-                <h2 className="col-9">{item.title}</h2>
-                {loggedIn ? (
-                  <>
-                    <div className="col-sm-1">
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        id={item._id}
-                        onClick={(e) => {
-                          deleteClicked(e);
-                        }}
-                      >
-                        Slet
-                      </button>
-                    </div>
-                    <div className="col-sm-1">
-                      <button
-                        className="btn btn-primary"
-                        id={item._id}
-                        onClick={(e) => {
-                          editClicked(e);
-                        }}
-                      >
-                        Rediger
-                      </button>
-                    </div>
-                    <div className="col-sm-1"></div>
-                  </>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="row">
-                <p className="col">Udgivelsesår {item.releaseYear}</p>
-                <p className="col">Forlag {item.publisher}</p>
-              </div>
-              <div>
-                {" "}
-                <div className="bold">Forfattere:</div>
-                {item.authors.map((author) => {
-                  return (
-                    <p key={author._id} className="col">
-                      {author.firstName} {author.lastName}
-                    </p>
-                  );
-                })}
-              </div>
-              <div>{item.link ? <a href={item.link}>Link til {showBorA == "books" ? "bogen" : "artiklen"}</a> : ""}</div>
+          {sortArticles(data)
+            .filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            .map((item) => (
+              <div
+                key={item._id}
+                className="container my-2"
+                style={{ border: "red 1px solid", borderRadius: "5px" }}
+              >
+                {/* <div key={item._id} className="p-2 col-sm d-flex justify-content-center space-between"> */}
+                <div className="row gx-4 ">
+                  <h2 className="col-9">{item.title}</h2>
+                  {loggedIn ? (
+                    <>
+                      <div className="col-sm-1">
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          id={item._id}
+                          onClick={(e) => {
+                            deleteClicked(e);
+                          }}
+                        >
+                          Slet
+                        </button>
+                      </div>
+                      <div className="col-sm-1">
+                        <button
+                          className="btn btn-primary"
+                          id={item._id}
+                          onClick={(e) => {
+                            editClicked(e);
+                          }}
+                        >
+                          Rediger
+                        </button>
+                      </div>
+                      <div className="col-sm-1"></div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="row">
+                  <p className="col">
+                    {" "}
+                    <b>Udgivelsesår: </b>
+                    {item.releaseYear}
+                  </p>
+                  <p className="col">
+                    <b>Forlag: </b>
+                    {item.publisher}
+                  </p>
+                </div>
+                <div>
+                  {" "}
+                  <div className="col">
+                    <b>Forfattere: </b>
+                  </div>
+                  {item.authors.map((author) => {
+                    return (
+                      <p key={author._id} className="col">
+                        {author.firstName} {author.lastName}
+                      </p>
+                    );
+                  })}
+                </div>
+                <div>
+                  {item.link ? (
+                    <a href={item.link}>
+                      Link til {showBorA == "books" ? "bogen" : "artiklen"}
+                    </a>
+                  ) : (
+                    ""
+                  )}
+                </div>
 
-              {/* pay skal laves om */}
-              <p>
-                <b>Adgang: </b>
-                {item.pay == false ? "Gratis" : "Betalt"}
-              </p>
-              <p className="blockquote">{item.resume}</p>
-            </div>
-          ))}
+                {/* pay skal laves om */}
+                <p>
+                  <b>Adgang: </b>
+                  {item.pay == false ? "Gratis" : "Betalt"}
+                </p>
+                <p className="blockquote">{item.resume}</p>
+              </div>
+            ))}
         </div>
       ) : (
         <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt

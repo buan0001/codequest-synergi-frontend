@@ -62,6 +62,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
 
   return (
     <div className="mt-4">
+      <h2 className="text-center">Tilføj bog eller artikel</h2>
       <Form
         style={{
           display: "flex",
