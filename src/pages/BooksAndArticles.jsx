@@ -139,7 +139,11 @@ export default function FetchComponent() {
       {data ? (
         <div style={{ margin: "10px" }}>
           {sortArticles(data).map((item) => (
-            <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
+            <div
+              key={item._id}
+              className="container my-2"
+              style={{ border: "red 1px solid", borderRadius: "5px" }}
+            >
               {/* <div key={item._id} className="p-2 col-sm d-flex justify-content-center space-between"> */}
               <div className="row gx-4 ">
                 <h2 className="col-9">{item.title}</h2>
@@ -175,12 +179,21 @@ export default function FetchComponent() {
                 )}
               </div>
               <div className="row">
-                <p className="col">Udgivelsesår {item.releaseYear}</p>
-                <p className="col">Forlag {item.publisher}</p>
+                <p className="col">
+                  {" "}
+                  <b>Udgivelsesår: </b>
+                  {item.releaseYear}
+                </p>
+                <p className="col">
+                  <b>Forlag: </b>
+                  {item.publisher}
+                </p>
               </div>
               <div>
                 {" "}
-                <div className="bold">Forfattere:</div>
+                <div className="col">
+                  <b>Forfattere: </b>
+                </div>
                 {item.authors.map((author) => {
                   return (
                     <p key={author._id} className="col">
@@ -189,7 +202,15 @@ export default function FetchComponent() {
                   );
                 })}
               </div>
-              <div>{item.link ? <a href={item.link}>Link til {showBorA == "books" ? "bogen" : "artiklen"}</a> : ""}</div>
+              <div>
+                {item.link ? (
+                  <a href={item.link}>
+                    Link til {showBorA == "books" ? "bogen" : "artiklen"}
+                  </a>
+                ) : (
+                  ""
+                )}
+              </div>
 
               {/* pay skal laves om */}
               <p>
