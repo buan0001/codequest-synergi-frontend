@@ -4,22 +4,50 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-// import FormSelect from "react-bootstrap/FormSelect";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { isWeekend } from "date-fns";
-import da from "date-fns/locale/da";
+import { useSelector } from "react-redux";
+import FetchBookings from "../components/FetchBookings";
+import errorMessage from "../components/ErrorMessage";
+import SuccessMessage from "../components/SuccessMessage";
+
 registerLocale("da", da);
 setDefaultLocale("da");
-
-// console.log(excludeBookedDates);
 
 // https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
 
 export default function Booking() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
   console.log("login boolean:", loggedIn);
+
+  const [datesArray, setDatesArray] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:3333/booking");
+      if (!response.ok) {
+        throw new Error("An error occurred during fetch");
+      }
+      const result = await response.json();
+
+      // Assuming result is an array of booking objects with 'date' property
+      const dates = result.map((booking) => booking.appointmentInfo.date);
+      const dateObjectsArray = dates.map((dateString) => new Date(dateString));
+
+      setDatesArray(dateObjectsArray);
+    } catch (error) {
+      console.error("Error fetching dates:", error);
+    }
+  };
+  console.log(datesArray);
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState("");
 
@@ -37,91 +65,25 @@ export default function Booking() {
     }
   };
 
-  const roundToNearest15Minutes = (date) => {
-    const minutes = date.getMinutes();
-    const remainder = 15 - (minutes % 15); // Calculate the remainder to reach the next 15-minute interval
-    const roundedDate = new Date(date.getTime() + remainder * 60000); // Add milliseconds to round up
-
-    return roundedDate;
-  };
-
   const parseDateString = (dateString) => {
-    const [datePart, timePart] = dateString.split(" "); // Split date and time
-    const [day, month, year] = datePart.split("-"); // Split day, month, and year
-    const [hours, minutes] = timePart.split(":"); // Split hours and minutes
+    const parsedDate = new Date(dateString);
 
-    // Create a new Date object using parsed values (month - 1 because months are 0-indexed in JavaScript)
-    const parsedDate = new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
-
+    if (isNaN(parsedDate.getTime())) {
+      console.error("Invalid date:", dateString);
+      return null; // Return null or handle the invalid date case accordingly
+    }
     // Convert Date object to ISO date string
     const isoDateString = parsedDate.toISOString();
-    console.log("ISO Date: " + isoDateString);
+    // console.log("ISO Date: " + isoDateString);
 
     return isoDateString;
-
-    // Create a new Date object using parsed values (month - 1 because months are 0-indexed in JavaScript)
-    // console.log("hehehehehehe" + new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes)));
-    // return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
   };
-
-  // const firstDay = parseDateString("11-12-2023 14:00");
-  // const lastDay = parseDateString("15-12-2023 13:00");
-
-  // // Convert date strings to Date objects
-  // const firstDay = new Date("11-12-2023 14:00");
-  // const lastDay = new Date("15-12-2023 13:00");
-
-  // const generateDatesBetween = (startDate, endDate) => {
-  //   const dates = [];
-  //   let currentDate = new Date(startDate);
-
-  //   while (currentDate <= endDate) {
-  //     dates.push(new Date(currentDate));
-  //     currentDate.setDate(currentDate.getDate() + 1);
-  //   }
-
-  //   return dates;
-  // };
-
-  // const datesInRange = generateDatesBetween(firstDay, lastDay);
-
-  // console.log(datesInRange);
-
-  // // Function to generate dates between two dates
-  // const getDatesBetweenDates = (startDate, endDate) => {
-  //   const dates = [];
-  //   let currentDate = new Date(startDate);
-
-  //   while (currentDate <= endDate) {
-  //     dates.push(new Date(currentDate));
-  //     currentDate.setDate(currentDate.getDate() + 1);
-  //   }
-  //   return dates;
-  // };
-
-  // // Get the dates between firstDay and lastDay
-  // const excludedDates = getDatesBetweenDates(firstDay, lastDay);
 
   const nextAvailableDate = (date) => {
     let today = new Date(date);
+
     let availableDay = new Date(today);
     availableDay.setDate(today.getDate() + 1);
-    availableDay = roundToNearest15Minutes(availableDay);
-    // let availableDay = new Date(date).setDate().getDate() + 1;
-
-    availableDay.getMinutes();
-
-    // Check if it's before 8 am
-    if (availableDay.getHours() < 8) {
-      availableDay.setHours(8, 0, 0, 0); // Set time to 8 am
-    } else if (availableDay.getHours() > 16) {
-      // If it's past 4 pm, move to the next day's 8 am
-      if (!isWeekend(availableDay)) {
-        availableDay.setDate(availableDay.getDate() + 1);
-        console.log("hejsa");
-      }
-      availableDay.setHours(8, 0, 0, 0); // Set time to 8 am
-    }
 
     // Check if it's a weekend (Saturday or Sunday)
     if (isWeekend(availableDay)) {
@@ -139,39 +101,33 @@ export default function Booking() {
     return availableDay;
   };
 
-  const addFifteenMinutes = (endDate) => {
-    const nextDay = new Date(endDate);
-    // nextDay.setDate(nextDay.getDate() + 1); // Adding 1 day
-
-    // Adding 15 minutes
-    nextDay.setTime(nextDay.getTime() + 15 * 60 * 1000);
-
-    return nextDay;
-  };
-
+  // to test it takes the next right date use
+  // this date format in new Date("12-09-2023") --> mm-dd-yyyy;
   const [startDate, setStartDate] = useState(() => nextAvailableDate(new Date()));
-  const [endDate, setEndDate] = useState(() => addFifteenMinutes(startDate));
 
-  useEffect(() => {
-    // Update endDate whenever startDate changes
-    setEndDate(addFifteenMinutes(startDate));
-  }, [startDate]);
-
-  const getNextDay = () => {
-    const today = new Date();
-    const nextDay = new Date(today);
-    nextDay.setDate(today.getDate() + 1);
-    return nextDay;
-  };
+  // // updating the shown date to the next day
+  // // when 'inline' in datePickerform is off
+  //   const getNextDay = () => {
+  //     const today = new Date();
+  //     const nextDay = new Date(today);
+  //     nextDay.setDate(today.getDate() + 1);
+  //     return nextDay;
+  //   };
 
   const excludeWeekends = (date) => {
-    // Returns false if the day is Saturday or Sunday
+    // Returns false if the day is Saturday or Sunday - from date-fns library
     return !isWeekend(date);
   };
 
   const excludePastDatesAndToday = (date) => {
     const today = new Date();
+    // console.log(date);
+    // console.log(today);
     return date >= today;
+  };
+
+  const filterDate = (date) => {
+    return excludeWeekends(date) && excludePastDatesAndToday(date);
   };
 
   const handleSubmit = async (event) => {
@@ -183,12 +139,9 @@ export default function Booking() {
       return; // Prevent form submission if there's an error
     }
 
-    const firstDayValue = event.target.elements.firstDay.value;
-    const lastDayValue = event.target.elements.lastDay.value;
+    console.log("startdate", startDate);
 
-    // Parse date strings to ISO date strings using parseDateString function
-    const isoFirstDay = parseDateString(firstDayValue);
-    const isoLastDay = parseDateString(lastDayValue);
+    const isoDate = parseDateString(startDate);
 
     // Get other form data
     const formData = new FormData(event.target);
@@ -201,8 +154,8 @@ export default function Booking() {
     const updatedFormData = {
       ...formEntries,
       phoneNumber,
-      firstDay: isoFirstDay,
-      lastDay: isoLastDay,
+      date: isoDate,
+      // lastDay: isoLastDay,
     };
 
     try {
@@ -210,154 +163,170 @@ export default function Booking() {
       const response = await fetch("http://localhost:3333/booking", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Set the appropriate content type
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedFormData), // Convert data to JSON format
+        body: JSON.stringify(updatedFormData),
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      // Handle the success response from the server if needed
       const responseData = await response.json();
       console.log("Server response:", responseData);
+
+      if (responseData?.message?.includes("already exists")) {
+        errorMessage("Dato'en var desværre optaget, venligst vælg en ny!");
+        fetchData(); // Fetch updated booking dates after unsuccessful booking
+        return;
+      } else if (!response.ok) {
+        throw new Error("Network response was not ok");
+      } else {
+        SuccessMessage("Din booking er gennemført!");
+        event.target.reset(); // Reset the form on successful booking
+        fetchData(); // Fetch updated booking dates after successful booking
+      }
     } catch (error) {
       console.error("Error:", error);
-      // Handle errors or show error messages to the user
+      errorMessage("Din booking blev ikke gennemført, prøv igen!");
     }
 
     console.log("Form Data", updatedFormData);
+
+    // console.log("Form Data", updatedFormData);
   };
+
+  const BookingForm = (
+    <div>
+      <div className="text-center mb-5">
+        <h3>Booking af konsulentydelse</h3>
+        <p>
+          Ved ændring af booking, kontakt Peter gennem{" "}
+          <a href="/contact" style={{ color: "black" }}>
+            kontaktformularen
+          </a>
+        </p>
+      </div>
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Fornavn:
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control type="text" name="firstName" placeholder="Fornavn" required />
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Efternavn:
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Email
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control type="email" name="email" placeholder="Din E-mail" required />
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Tlf. Nummer
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" onChange={handlePhoneNumberChange} aria-describedby="phoneNumberError" required />
+          {phoneNumberError && (
+            <div id="phoneNumberError" className="form-text text-danger">
+              {phoneNumberError}
+            </div>
+          )}
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Vælg ydelse:
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Select aria-label="Default select example" name="service" defaultValue="Vælg konsulent ydelse" required>
+            <option disabled>Vælg konsulent ydelse</option>
+            <option value="Proceskonsultation">Proceskonsultation</option>
+            <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
+            <option value="Kreativ facilitering">Kreativ facilitering</option>
+            <option value="Teamudvikling">Teamudvikling</option>
+            <option value="Facilitering af ledernetværk og træning">Facilitering af ledernetværk og træning</option>
+            <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
+            <option value="Interne skræddersyede uddannelses- og træningsforløb">Interne skræddersyede uddannelses- og træningsforløb</option>
+          </Form.Select>
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
+        <Form.Label column sm={2}>
+          Besked (valgfrit)
+        </Form.Label>
+        <Col sm={4}>
+          <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} required />
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row} className="mb-3 justify-content-center">
+        <Form.Label column sm={2}>
+          Vælg Dato:
+        </Form.Label>
+        <Col sm={4}>
+          <DatePicker
+            todayButton="I dag"
+            // showIcon
+            selected={startDate}
+            onChange={(date) => {
+              setStartDate(date);
+            }}
+            // withPortal
+            locale="da"
+            dateFormat="dd-MM-yyyy"
+            name="date"
+            inline
+            // // when inline is off use placeHolderText
+            // placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+            filterDate={filterDate}
+            excludeDates={datesArray}
+          />
+        </Col>
+      </Form.Group>
+
+      <Form.Group className="text-center mb-5" controlId="formBasicButton">
+        <Button variant="primary" type="submit" value="book">
+          Book
+        </Button>
+      </Form.Group>
+    </div>
+  );
 
   return (
     <>
-      <Form onSubmit={handleSubmit} className="mb-5 mt-5">
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Fulde navn:
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control type="text" name="firstName" placeholder="Fornavn" required className="mb-3" />
-            <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
-          </Col>
-        </Form.Group>
+      {loggedIn ? (
+        <div className="row">
+          <div className="col-md-6">
+            <Form onSubmit={handleSubmit} className="mb-5 mt-5">
+              {BookingForm}
+            </Form>
+          </div>
 
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Email
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control type="email" name="email" placeholder="Din E-mail" required />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Tlf. Nummer
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" onChange={handlePhoneNumberChange} aria-describedby="phoneNumberError" required />
-            {phoneNumberError && (
-              <div id="phoneNumberError" className="form-text text-danger">
-                {phoneNumberError}
-              </div>
-            )}
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Vælg ydelse:
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Select aria-label="Default select example" name="chooseService" defaultValue="Vælg konsulent ydelse" required>
-              <option disabled>Vælg konsulent ydelse</option>
-              <option value="Proceskonsultation">Proceskonsultation</option>
-              <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
-              <option value="Kreativ facilitering">Kreativ facilitering</option>
-              <option value="Teamudvikling">Teamudvikling</option>
-              <option value="Facilitering af ledernetværk og træning">Facilitering af ledernetværk og træning</option>
-              <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
-              <option value="Interne skræddersyede uddannelses- og træningsforløb">Interne skræddersyede uddannelses- og træningsforløb</option>
-            </Form.Select>
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
-          <Form.Label column sm={2}>
-            Besked
-          </Form.Label>
-          <Col sm={4}>
-            <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} required />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Vælg Start Dato
-          </Form.Label>
-          <Col sm={4}>
-            <DatePicker
-              todayButton="I dag"
-              showIcon
-              selected={startDate}
-              onChange={(date) => {
-                setStartDate(date);
-              }}
-              withPortal
-              locale="da"
-              dateFormat="dd-MM-yyyy HH:mm"
-              name="firstDay"
-              placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
-              showTimeSelect
-              // inline
-              timeIntervals={15}
-              filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
-              minTime={new Date().setHours(8, 0)}
-              maxTime={new Date().setHours(15, 0)}
-              // excludeDates={excludedDates.map((dateString) => new Date(dateString))}
-              // excludeDates={datesInRange}
-              // excludeDateIntervals={[{ start: new Date("11-12-2023"), end: new Date("15-12-2023") }]}
-              required
-            />
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-3 justify-content-center">
-          <Form.Label column sm={2}>
-            Vælg Slut Dato
-          </Form.Label>
-          <Col sm={4}>
-            <DatePicker
-              todayButton="I dag"
-              showIcon
-              selected={endDate}
-              onChange={(date) => {
-                setEndDate(date);
-              }}
-              withPortal
-              locale="da"
-              dateFormat="dd-MM-yyyy HH:mm"
-              name="lastDay"
-              placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
-              showTimeSelect
-              // inline
-              timeIntervals={15}
-              filterDate={(date) => excludeWeekends(date) && excludePastDatesAndToday(date)}
-              minDate={startDate}
-              minTime={startDate.toDateString() !== endDate.toDateString() ? new Date().setHours(8, 0) : new Date(startDate.getTime() + 15 * 60 * 1000)}
-              maxTime={new Date().setHours(16, 0)}
-              required
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group className="text-center" controlId="formBasicButton">
-          <Button variant="primary" type="submit" value="book">
-            Book
-          </Button>
-        </Form.Group>
-      </Form>
+          <div className="col-md-6">
+            <FetchBookings />
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div>
+            <Form onSubmit={handleSubmit} className="mb-5 mt-5">
+              {BookingForm}
+            </Form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
