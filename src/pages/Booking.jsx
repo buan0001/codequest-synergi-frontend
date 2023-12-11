@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
+
+// Bootstrap
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import DatePicker from "react-datepicker";
+
+// Datepicker
 import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
-import da from "date-fns/locale/da";
 import { isWeekend } from "date-fns";
+import da from "date-fns/locale/da";
+
+// Redux
 import { useSelector } from "react-redux";
+
+// Components
 import FetchBookings from "../components/FetchBookings";
 import errorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
