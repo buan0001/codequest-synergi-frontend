@@ -21,7 +21,7 @@ export default function FetchComponent() {
   const [sortOrder, setSortOrder] = useState("desc");
   const [showBorA, setShowBorA] = useState("articles");
   const [formData, setFormData] = useState("");
-  const [showForm, setShowForm] = useState(true)
+  const [showForm, setShowForm] = useState(false);
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
   const handleSort = (key) => {
@@ -94,10 +94,14 @@ export default function FetchComponent() {
   async function deleteClicked(e) {
     const id = e.target.id;
     console.log("delete this id", id);
-    const res = await tryCatch(showBorA + "/" + id, { method: "DELETE" });
-    console.log("RES", res);
-    if (res) {
-      setChangedPost(res);
+    const confirmCheck = confirm("Vil du virkelig slette?");
+    // console.log("did you confirm?", confirmCheck);
+    if (confirmCheck) {
+      const res = await tryCatch(showBorA + "/" + id, { method: "DELETE" });
+      console.log("RES", res);
+      if (res) {
+        setChangedPost(res);
+      }
     }
   }
   async function editClicked(e) {
@@ -224,11 +228,16 @@ export default function FetchComponent() {
           {showModal ? (
             <UpdateModal showModal={showModal} showBorA={showBorA} setChangedPost={setChangedPost} setShowModal={setShowModal} formData={formData}></UpdateModal>
           ) : (
-            <div style={{ display: "flex", justifyContent: "center", flexDirection:"column" }}>
-              <Button style={{height:"80px", width:"30%", margin:"auto"}} onClick={() =>{
-                setShowForm(!showForm)
-              }}>Vis/skjul oprettelsesformular</Button>
-              {showForm ?<BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm> : "" }
+            <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+              <Button
+                style={{ height: "80px", width: "30%", margin: "auto" }}
+                onClick={() => {
+                  setShowForm(!showForm);
+                }}
+              >
+                Vis/skjul oprettelsesformular
+              </Button>
+              {showForm ? <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm> : ""}
             </div>
           )}
 

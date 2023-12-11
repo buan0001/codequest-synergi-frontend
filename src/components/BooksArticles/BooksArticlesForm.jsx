@@ -24,11 +24,11 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
   // if (methodToUse === "PATCH"){setAuthorField(formData.authors.map(author => {
   //   return {firstName: author.firstName, lastName: author.lastName}
   // }))}
-  console.log("author field", authorField);
-  console.log("form data",formData);
   console.log("methodToUse", methodToUse);
-
+  
   async function handleSubmit(form) {
+    console.log("author field", authorField);
+    console.log("form data",formData);
     // console.log("PROPS", props);
     console.log("form,", form);
     console.log("method to use,", methodToUse);
@@ -37,15 +37,17 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
       title: form.title,
       releaseYear: form.releaseYear,
       publisher: form.publisher,
-      authors: authorField.map((field) => {
-        return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
+      authors: authorField.map((field,index) => {
+        return { firstName: authorField[index].firstName, lastName: authorField[index].lastName };
       }),
       link: form.link,
       isPay: form.isPay,
       resume: form.resume,
     };
     console.log("new article", newArticleOrBook);
-    let path = methodToUse === "POST" ? form.bookOrArticle : `${form.bookOrArticle}/${formData._id}`;
+    let path = form.bookOrArticle;
+    if (methodToUse === "PATCH"){newArticleOrBook._id = formData._id}
+    // let path = methodToUse === "POST" ? form.bookOrArticle : `${form.bookOrArticle}/${formData._id}`;
     console.log("path", path);
     const response = await tryCatch(path, {
       method: methodToUse,
@@ -56,7 +58,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
     });
     console.log(response);
     if (response) {
-      newSubmit.setChangedPost(response);
+      newSubmit(response)
     }
   }
 

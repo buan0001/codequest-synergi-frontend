@@ -31,6 +31,7 @@ export default function Header() {
         <div>
           <Navbar.Collapse>
             <Nav>
+              <Nav.Link href="/blog">Blog</Nav.Link>
               <Nav.Link href="/kunder">Kunder</Nav.Link>
               <NavDropdown title="Konsulentydelser" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/proceskonsultation">Proceskonsultation</NavDropdown.Item>
