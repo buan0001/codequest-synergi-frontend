@@ -3,7 +3,6 @@
 import FetchPages from "../components/InfoPages";
 import { useSelector } from "react-redux";
 import Editor from "../components/CKEditor";
-// import FetchBooksAndArticles from "../components/FetchBooksAndArticles";
 
 export default function Home() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);

@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
 // import Home from "./pages/Home";
@@ -14,7 +15,6 @@ import StandardPage from "./pages/StandardPage"
 import Blog from "./pages/Blog";
 import "./App.css";
 // import calendar from "./pages/calendar";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

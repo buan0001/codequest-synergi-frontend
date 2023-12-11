@@ -27,6 +27,7 @@ export default function FetchComponent() {
       setSortOrder("desc");
     }
   };
+
   const getSortArrow = (key) => {
     if (sortBy === key) {
       return sortOrder === "asc" ? "↑" : "↓";
@@ -69,15 +70,15 @@ export default function FetchComponent() {
       }),
       link: form.link,
       isPay: isPay,
-      resume: form.resume
+      resume: form.resume,
     };
     console.log("new article", newArticleOrBook);
     const response = await tryCatch(bookOrArticle, {
       method: "POST",
       body: JSON.stringify(newArticleOrBook),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
     console.log(response);
     if (response) {
@@ -203,7 +204,7 @@ export default function FetchComponent() {
                 display: "flex",
                 padding: "5px",
                 gap: "10px",
-                flexDirection: "column"
+                flexDirection: "column",
               }}
               onSubmit={(e) => {
                 e.preventDefault();
