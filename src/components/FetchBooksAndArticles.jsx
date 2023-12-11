@@ -77,11 +77,11 @@ export default function FetchComponent() {
           "Content-Type": "application/json",
         },
       });
-      console.log(result);
-      if (response){setNewPost(result)};
+      console.log(response);
+      if (response){setNewPost(response)}
       // setData(result);
     }
-  }
+  
 
   function editClicked(e) {
     console.log("event id",e.target.id);
@@ -369,5 +369,5 @@ export default function FetchComponent() {
         </div>
       )}
     </div>
-  );
+  )
 }

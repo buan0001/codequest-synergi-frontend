@@ -21,6 +21,7 @@ export default function FetchComponent() {
   const [sortOrder, setSortOrder] = useState("desc");
   const [showBorA, setShowBorA] = useState("articles");
   const [formData, setFormData] = useState("");
+  const [showForm, setShowForm] = useState(true)
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
   const handleSort = (key) => {
@@ -223,7 +224,12 @@ export default function FetchComponent() {
           {showModal ? (
             <UpdateModal showModal={showModal} showBorA={showBorA} setChangedPost={setChangedPost} setShowModal={setShowModal} formData={formData}></UpdateModal>
           ) : (
-            <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm>
+            <div style={{ display: "flex", justifyContent: "center", flexDirection:"column" }}>
+              <Button style={{height:"80px", width:"30%", margin:"auto"}} onClick={() =>{
+                setShowForm(!showForm)
+              }}>Vis/skjul oprettelsesformular</Button>
+              {showForm ?<BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm> : "" }
+            </div>
           )}
 
           <div>
