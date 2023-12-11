@@ -2,19 +2,23 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+// import Row from "react-bootstrap/Row";
+// import Col from "react-bootstrap/Col";
 import { Modal } from "react-bootstrap";
 import tryCatch from "../components/TryCatch";
 import BlogForm from "../components/Blog/BlogForm";
 
 export default function Blog() {
-  const [posts, setPosts] = useState("");
+  const [userListChanged, setUserListChanged] = useState();
   const [postChanged, setPostChanged] = useState();
+  // const [commentsChanged, setCommentsChanged] = useState();
+
+  const [comments, setComments] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [showComments, setShowComments] = useState([]);
+  //   const [showComments, setShowComments] = useState([]);
   const [userList, setUserList] = useState([]);
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
@@ -28,7 +32,7 @@ export default function Blog() {
     }
 
     fetchPosts();
-  }, [postChanged]); // empty for now
+  }, [postChanged]);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -40,7 +44,7 @@ export default function Blog() {
     }
 
     fetchUsers();
-  }, []); // empty for now
+  }, [userListChanged]);
 
   async function deletePostClicked(e, title) {
     const blogId = e.target.id;
@@ -56,12 +60,43 @@ export default function Blog() {
   }
 
   async function createUser(event) {
-    const form = event.target
-    const newUser = {userName: form.userName.value}
-    const response = await tryCatch("users", {method:"POST", })
+    const form = event.target;
+    const newUser = { userName: form.userName.value };
+    console.log("creating user", newUser);
+    const response = await tryCatch("users", {
+      method: "POST",
+      body: JSON.stringify(newUser),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response) {
+      setUserListChanged(response);
+      setShowModal(false);
+    }
   }
 
-  async function getComments(postID) {}
+  async function getComments(postID) {
+    const response = await tryCatch("comments/" + postID);
+    console.log("GETTING COMMENTS", response);
+    if (response) {
+      let existingEntry = comments?.find((post) => {
+        return post._id === postID;
+      });
+      if (existingEntry) {
+          console.log("existing entry",existingEntry);
+        existingEntry.comments = response;
+        existingEntry.show = true
+        console.log("existing entry",existingEntry);
+        console.log("COMMENTS check",comments);
+        setComments([...comments]);
+      } else {
+        setComments([...comments, { _id: postID, comments: response, show: true }]);
+      }
+      //   const updatedEntry = existingEntry ? (existingEntry.comments = response) : { _id: postID, comments: response, show: true };
+    //   console.log("updated entry", updatedEntry);
+    }
+  }
 
   async function postComment(form, postID) {
     // const form =
@@ -73,6 +108,16 @@ export default function Blog() {
       postID: postID,
     };
     console.log("new comment", newComment);
+    const response = await tryCatch("comments", {
+      method: "POST",
+      body: JSON.stringify(newComment),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response) {
+      getComments(postID);
+    }
   }
 
   return (
@@ -84,9 +129,9 @@ export default function Blog() {
               setShowForm(!showForm);
             }}
           >
-            Skjul/vis oprettelsesformular
+            {showForm ? "Skjul" : "Vis"} oprettelsesformular
           </Button>
-          {showForm ? <BlogForm></BlogForm> : ""}
+          {showForm ? <BlogForm updatePosts={setPostChanged}></BlogForm> : ""}
         </div>
       ) : (
         <div>Not logged in</div>
@@ -117,17 +162,22 @@ export default function Blog() {
                   )}
 
                   <div>
-                    {showComments.find((obj) => {
-                      return obj.id === entry._id;
+                    {comments?.find((obj) => {
+                      console.log("comments", comments);
+                      return obj._id === entry._id && obj.show === true;
                     }) ? (
                       <div>
                         <Button
                           onClick={() => {
-                            setShowComments(
-                              [...showComments].filter((obj) => {
-                                obj.id === entry._id;
-                              })
-                            );
+                            const newArray = [...comments];
+                            console.log("new array", newArray);
+                            newArray.find((obj) => {
+                              console.log("obj id", obj._id);
+                              console.log("entry id", entry._id);
+                              return obj._id === entry._id;
+                            }).show = false;
+                            console.log("new array", newArray);
+                            setComments(newArray);
                           }}
                         >
                           Skjul kommentarer
@@ -147,26 +197,33 @@ export default function Blog() {
                               >
                                 <Modal.Title>Tilføj ny bruger</Modal.Title>
                               </Modal.Header>
-                              <Modal.Body>
-                                <Form onSubmit={(e) => {e.preventDefault(); createUser(e)}}>
+                              <Form
+                                onSubmit={(e) => {
+                                  e.preventDefault();
+                                  createUser(e);
+                                }}
+                              >
+                                <Modal.Body>
                                   <Form.Group>
                                     <Form.Label>Navn</Form.Label>
                                     <Form.Control type="text" name="userName"></Form.Control>
                                   </Form.Group>
-                                </Form>
-                              </Modal.Body>
+                                </Modal.Body>
 
-                              <Modal.Footer>
-                                  <Button variant="primary">Opret bruger</Button>
-                                <Button
-                                  variant="secondary"
-                                  onClick={() => {
-                                    setShowModal(false);
-                                  }}
-                                >
-                                  Luk
-                                </Button>
-                              </Modal.Footer>
+                                <Modal.Footer>
+                                  <Button type="submit" variant="primary">
+                                    Opret bruger
+                                  </Button>
+                                  <Button
+                                    variant="secondary"
+                                    onClick={() => {
+                                      setShowModal(false);
+                                    }}
+                                  >
+                                    Luk
+                                  </Button>
+                                </Modal.Footer>
+                              </Form>
                             </Modal.Dialog>
                           </Modal>
                         </div>
@@ -191,7 +248,11 @@ export default function Blog() {
                             <Form.Select name="user">
                               {userList instanceof Array ? (
                                 userList.map((entry) => {
-                                  return <option key={entry._id}>{entry.userName}</option>;
+                                  return (
+                                    <option key={entry._id} value={entry._id}>
+                                      {entry.userName}
+                                    </option>
+                                  );
                                 })
                               ) : (
                                 <option>No users found</option>
@@ -205,11 +266,23 @@ export default function Blog() {
                           </Form.Group>
                           <Button type="submit">Tilføj kommentar</Button>
                         </Form>
+                        <div>
+                          {comments.find((obj) => {
+                            return obj._id === entry._id;
+                          }).comments
+                            ? comments
+                                .find((obj) => {
+                                  return obj._id === entry._id;
+                                })
+                                .comments.map((comment, index) => {
+                                  return <div key={index}>{comment.body}</div>;
+                                })
+                            : "No comments found"}
+                        </div>
                       </div>
                     ) : (
                       <Button
                         onClick={() => {
-                          setShowComments([...showComments, { id: entry._id }]);
                           getComments(entry._id);
                         }}
                       >

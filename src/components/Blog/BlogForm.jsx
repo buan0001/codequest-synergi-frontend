@@ -5,19 +5,17 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import tryCatch from "../TryCatch";
-export default function BlogForm(prop) {
-  // some functionality here
-
+export default function BlogForm({ updatePosts }) {
   async function handleSubmit(formEntries) {
-      const newPost = {
-          title: formEntries.title,
-          image: formEntries.image,
-          resume: formEntries.resume,
-          body: formEntries.body,
-          commentsAllowed: formEntries.commentsAllowed,
-        };
-        
-        console.log("new post",newPost);
+    const newPost = {
+      title: formEntries.title,
+      image: formEntries.image,
+      resume: formEntries.resume,
+      body: formEntries.body,
+      commentsAllowed: formEntries.commentsAllowed,
+    };
+
+    console.log("new post", newPost);
     const response = await tryCatch("blog", {
       method: "POST",
       body: JSON.stringify(newPost),
@@ -26,6 +24,7 @@ export default function BlogForm(prop) {
       },
     });
     console.log("response", response);
+    if (response){updatePosts(response)}
   }
 
   return (
@@ -96,26 +95,17 @@ export default function BlogForm(prop) {
 
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={5}>
-            {/* Betalingsartikel? <select type="select" name="pay" /> */}
             Tillad kommentarer?
-            <Form.Select
-              name="commentsAllowed"
-              id=""
-              //   onChange={(e) => {
-              //     setIsPay(e.target.value === "true");
-              //   }}
-            >
+            <Form.Select name="commentsAllowed" id="">
               <option value="true">Alle kan kommentere</option>
               <option value="false">Ingen kommentarer tilladt</option>
             </Form.Select>
-            {/* Betalingsartikel? <input type="checkbox" name="pay" /> */}
           </Form.Label>
         </Form.Group>
 
         <Form.Group className="mb-3 text-center" controlId="formBasicButton">
           <Button type="submit" variant="outline-secondary" className="mx-2 btn-dark text-warning">
             Opret
-            {/* {methodToUse === "POST" ? "Opret" : "Opdater"} {formCreateType === "articles" ? "artikel" : "bog"} */}
           </Button>
         </Form.Group>
       </Form>
