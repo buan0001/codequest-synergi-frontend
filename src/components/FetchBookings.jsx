@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import tryCatch from "./TryCatch";
 
 export default function FetchComponent() {
   const [data, setData] = useState(null);
