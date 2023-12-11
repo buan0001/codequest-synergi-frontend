@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import tryCatch from "./TryCatch";
 
 export default function FetchComponent() {
   const [data, setData] = useState("");
@@ -45,17 +46,9 @@ export default function FetchComponent() {
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const response = await fetch(`http://localhost:3333/${bookOrArticle}`);
-        if (!response.ok) {
-          throw new Error("Der opstod en fejl ved fetch");
-        }
-        const result = await response.json();
-        console.log("RESULT", result);
-        setData(result);
-      } catch (error) {
-        console.error("Der opstod en fejl ved indlæsning af data:", error);
-      }
+      const response = await tryCatch(bookOrArticle)
+      console.log("response",response);
+      if (response){setData(response)}
     }
 
     fetchData();
@@ -77,31 +70,24 @@ export default function FetchComponent() {
       resume: form.resume,
     };
     console.log("new article", newArticleOrBook);
-
-    try {
-      const response = await fetch(`http://localhost:3333/${bookOrArticle}`, {
+      const response = await tryCatch(bookOrArticle, {
         method: "POST",
         body: JSON.stringify(newArticleOrBook),
         headers: {
           "Content-Type": "application/json",
         },
       });
-
-      if (!response.ok) {
-        throw new Error("Der opstod en fejl ved fetch");
-      }
-      const result = await response.json();
-      setNewPost(result);
       console.log(result);
+      if (response){setNewPost(result)};
       // setData(result);
-    } catch (error) {
-      console.error("Der opstod en fejl ved indlæsning af data:", error);
     }
   }
 
   function editClicked(e) {
-    console.log("event", e.parent);
-    console.log("event", e.target);
+    console.log("event id",e.target.id);
+    tryCatch(``)
+    // console.log("event",e.target.key);
+    // console.log("event",e.key);
   }
 
   const sortAndShowButtons = (
@@ -143,15 +129,7 @@ export default function FetchComponent() {
                       </button>
                     </div>
                     <div className="col-sm-1">
-                      <button
-                        className="btn btn-primary"
-                        key={item._id}
-                        onClick={(e) => {
-                          editClicked(e);
-                        }}
-                      >
-                        Rediger
-                      </button>
+                      <button className="btn btn-primary" id={item._id} onClick={(e) => {editClicked(e)}}>Rediger</button>
                     </div>
                     <div className="col-sm-1"></div>
                   </>

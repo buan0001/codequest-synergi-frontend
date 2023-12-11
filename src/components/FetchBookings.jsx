@@ -1,19 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import tryCatch from "./TryCatch";
 
 export default function FetchComponent() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:3333/booking");
-        if (!response.ok) {
-          throw new Error("Der opstod en fejl ved fetch");
-        }
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Der opstod en fejl ved indlæsning af data:", error);
+      const response = await tryCatch("booking");
+      if (response) {
+        setData(response);
       }
     };
 
