@@ -6,7 +6,7 @@ export default function FetchComponent() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await tryCatch("bookings");
+      const response = await tryCatch("booking");
       if (response) {
         setData(response);
       }
