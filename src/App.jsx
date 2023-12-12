@@ -6,7 +6,7 @@ import Header from "./components/Navbar";
 import Booksandarticles from "./pages/BooksAndArticles";
 // import Theory from "./pages/Theory";
 // import Kunder from "./pages/Customers";
-import About from "./pages/About";
+// import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Booking from "./pages/Booking";
@@ -37,7 +37,7 @@ export default function App() {
             <Route path="/contact" element={<Contact />}></Route> {/* Contact page */}
             <Route path="/blog" element={<Blog />}></Route> {/* blog page */}
             {/* <Route path="/contact" element={<Contact />} title={"forside"}></Route> Contact page */}
-            <Route path="/about" element={<About />}></Route> {/* About page */}
+            {/* <Route path="/about" element={<About />}></Route> About page */}
             <Route path="/booking" element={<Booking />}></Route> {/*Booking page*/}
             <Route path="/theory" element={<StandardPage title={"ståsted"} />}></Route> {/* Teoretisk ståsted page */}
             <Route path="/cv" element={<StandardPage title={"cv"} />}></Route> {/* CV page */}

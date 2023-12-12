@@ -319,7 +319,7 @@ export default function Booking({ fetchBookings, fetchData }) {
           </Col>
         </Form.Group>
 
-        <Form.Group className="text-center mb-5" controlId="formBasicButton">
+        <Form.Group className="text-center mb-5 p-4" controlId="formBasicButton">
           <Button variant="primary" type="submit" value="book">
             Book
           </Button>
