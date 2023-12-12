@@ -9,10 +9,12 @@ import Form from "react-bootstrap/Form";
 import { Modal } from "react-bootstrap";
 import tryCatch from "../components/TryCatch";
 import BlogForm from "../components/Blog/BlogForm";
+import BlogUserComments from "../components/Blog/BlogUserComments";
 
 export default function Blog() {
   const [userListChanged, setUserListChanged] = useState();
   const [postChanged, setPostChanged] = useState();
+  const [userComments, setUserComments] = useState()
   // const [commentsChanged, setCommentsChanged] = useState();
 
   const [comments, setComments] = useState([]);
@@ -20,7 +22,8 @@ export default function Blog() {
   const [showForm, setShowForm] = useState(false);
   //   const [showComments, setShowComments] = useState([]);
   const [userList, setUserList] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showCreateUserModal, setShowCreateUserModal] = useState(false);
+  const [showUserCommentsModal, setShowUserCommentsModal] = useState(false)
 
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
@@ -80,7 +83,7 @@ export default function Blog() {
     });
     if (response) {
       setUserListChanged(response);
-      setShowModal(false);
+      setShowCreateUserModal(false);
     }
   }
 
@@ -98,8 +101,7 @@ export default function Blog() {
       } else {
         setComments([...comments, { _id: postID, comments: response, show: true }]);
       }
-      //   const updatedEntry = existingEntry ? (existingEntry.comments = response) : { _id: postID, comments: response, show: true };
-      //   console.log("updated entry", updatedEntry);
+
     }
   }
 
@@ -114,11 +116,11 @@ export default function Blog() {
     }
   }
 
-  async function postComment(form, postID) {
+  async function postComment(form, postId) {
     const newComment = {
       body: form.body.value,
       userID: form.user.value,
-      postID: postID,
+      postID: postId,
     };
     console.log("new comment", newComment);
     const response = await tryCatch("comments", {
@@ -129,21 +131,23 @@ export default function Blog() {
       },
     });
     if (response) {
-      getComments(postID);
+      getComments(postId);
     }
   }
 
   function getPresentableDate(dateString) {
     // console.log("date string",dateString);
     const date = new Date(dateString).toLocaleDateString("da-DK", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
-  
-    return date
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+
+    return date;
   }
+
+
 
   return (
     <div>
@@ -194,13 +198,12 @@ export default function Blog() {
                         <Button
                           onClick={() => {
                             const newArray = [...comments];
-                            console.log("new array", newArray);
+          
                             newArray.find((obj) => {
-                              console.log("obj id", obj._id);
-                              console.log("entry id", entry._id);
+                
                               return obj._id === entry._id;
                             }).show = false;
-                            console.log("new array", newArray);
+                    
                             setComments(newArray);
                           }}
                         >
@@ -208,12 +211,12 @@ export default function Blog() {
                         </Button>
 
                         <div>
-                          <Modal show={showModal} dialogClassName="" size="xl">
+                          <Modal show={showCreateUserModal} dialogClassName="" size="xl">
                             <Modal.Dialog size="xl" className="text-dark">
                               <Modal.Header
                                 closeButton
                                 onClick={() => {
-                                  setShowModal(false);
+                                  setShowCreateUserModal(false);
                                 }}
                               >
                                 <Modal.Title>Tilføj ny bruger</Modal.Title>
@@ -251,7 +254,7 @@ export default function Blog() {
                                   <Button
                                     variant="secondary"
                                     onClick={() => {
-                                      setShowModal(false);
+                                      setShowCreateUserModal(false);
                                     }}
                                   >
                                     Luk
@@ -272,7 +275,7 @@ export default function Blog() {
                             Er du ikke på listen?{" "}
                             <Button
                               onClick={() => {
-                                setShowModal(!showModal);
+                                setShowCreateUserModal(!showCreateUserModal);
                               }}
                             >
                               Opret ny bruger her
@@ -319,8 +322,16 @@ export default function Blog() {
                                       <div
                                         className="text-primary font-weight-bold"
                                         onMouseOver={(e) => (e.target.style.cursor = "pointer")}
-                                        onClick={() => {
-                                          console.log("clicked on user with id", comment.userID._id);
+                                        onClick={async () => {
+                                          const response = await tryCatch("users/comments/" + comment.userID._id);
+                                          if (response) {
+                                            response.userName = comment.userID.userName
+                                            // Make the dates reader friendly
+                                            response.forEach(post => {post.comments.forEach((comment) => comment.createdAt = getPresentableDate(comment.createdAt)); })
+                                            console.log("getting comments from one user",response);
+                                            setShowUserCommentsModal(true);
+                                            setUserComments(response)
+                                          }
                                         }}
                                       >
                                         - {comment.userID.userName}
@@ -330,7 +341,7 @@ export default function Blog() {
                                           className="btn-danger"
                                           onClick={() => {
                                             deleteCommentClicked(comment);
-                                            console.log("clicked to delete comment with id", comment._id);
+                                            
                                           }}
                                         >
                                           Slet kommentar
@@ -353,10 +364,14 @@ export default function Blog() {
                             getComments(entry._id);
                           }}
                         >
-                          {entry.commentsAllowed ?"Vis kommentarer" : "Kommentarer slået fra" } 
+                          {entry.commentsAllowed ? "Vis kommentarer" : "Kommentarer slået fra"}
                         </Button>
                       </div>
                     )}
+                    <div>
+                      {/* {showUserCommentsModal ? <BlogUserComments/> : (() => {console.log("not showing user comments");return "hej";})} */}
+                      {showUserCommentsModal ? <BlogUserComments showBool={showUserCommentsModal} setBool={setShowUserCommentsModal} userInfo={userComments}></BlogUserComments> : ""}
+                    </div>
                   </div>
                 </div>
               );
