@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-
-export default function FetchComponent({bookings, fetchBookings}) {
+export default function FetchComponent({ bookings, fetchBookings }) {
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -20,16 +19,13 @@ export default function FetchComponent({bookings, fetchBookings}) {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3333/booking/${selectedId}`,
-        {
-          method: "DELETE",
-          body: JSON.stringify({}),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:3333/booking/${selectedId}`, {
+        method: "DELETE",
+        body: JSON.stringify({}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
         console.log(`Item with ID ${selectedId} deleted successfully.`);
@@ -59,11 +55,11 @@ export default function FetchComponent({bookings, fetchBookings}) {
   };
 
   return (
-    <div>
+    <div className="text-center mb-5">
       {bookings ? (
         <div>
           <h2>Kunde Bookinger</h2>
-          <table className="table">
+          <table className="table mb-5 mt-5 table-striped table-bordered responsive">
             <thead>
               <tr>
                 <th>Navn</th>
@@ -87,7 +83,7 @@ export default function FetchComponent({bookings, fetchBookings}) {
                   <td>{item.contactInfo.email}</td>
                   <td>{item.contactInfo.phoneNumber}</td>
                   <td>
-                    <Button onClick={() => handleShowModal(item._id)}>
+                    <Button variant="danger" size="sm" onClick={() => handleShowModal(item._id)}>
                       Delete
                     </Button>
                   </td>
@@ -110,10 +106,7 @@ export default function FetchComponent({bookings, fetchBookings}) {
             <div>
               <p>Er du sikker på du vil slette denne booking?</p>
               <p>
-                {selectedItem.contactInfo.firstName}{" "}
-                {selectedItem.contactInfo.lastName},{" "}
-                {selectedItem.appointmentInfo.service} d.{" "}
-                {formatDateTime(selectedItem.appointmentInfo.date)}
+                {selectedItem.contactInfo.firstName} {selectedItem.contactInfo.lastName}, {selectedItem.appointmentInfo.service} d. {formatDateTime(selectedItem.appointmentInfo.date)}
               </p>
             </div>
           )}
