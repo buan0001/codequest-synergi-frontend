@@ -51,7 +51,7 @@ export default function Blog() {
   async function deletePostClicked(e, title) {
     const blogId = e.target.id;
     console.log("id to delete", blogId);
-    const check = confirm(`Do you wish to delete ${title}?`);
+    const check = confirm(`Vil du virkelig slette opslaget ${title}?`);
     if (check) {
       const response = await tryCatch("blog/" + blogId, { method: "DELETE" });
       console.log("delete response", response);
@@ -134,10 +134,15 @@ export default function Blog() {
   }
 
   function getPresentableDate(dateString) {
-    console.log("date string",dateString);
-    const date = new Date(dateString)
-    console.log(date.toLocaleDateString("da-DK"));
-    console.log(date.toLocaleString("da-DK"));
+    // console.log("date string",dateString);
+    const date = new Date(dateString).toLocaleDateString("da-DK", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+  
+    return date
   }
 
   return (
@@ -256,6 +261,7 @@ export default function Blog() {
                             </Modal.Dialog>
                           </Modal>
                         </div>
+                        {entry.commentsAllowed ? "" : ""}
                         <Form
                           onSubmit={(e) => {
                             e.preventDefault();
@@ -306,7 +312,19 @@ export default function Blog() {
                                 .comments.map((comment, index) => {
                                   return (
                                     <div key={index}>
-                                      <div>{comment.body} - {getPresentableDate(comment.createdAt)}</div>
+                                      <div>
+                                        {comment.body} - {getPresentableDate(comment.createdAt)}
+                                      </div>
+
+                                      <div
+                                        className="text-primary font-weight-bold"
+                                        onMouseOver={(e) => (e.target.style.cursor = "pointer")}
+                                        onClick={() => {
+                                          console.log("clicked on user with id", comment.userID._id);
+                                        }}
+                                      >
+                                        - {comment.userID.userName}
+                                      </div>
                                       {loggedIn ? (
                                         <Button
                                           className="btn-danger"
@@ -320,15 +338,6 @@ export default function Blog() {
                                       ) : (
                                         ""
                                       )}
-                                      <div
-                                        className="text-primary font-weight-bold"
-                                        onMouseOver={(e) => (e.target.style.cursor = "pointer")}
-                                        onClick={() => {
-                                          console.log("clicked on user with id", comment.userID._id);
-                                        }}
-                                      >
-                                        - {comment.userID.userName}
-                                      </div>
                                     </div>
                                   );
                                 })
@@ -336,13 +345,17 @@ export default function Blog() {
                         </div>
                       </div>
                     ) : (
-                      <Button
-                        onClick={() => {
-                          getComments(entry._id);
-                        }}
-                      >
-                        Vis kommentarer
-                      </Button>
+                      <div>
+                        {" "}
+                        <Button
+                          disabled={entry.commentsAllowed ? false : true}
+                          onClick={() => {
+                            getComments(entry._id);
+                          }}
+                        >
+                          {entry.commentsAllowed ?"Vis kommentarer" : "Kommentarer slået fra" } 
+                        </Button>
+                      </div>
                     )}
                   </div>
                 </div>
