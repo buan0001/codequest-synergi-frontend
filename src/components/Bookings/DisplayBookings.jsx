@@ -58,7 +58,7 @@ export default function FetchComponent({ bookings, fetchBookings }) {
     <div className="text-center mb-5 p-4">
       {bookings ? (
         <div>
-          <h2>Kunde Bookinger</h2>
+          <h2 className="p-4">Kunde Bookinger</h2>
           <table className="table table-striped table-bordered responsive">
             <thead>
               <tr>
