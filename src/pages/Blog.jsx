@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import SuccessMessage from "../components/SuccessMessage";
+import ErrorMessage from "../components/ErrorMessage";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
@@ -36,7 +38,7 @@ export default function Blog() {
 
   useEffect(() => {
     async function fetchUsers() {
-      const response = await tryCatch("users");
+      const response = await tryCatch("users/" + loggedIn);
       console.log("GETTING USERS", response);
       if (response) {
         setUserList(response);
@@ -44,7 +46,7 @@ export default function Blog() {
     }
 
     fetchUsers();
-  }, [userListChanged]);
+  }, [userListChanged, loggedIn]);
 
   async function deletePostClicked(e, title) {
     const blogId = e.target.id;
@@ -62,6 +64,12 @@ export default function Blog() {
   async function createUser(event) {
     const form = event.target;
     const newUser = { userName: form.userName.value };
+    // console.log("form admin",form.admin.value);
+    if (loggedIn && form.admin.value === "true") {
+      newUser.admin = true;
+    } else {
+      newUser.admin = false;
+    }
     console.log("creating user", newUser);
     const response = await tryCatch("users", {
       method: "POST",
@@ -84,24 +92,29 @@ export default function Blog() {
         return post._id === postID;
       });
       if (existingEntry) {
-          console.log("existing entry",existingEntry);
         existingEntry.comments = response;
-        existingEntry.show = true
-        console.log("existing entry",existingEntry);
-        console.log("COMMENTS check",comments);
+        existingEntry.show = true;
         setComments([...comments]);
       } else {
         setComments([...comments, { _id: postID, comments: response, show: true }]);
       }
       //   const updatedEntry = existingEntry ? (existingEntry.comments = response) : { _id: postID, comments: response, show: true };
-    //   console.log("updated entry", updatedEntry);
+      //   console.log("updated entry", updatedEntry);
+    }
+  }
+
+  async function deleteCommentClicked(comment) {
+    const check = confirm(`Vil du virkelig slette kommentaren skrevet af ${comment.userID.userName}?`);
+    if (check) {
+      const response = await tryCatch("comments/" + comment._id, { method: "DELETE" });
+      console.log("delete response", response);
+      if (response) {
+        getComments(comment.postID);
+      }
     }
   }
 
   async function postComment(form, postID) {
-    // const form =
-    console.log("posting comment", form);
-    console.log("post id", postID);
     const newComment = {
       body: form.body.value,
       userID: form.user.value,
@@ -118,6 +131,13 @@ export default function Blog() {
     if (response) {
       getComments(postID);
     }
+  }
+
+  function getPresentableDate(dateString) {
+    console.log("date string",dateString);
+    const date = new Date(dateString)
+    console.log(date.toLocaleDateString("da-DK"));
+    console.log(date.toLocaleString("da-DK"));
   }
 
   return (
@@ -163,7 +183,6 @@ export default function Blog() {
 
                   <div>
                     {comments?.find((obj) => {
-                      console.log("comments", comments);
                       return obj._id === entry._id && obj.show === true;
                     }) ? (
                       <div>
@@ -182,10 +201,7 @@ export default function Blog() {
                         >
                           Skjul kommentarer
                         </Button>
-                        {}
-                        <br></br>
-                        <br></br>
-                        <br></br>
+
                         <div>
                           <Modal show={showModal} dialogClassName="" size="xl">
                             <Modal.Dialog size="xl" className="text-dark">
@@ -208,6 +224,19 @@ export default function Blog() {
                                     <Form.Label>Navn</Form.Label>
                                     <Form.Control type="text" name="userName"></Form.Control>
                                   </Form.Group>
+                                  {loggedIn ? (
+                                    <Form.Group>
+                                      <Form.Label>
+                                        Ny admin bruger?{" "}
+                                        <Form.Select name="admin">
+                                          <option value={false}>Nej</option>
+                                          <option value={true}>Ja</option>
+                                        </Form.Select>
+                                      </Form.Label>
+                                    </Form.Group>
+                                  ) : (
+                                    ""
+                                  )}
                                 </Modal.Body>
 
                                 <Modal.Footer>
@@ -269,15 +298,41 @@ export default function Blog() {
                         <div>
                           {comments.find((obj) => {
                             return obj._id === entry._id;
-                          }).comments
+                          }).comments.length > 0
                             ? comments
                                 .find((obj) => {
                                   return obj._id === entry._id;
                                 })
                                 .comments.map((comment, index) => {
-                                  return <div key={index}>{comment.body}</div>;
+                                  return (
+                                    <div key={index}>
+                                      <div>{comment.body} - {getPresentableDate(comment.createdAt)}</div>
+                                      {loggedIn ? (
+                                        <Button
+                                          className="btn-danger"
+                                          onClick={() => {
+                                            deleteCommentClicked(comment);
+                                            console.log("clicked to delete comment with id", comment._id);
+                                          }}
+                                        >
+                                          Slet kommentar
+                                        </Button>
+                                      ) : (
+                                        ""
+                                      )}
+                                      <div
+                                        className="text-primary font-weight-bold"
+                                        onMouseOver={(e) => (e.target.style.cursor = "pointer")}
+                                        onClick={() => {
+                                          console.log("clicked on user with id", comment.userID._id);
+                                        }}
+                                      >
+                                        - {comment.userID.userName}
+                                      </div>
+                                    </div>
+                                  );
                                 })
-                            : "No comments found"}
+                            : "Ingen kommentarer endnu"}
                         </div>
                       </div>
                     ) : (
