@@ -202,6 +202,7 @@ export default function Booking({ fetchBookings }) {
         SuccessMessage("Din booking er gennemført!");
         event.target.reset(); // Reset the form on successful booking
         fetchBookings(); // Fetch updated booking dates after successful booking
+        fetchData();
       }
     } catch (error) {
       console.error("Error:", error);

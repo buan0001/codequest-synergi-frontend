@@ -59,7 +59,7 @@ export default function FetchComponent({ bookings, fetchBookings }) {
       {bookings ? (
         <div>
           <h2>Kunde Bookinger</h2>
-          <table className="table mb-5 mt-5 table-striped table-bordered responsive">
+          <table className="table table-striped table-bordered responsive">
             <thead>
               <tr>
                 <th>Navn</th>
@@ -84,7 +84,7 @@ export default function FetchComponent({ bookings, fetchBookings }) {
                   <td>{item.contactInfo.phoneNumber}</td>
                   <td>
                     <Button variant="danger" size="sm" onClick={() => handleShowModal(item._id)}>
-                      Delete
+                      Slet
                     </Button>
                   </td>
                 </tr>
@@ -113,10 +113,10 @@ export default function FetchComponent({ bookings, fetchBookings }) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleDelete}>
-            Yes
+            Ja
           </Button>
           <Button variant="secondary" onClick={handleNo}>
-            No
+            Nej
           </Button>
         </Modal.Footer>
       </Modal>
