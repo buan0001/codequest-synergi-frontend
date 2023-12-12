@@ -18,8 +18,11 @@ export default function Booking() {
   const fetchBookings = async () => {
     const response = await fetch("http://localhost:3333/booking");
     const data = await response.json();
-    setBookings(data);
+    const sortedData = data.sort((b, a) => new Date(b.appointmentInfo.date) - new Date(a.appointmentInfo.date));
+    console.log("sortedData:", sortedData);
+    setBookings(sortedData);
   };
+
   useEffect(() => {
     fetchBookings();
   }, []);
@@ -47,17 +50,17 @@ export default function Booking() {
       {loggedIn ? (
         <div className="row">
           <div className="col-md-6">
-            <SubmitBookingComponent fetchBookings={fetchBookings} fetchData={fetchData}/>
+            <SubmitBookingComponent fetchBookings={fetchBookings} fetchData={fetchData} />
           </div>
 
           <div className="col-md-6">
-            <Bookings bookings={bookings} fetchBookings={fetchBookings}/>
+            <Bookings bookings={bookings} fetchBookings={fetchBookings} />
           </div>
         </div>
       ) : (
         <div>
           <div>
-            <SubmitBookingComponent fetchBookings={bookings} fetchData={fetchData}/>
+            <SubmitBookingComponent fetchBookings={bookings} fetchData={fetchData} />
           </div>
         </div>
       )}
