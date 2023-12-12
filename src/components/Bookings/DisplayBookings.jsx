@@ -55,7 +55,7 @@ export default function FetchComponent({ bookings, fetchBookings }) {
   };
 
   return (
-    <div className="text-center mb-5">
+    <div className="text-center mb-5 p-4">
       {bookings ? (
         <div>
           <h2>Kunde Bookinger</h2>

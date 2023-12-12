@@ -29,17 +29,17 @@ export default function Booking() {
       {loggedIn ? (
         <div className="row">
           <div className="col-md-12">
-            <SubmitBookingComponent fetchBookings={fetchBookings}/>
+            <SubmitBookingComponent fetchBookings={fetchBookings} />
           </div>
 
           <div className="col-md-12">
-            <Bookings bookings={bookings} fetchBookings={fetchBookings}/>
+            <Bookings bookings={bookings} fetchBookings={fetchBookings} />
           </div>
         </div>
       ) : (
         <div>
           <div>
-            <SubmitBookingComponent fetchBookings={bookings}/>
+            <SubmitBookingComponent fetchBookings={bookings} />
           </div>
         </div>
       )}

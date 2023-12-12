@@ -216,7 +216,7 @@ export default function Booking({ fetchBookings }) {
 
   return (
     <div>
-      <div className="text-center mb-5">
+      <div className="text-center mb-5 p-4">
         <h3>Booking af konsulentydelse</h3>
         <p>
           Ved ændring af booking, kontakt Peter gennem{" "}
