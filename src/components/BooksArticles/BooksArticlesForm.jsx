@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 // import tryCatch from "../components/TryCatch";
 import tryCatch from "../TryCatch";
 
-export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST" }) {
+export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle}) {
   //   const [changedPost, setChangedPost] = useState("");
   //   const [showBorA, setShowBorA] = useState("articles");
   //   const [isPay, setIsPay] = useState(false);
@@ -64,7 +64,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
 
   return (
     <div className="mt-4">
-      <h2 className="text-center">Tilføj bog eller artikel</h2>
+      <h2 className="text-center">{methodToUse === "POST" ? "Tilføj bog eller artikel" : "Rediger"}</h2>
       <Form
         style={{
           display: "flex",
@@ -95,11 +95,12 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
           {/* Titel, udgivelsesår, udgiver */}
           <Form.Group as={Row} className="mb-3 justify-content-center">
             <Form.Select
-              defaultValue={formData.showBorA}
+              defaultValue={bookOrArticle}
               name="bookOrArticle"
               className="justify-content-center"
               style={{ width: "30vw" }}
               onChange={(e) => {
+                console.log("default value", bookOrArticle);
                 setFormCreateType(e.target.value);
               }}
             >
