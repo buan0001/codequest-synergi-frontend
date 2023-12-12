@@ -22,13 +22,53 @@ setDefaultLocale("da");
 
 // https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
 
-export default function Booking({fetchBookings}) {
-
+export default function Booking({ fetchBookings }) {
   const [datesArray, setDatesArray] = useState([]);
+
+  const [startDate, setStartDate] = useState(null);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // finding the first available date for default startDate
+    function nextAvailableDate(date) {
+      let today = new Date(date);
+
+      let availableDay = new Date(today);
+      availableDay.setDate(today.getDate() + 1);
+
+      // Check if it's a weekend (Saturday or Sunday)
+      if (isWeekend(availableDay)) {
+        if (availableDay.getDay() === 0) {
+          // Sunday
+          // Move to the next day (Monday)
+          availableDay.setDate(availableDay.getDate() + 1);
+        } else if (availableDay.getDay() === 6) {
+          // Saturday
+          // Move to the following Monday
+          availableDay.setDate(availableDay.getDate() + 2);
+        }
+      }
+
+      // chech if date is already booked
+      const isBooked = datesArray.some((date) => {
+        const BookedDate = new Date(date);
+        return availableDay.toDateString() === BookedDate.toDateString();
+      });
+
+      if (isBooked) {
+        return nextAvailableDate(availableDay);
+      }
+
+      console.log("next available Day ", availableDay);
+
+      return availableDay;
+    }
+
+    setStartDate(nextAvailableDate(new Date()));
+  }, [datesArray]);
 
   const fetchData = async () => {
     try {
@@ -80,33 +120,11 @@ export default function Booking({fetchBookings}) {
     return isoDateString;
   };
 
-  const nextAvailableDate = (date) => {
-    let today = new Date(date);
-
-    let availableDay = new Date(today);
-    availableDay.setDate(today.getDate() + 1);
-
-    // Check if it's a weekend (Saturday or Sunday)
-    if (isWeekend(availableDay)) {
-      if (availableDay.getDay() === 0) {
-        // Sunday
-        // Move to the next day (Monday)
-        availableDay.setDate(availableDay.getDate() + 1);
-      } else if (availableDay.getDay() === 6) {
-        // Saturday
-        // Move to the following Monday
-        availableDay.setDate(availableDay.getDate() + 2);
-      }
-    }
-
-    return availableDay;
-  };
-
   // to test it takes the next right date use
   // this date format in new Date("12-09-2023") --> mm-dd-yyyy;
-  const [startDate, setStartDate] = useState(() =>
-    nextAvailableDate(new Date())
-  );
+  // const [startDate, setStartDate] = useState(() =>
+  //   nextAvailableDate(new Date())
+  // );
 
   // // updating the shown date to the next day
   // // when 'inline' in datePickerform is off
@@ -196,7 +214,7 @@ export default function Booking({fetchBookings}) {
   };
 
   return (
-        <div>
+    <div>
       <div className="text-center mb-5">
         <h3>Booking af konsulentydelse</h3>
         <p>
@@ -206,148 +224,105 @@ export default function Booking({fetchBookings}) {
           </a>
         </p>
       </div>
-    <Form onSubmit={handleSubmit} className="mb-5 mt-5">
-      <Form.Group as={Row} className="mb-3 justify-content-center">
-        <Form.Label column sm={2}>
-          Fornavn:
-        </Form.Label>
-        <Col sm={4}>
-          <Form.Control
-            type="text"
-            name="firstName"
-            placeholder="Fornavn"
-            required
-          />
-        </Col>
-      </Form.Group>
+      <Form onSubmit={handleSubmit} className="mb-5 mt-5">
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Fornavn:
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Control type="text" name="firstName" placeholder="Fornavn" required />
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3 justify-content-center">
-        <Form.Label column sm={2}>
-          Efternavn:
-        </Form.Label>
-        <Col sm={4}>
-          <Form.Control
-            type="text"
-            name="lastName"
-            placeholder="Efternavn"
-            required
-          />
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Efternavn:
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3 justify-content-center">
-        <Form.Label column sm={2}>
-          Email
-        </Form.Label>
-        <Col sm={4}>
-          <Form.Control
-            type="email"
-            name="email"
-            placeholder="Din E-mail"
-            required
-          />
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Email
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Control type="email" name="email" placeholder="Din E-mail" required />
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3 justify-content-center">
-        <Form.Label column sm={2}>
-          Tlf. Nummer
-        </Form.Label>
-        <Col sm={4}>
-          <Form.Control
-            type="number"
-            name="phoneNumber"
-            placeholder="Dit tlf. nummer"
-            onChange={handlePhoneNumberChange}
-            aria-describedby="phoneNumberError"
-            required
-          />
-          {phoneNumberError && (
-            <div id="phoneNumberError" className="form-text text-danger">
-              {phoneNumberError}
-            </div>
-          )}
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Tlf. Nummer
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" onChange={handlePhoneNumberChange} aria-describedby="phoneNumberError" required />
+            {phoneNumberError && (
+              <div id="phoneNumberError" className="form-text text-danger">
+                {phoneNumberError}
+              </div>
+            )}
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3 justify-content-center">
-        <Form.Label column sm={2}>
-          Vælg ydelse:
-        </Form.Label>
-        <Col sm={4}>
-          <Form.Select
-            aria-label="Default select example"
-            name="service"
-            defaultValue="Vælg konsulent ydelse"
-            required
-          >
-            <option disabled>Vælg konsulent ydelse</option>
-            <option value="Proceskonsultation">Proceskonsultation</option>
-            <option value="Coaching af enkeltpersoner eller grupper">
-              Coaching af enkeltpersoner eller grupper
-            </option>
-            <option value="Kreativ facilitering">Kreativ facilitering</option>
-            <option value="Teamudvikling">Teamudvikling</option>
-            <option value="Facilitering af ledernetværk og træning">
-              Facilitering af ledernetværk og træning
-            </option>
-            <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
-            <option value="Interne skræddersyede uddannelses- og træningsforløb">
-              Interne skræddersyede uddannelses- og træningsforløb
-            </option>
-          </Form.Select>
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Vælg ydelse:
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Select aria-label="Default select example" name="service" defaultValue="Vælg konsulent ydelse" required>
+              <option disabled>Vælg konsulent ydelse</option>
+              <option value="Proceskonsultation">Proceskonsultation</option>
+              <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
+              <option value="Kreativ facilitering">Kreativ facilitering</option>
+              <option value="Teamudvikling">Teamudvikling</option>
+              <option value="Facilitering af ledernetværk og træning">Facilitering af ledernetværk og træning</option>
+              <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
+              <option value="Interne skræddersyede uddannelses- og træningsforløb">Interne skræddersyede uddannelses- og træningsforløb</option>
+            </Form.Select>
+          </Col>
+        </Form.Group>
 
-      <Form.Group
-        as={Row}
-        className="mb-3 justify-content-center"
-        controlId="exampleFormControlTextarea1"
-      >
-        <Form.Label column sm={2}>
-          Besked (valgfrit)
-        </Form.Label>
-        <Col sm={4}>
-          <Form.Control
-            as="textarea"
-            className="bg-light"
-            name="message"
-            placeholder="Kort uddybning af grunden til du booker.."
-            rows={4}
-          />
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
+          <Form.Label column sm={2}>
+            Besked (valgfrit)
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} />
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3 justify-content-center">
-        <Form.Label column sm={2}>
-          Vælg Dato:
-        </Form.Label>
-        <Col sm={4}>
-          <DatePicker
-            todayButton="I dag"
-            // showIcon
-            selected={startDate}
-            onChange={(date) => {
-              setStartDate(date);
-            }}
-            // withPortal
-            locale="da"
-            dateFormat="dd-MM-yyyy"
-            name="date"
-            inline
-            // // when inline is off use placeHolderText
-            // placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
-            filterDate={filterDate}
-            excludeDates={datesArray}
-          />
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3 justify-content-center">
+          <Form.Label column sm={2}>
+            Vælg Dato:
+          </Form.Label>
+          <Col sm={4}>
+            <DatePicker
+              todayButton="I dag"
+              // showIcon
+              selected={startDate}
+              onChange={(date) => {
+                setStartDate(date);
+              }}
+              // withPortal
+              locale="da"
+              dateFormat="dd-MM-yyyy"
+              name="date"
+              inline
+              // // when inline is off use placeHolderText
+              // placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+              filterDate={filterDate}
+              excludeDates={datesArray}
+            />
+          </Col>
+        </Form.Group>
 
-      <Form.Group className="text-center mb-5" controlId="formBasicButton">
-        <Button variant="primary" type="submit" value="book">
-          Book
-        </Button>
-      </Form.Group>
+        <Form.Group className="text-center mb-5" controlId="formBasicButton">
+          <Button variant="primary" type="submit" value="book">
+            Book
+          </Button>
+        </Form.Group>
       </Form>
     </div>
   );
