@@ -9,7 +9,7 @@ import logo from "../assets/synergi-hrm logo.png";
 export default function Header() {
   // const { loggedIn } = useAuth();
   return (
-    <Navbar expand="lg" className="bg-body-tertiary" style={{ boxShadow: "1px 1px 10px 5px rgb(182 185 189)" }}>
+    <Navbar expand="lg" className="bg-body-tertiary sticky-top" style={{ boxShadow: "1px 1px 10px 5px rgb(182 185 189)" }}>
       <Container className="ms-0 mw-100">
         <div className="nav align-self-center">
           {/* Synergi Logo */}
