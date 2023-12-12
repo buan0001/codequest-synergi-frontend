@@ -21,6 +21,7 @@ export default function FetchComponent() {
   const [showBorA, setShowBorA] = useState("articles");
   const [formData, setFormData] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showForm, setShowForm] = useState(false)
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
   const handleSort = (key) => {
@@ -93,10 +94,14 @@ export default function FetchComponent() {
   async function deleteClicked(e) {
     const id = e.target.id;
     console.log("delete this id", id);
-    const res = await tryCatch(showBorA + "/" + id, { method: "DELETE" });
-    console.log("RES", res);
-    if (res) {
-      setChangedPost(res);
+    const confirmCheck = confirm("Vil du virkelig slette?");
+    // console.log("did you confirm?", confirmCheck);
+    if (confirmCheck) {
+      const res = await tryCatch(showBorA + "/" + id, { method: "DELETE" });
+      console.log("RES", res);
+      if (res) {
+        setChangedPost(res);
+      }
     }
   }
   async function editClicked(e) {
@@ -222,15 +227,6 @@ export default function FetchComponent() {
     </div>
   );
 
-  // function changeBookArticle(e) {
-  //   // console.log("option changed",e.target.value);
-  //   setShowBorA(e.target.value);
-  // }
-
-  // function changePay(e) {
-  //   setIsPay(e.target.value === "true");
-  // }
-
   return (
     <div className="" style={{ backgroundColor: "rgb(237, 227, 227)" }}>
       {" "}
@@ -239,7 +235,17 @@ export default function FetchComponent() {
           {showModal ? (
             <UpdateModal showModal={showModal} showBorA={showBorA} setChangedPost={setChangedPost} setShowModal={setShowModal} formData={formData}></UpdateModal>
           ) : (
-            <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm>
+            <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+              <Button
+                style={{ height: "80px", width: "30%", margin: "auto" }}
+                onClick={() => {
+                  setShowForm(!showForm);
+                }}
+              >
+                Vis/skjul oprettelsesformular
+              </Button>
+              {showForm ? <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm> : ""}
+            </div>
           )}
 
           <div>
@@ -257,166 +263,3 @@ export default function FetchComponent() {
     </div>
   );
 }
-
-// <Form
-//   style={{
-//     display: "flex",
-//     padding: "5px",
-//     gap: "10px",
-//     flexDirection: "column",
-//   }}
-//   onSubmit={(e) => {
-//     e.preventDefault();
-//     console.log("target", new FormData(e.target));
-//     const formEntries = Object.fromEntries(new FormData(e.target).entries());
-//     console.log("form entries", formEntries);
-//     handleSubmit(formEntries);
-//   }}
-//   onChange={(e) => {
-//     const element = e.target;
-//     if (element.type == "text") {
-//       if (!element.style.minWidth) {
-//         element.style.minWidth = "200px";
-//         element.style.maxWidth = "80vw";
-//       }
-//       element.style.width = element.value.length + "ch";
-//     }
-//   }}
-// >
-//   <div>
-//     {/* Titel, udgivelsesår, udgiver */}
-//     <Form.Group as={Row} className="mb-3 justify-content-center">
-//       <Form.Select
-//         name="bookOrArticle"
-//         className="justify-content-center"
-//         style={{ width: "30vw" }}
-//         onChange={(e) => {
-//           setShowBorA(e.target.value);
-//         }}
-//       >
-//         <option value="articles">Artikel</option>
-//         <option value="books">Bog</option>
-//       </Form.Select>
-//     </Form.Group>
-//     <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
-//       <Form.Label column sm={2}>
-//         Titel
-//       </Form.Label>
-//       <Col sm={3}>
-//         <Form.Control type="text" name="title" className="bg-light" placeholder="Titel" required />
-//       </Col>
-//     </Form.Group>
-
-//     <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
-//       <Form.Label column sm={2}>
-//         Udgivelsesår
-//       </Form.Label>
-//       <Col sm={3}>
-//         <Form.Control type="number" name="releaseYear" className="bg-light" placeholder="Årstal" required />
-//       </Col>
-//     </Form.Group>
-
-//     <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
-//       <Form.Label column sm={2}>
-//         Udgiver
-//       </Form.Label>
-//       <Col sm={3}>
-//         <Form.Control type="text" name="publisher" className="bg-light" placeholder="Navn på udgiver" required />
-//       </Col>
-//     </Form.Group>
-//   </div>
-
-//   <div>
-//     {authorField.map((field, index) => {
-//       console.log("author field", authorField);
-//       return (
-//         <div key={field}>
-//           <div>
-//             <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
-//               <Form.Label column sm={2}>
-//                 Forfatter {index + 1}:
-//               </Form.Label>
-//               <Col sm={3}>
-//                 <Form.Control type="text" name={"firstName" + index} className="bg-light" placeholder="Fornavn" required />
-//               </Col>
-//               <Col sm={3}>
-//                 <Form.Control type="text" name={"lastName" + index} className="bg-light" placeholder="Efternavn" required />
-//               </Col>
-//             </Form.Group>
-//           </div>
-//         </div>
-//       );
-//     })}
-//   </div>
-
-//   <div className="container">
-//     <div className="row">
-//       <div className="p-2 col-sm d-flex justify-content-center space-between">
-//         <Button
-//           onClick={() => {
-//             setAuthorField([...authorField, authorField.length]);
-//           }}
-//           variant="outline-secondary"
-//           className="mx-2"
-//         >
-//           Tilføj ny forfatter
-//         </Button>
-//         <Button
-//           onClick={() => {
-//             const newField = [...authorField];
-//             if (newField.length > 1) {
-//               newField.pop();
-//               setAuthorField(newField);
-//             }
-//           }}
-//           variant="outline-secondary"
-//           className="mx-2"
-//         >
-//           Fjern seneste forfatter
-//         </Button>
-//       </div>
-//     </div>
-//   </div>
-
-//   {/* Link til artikel */}
-//   <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
-//     <Form.Label column sm={2}>
-//       Link til læsning/køb
-//     </Form.Label>
-//     <Col sm={3}>
-//       <Form.Control type="text" name="link" className="bg-light" placeholder="Link" defaultValue={formData.link || ""} />
-//     </Col>
-//   </Form.Group>
-
-//   <Form.Group as={Row} className="mb-3 justify-content-center">
-//     <Form.Label column sm={5}>
-//       Betalt adgang?
-//       <select
-//         defaultValue={formData.pay || ""}
-//         name=""
-//         id=""
-//         onChange={(e) => {
-//           setIsPay(e.target.value === "true");
-//         }}
-//       >
-//         <option value="false">Gratis</option>
-//         <option value="true">Betalt</option>
-//       </select>
-//     </Form.Label>
-//   </Form.Group>
-
-//   <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupText">
-//     <Form.Label column sm={1}>
-//       Kort resume
-//     </Form.Label>
-//     <Col sm={4}>
-//       <Form.Control as="textarea" className="bg-light" name="resume" rows={4} defaultValue={formData.resume || ""} />
-//     </Col>
-//   </Form.Group>
-
-//   <Form.Group className="mb-3 text-center" controlId="formBasicButton">
-//     <Button type="submit" variant="outline-secondary" className="mx-2">
-//       Opret artikel
-//     </Button>
-//   </Form.Group>
-// </Form>;

@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 // import tryCatch from "../components/TryCatch";
 import tryCatch from "../TryCatch";
 
-export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST" }) {
+export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle}) {
   //   const [changedPost, setChangedPost] = useState("");
   //   const [showBorA, setShowBorA] = useState("articles");
   //   const [isPay, setIsPay] = useState(false);
@@ -24,11 +24,11 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
   // if (methodToUse === "PATCH"){setAuthorField(formData.authors.map(author => {
   //   return {firstName: author.firstName, lastName: author.lastName}
   // }))}
-  console.log("author field", authorField);
-  console.log("form data", formData);
   console.log("methodToUse", methodToUse);
-
+  
   async function handleSubmit(form) {
+    console.log("author field", authorField);
+    console.log("form data",formData);
     // console.log("PROPS", props);
     console.log("form,", form);
     console.log("method to use,", methodToUse);
@@ -37,15 +37,17 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
       title: form.title,
       releaseYear: form.releaseYear,
       publisher: form.publisher,
-      authors: authorField.map((field) => {
-        return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
+      authors: authorField.map((field,index) => {
+        return { firstName: authorField[index].firstName, lastName: authorField[index].lastName };
       }),
       link: form.link,
       isPay: form.isPay,
       resume: form.resume,
     };
     console.log("new article", newArticleOrBook);
-    let path = methodToUse === "POST" ? form.bookOrArticle : `${form.bookOrArticle}/${formData._id}`;
+    let path = form.bookOrArticle;
+    if (methodToUse === "PATCH"){newArticleOrBook._id = formData._id}
+    // let path = methodToUse === "POST" ? form.bookOrArticle : `${form.bookOrArticle}/${formData._id}`;
     console.log("path", path);
     const response = await tryCatch(path, {
       method: methodToUse,
@@ -56,13 +58,13 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
     });
     console.log(response);
     if (response) {
-      newSubmit.setChangedPost(response);
+      newSubmit(response)
     }
   }
 
   return (
     <div className="mt-4">
-      <h2 className="text-center">Tilføj bog eller artikel</h2>
+      <h2 className="text-center">{methodToUse === "POST" ? "Tilføj bog eller artikel" : "Rediger"}</h2>
       <Form
         style={{
           display: "flex",
@@ -93,11 +95,12 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
           {/* Titel, udgivelsesår, udgiver */}
           <Form.Group as={Row} className="mb-3 justify-content-center">
             <Form.Select
-              defaultValue={formData.showBorA}
+              defaultValue={bookOrArticle}
               name="bookOrArticle"
               className="justify-content-center"
               style={{ width: "30vw" }}
               onChange={(e) => {
+                console.log("default value", bookOrArticle);
                 setFormCreateType(e.target.value);
               }}
             >
@@ -166,16 +169,15 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                           const id = Number(e.target.id);
                           console.log("ID", id);
                           const newField = authorField.filter((entry) => {
-                            console.log("entry.placement", entry);
+                            // console.log("entry.placement", entry);
                             return entry.placement !== id;
                           });
                           newField.forEach((entry, index) => {
-                            console.log("index", index);
+                            // console.log("index", index);
                             entry.placement = index;
                           });
-                          // const newField = id > 0 ? [...authorField].splice([id - 1], [id]) : [...authorField].splice([id], [id+1]);
-                          console.log("newField", newField);
-                          console.log("newField length", newField.length);
+                          // console.log("newField", newField);
+                          // console.log("newField length", newField.length);
                           if (newField.length !== 0) {
                             // newField.pop();
                             setAuthorField(newField);
@@ -218,12 +220,12 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                 onClick={() => {
                   setAuthorField([...authorField, { placement: authorField.length }]);
                 }}
-                variant="outline-secondary"
+                variant="primary"
                 className="mx-2"
               >
                 Tilføj ny forfatter
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => {
                   const newField = [...authorField];
                   if (newField.length > 1) {
@@ -235,7 +237,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                 className="mx-2"
               >
                 Fjern seneste forfatter
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

@@ -1,23 +1,12 @@
-import { useState, useEffect } from "react";
-import tryCatch from "./TryCatch";
+import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-export default function FetchComponent() {
-  const [data, setData] = useState(null);
+export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await tryCatch("booking");
-      if (response) {
-        setData(response);
-      }
-    };
-
-    fetchData();
-  }, []);
+  console.log("bookings:", bookings);
 
   const formatDateTime = (dateTime) => {
     const options = {
@@ -26,23 +15,6 @@ export default function FetchComponent() {
       day: "numeric",
     };
     return new Date(dateTime).toLocaleString("da-DK", options);
-  };
-
-  const fetchDataAgain = async () => {
-    try {
-      const response = await fetch("http://localhost:3333/booking", {
-        method: "GET",
-      });
-
-      if (response.ok) {
-        const data = await response.json(); // Parse response body as JSON
-        setData(data); // Update state with fetched data
-      } else {
-        console.error("Failed to fetch data.");
-      }
-    } catch (error) {
-      console.error("Error occurred while fetching data:", error);
-    }
   };
 
   const handleDelete = async () => {
@@ -58,8 +30,9 @@ export default function FetchComponent() {
       if (response.ok) {
         console.log(`Item with ID ${selectedId} deleted successfully.`);
         // Update the data after successful deletion (remove the deleted item from the list)
-        setData(data.filter((item) => item.id !== selectedId));
-        fetchDataAgain(); // Refetch the data after deletion
+        // bookings.filter((item) => item.id !== selectedId);
+        fetchBookings();
+        fetchData();
       } else {
         console.error("Failed to delete item.");
       }
@@ -76,18 +49,18 @@ export default function FetchComponent() {
   };
 
   const handleShowModal = (id) => {
-    const selectedItem = data.find((item) => item._id === id);
+    const selectedItem = bookings.find((item) => item._id === id);
     setSelectedId(id);
     setShowModal(true);
     setSelectedItem(selectedItem);
   };
 
   return (
-    <div>
-      {data ? (
+    <div className="text-center mb-5 p-4">
+      {bookings ? (
         <div>
-          <h2>Kunde Bookinger</h2>
-          <table className="table">
+          <h2 className="p-4">Kunde Bookinger</h2>
+          <table className="table table-striped table-bordered responsive">
             <thead>
               <tr>
                 <th>Navn</th>
@@ -100,7 +73,7 @@ export default function FetchComponent() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {bookings.map((item) => (
                 <tr key={item._id}>
                   <td>
                     {item.contactInfo.firstName} {item.contactInfo.lastName}{" "}
@@ -111,7 +84,9 @@ export default function FetchComponent() {
                   <td>{item.contactInfo.email}</td>
                   <td>{item.contactInfo.phoneNumber}</td>
                   <td>
-                    <Button onClick={() => handleShowModal(item._id)}>Delete</Button>
+                    <Button variant="danger" size="sm" onClick={() => handleShowModal(item._id)}>
+                      Slet
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -139,10 +114,10 @@ export default function FetchComponent() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleDelete}>
-            Yes
+            Ja
           </Button>
           <Button variant="secondary" onClick={handleNo}>
-            No
+            Nej
           </Button>
         </Modal.Footer>
       </Modal>
