@@ -13,7 +13,9 @@ export default function FetchComponent(prop) {
         }
         const result = await response.json();
         console.log(result);
-        const body = <div dangerouslySetInnerHTML={{ __html: result.body }} />;
+        const body = (
+          <div style={{ display: "flex", flexFlow: "wrap", alignItems: "baseline", justifyContent: "flex-start", padding: "5%", color: "black" }} dangerouslySetInnerHTML={{ __html: result.body }} />
+        );
         setData(body);
       } catch (error) {
         console.error("Der opstod en fejl ved indlæsning af data:", error);
@@ -24,7 +26,7 @@ export default function FetchComponent(prop) {
   }, [prop]); // Dependency that decides how many times the effect runs
 
   return (
-    <div>
+    <div style={{ margin: "2%" }}>
       {data ? (
         <div>{data}</div>
       ) : (

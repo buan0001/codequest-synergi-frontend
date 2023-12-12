@@ -9,7 +9,7 @@ import logo from "../assets/synergi-hrm logo.png";
 export default function Header() {
   // const { loggedIn } = useAuth();
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="bg-body-tertiary sticky-top" style={{ boxShadow: "1px 1px 10px 5px rgb(182 185 189)" }}>
       <Container className="ms-0 mw-100">
         <div className="nav align-self-center">
           {/* Synergi Logo */}
@@ -45,7 +45,7 @@ export default function Header() {
               {/* Om mig dropdown & Kontakt */}
               <NavDropdown title="Om mig" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/theory">Teoretisk ståsted</NavDropdown.Item>
-                <NavDropdown.Item href="/about">Om mig</NavDropdown.Item>
+                {/* <NavDropdown.Item href="/about">Om mig</NavDropdown.Item> */}
                 <NavDropdown.Item href="/cv">CV</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="/booksandarticles">Bøger og artikler</NavDropdown.Item>
