@@ -24,22 +24,40 @@ export default function Booking() {
     fetchBookings();
   }, []);
 
+  const fetchData = async (setDatesArray) => {
+    try {
+      const response = await fetch("http://localhost:3333/booking");
+      if (!response.ok) {
+        throw new Error("An error occurred during fetch");
+      }
+      const result = await response.json();
+
+      // Assuming result is an array of booking objects with 'date' property
+      const dates = result.map((booking) => booking.appointmentInfo.date);
+      const dateObjectsArray = dates.map((dateString) => new Date(dateString));
+
+      setDatesArray(dateObjectsArray);
+    } catch (error) {
+      console.error("Error fetching dates:", error);
+    }
+  };
+
   return (
     <>
       {loggedIn ? (
         <div className="row">
-          <div className="col-md-12">
-            <SubmitBookingComponent fetchBookings={fetchBookings} />
+          <div className="col-md-6">
+            <SubmitBookingComponent fetchBookings={fetchBookings} fetchData={fetchData}/>
           </div>
 
-          <div className="col-md-12">
-            <Bookings bookings={bookings} fetchBookings={fetchBookings} />
+          <div className="col-md-6">
+            <Bookings bookings={bookings} fetchBookings={fetchBookings}/>
           </div>
         </div>
       ) : (
         <div>
           <div>
-            <SubmitBookingComponent fetchBookings={bookings} />
+            <SubmitBookingComponent fetchBookings={bookings} fetchData={fetchData}/>
           </div>
         </div>
       )}

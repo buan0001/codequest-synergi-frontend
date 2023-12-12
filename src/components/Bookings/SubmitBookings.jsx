@@ -22,14 +22,14 @@ setDefaultLocale("da");
 
 // https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
 
-export default function Booking({ fetchBookings }) {
+export default function Booking({ fetchBookings, fetchData }) {
   const [datesArray, setDatesArray] = useState([]);
 
   const [startDate, setStartDate] = useState(null);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(setDatesArray);
+  }, [fetchData]);
 
   useEffect(() => {
     // finding the first available date for default startDate
@@ -70,23 +70,23 @@ export default function Booking({ fetchBookings }) {
     setStartDate(nextAvailableDate(new Date()));
   }, [datesArray]);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:3333/booking");
-      if (!response.ok) {
-        throw new Error("An error occurred during fetch");
-      }
-      const result = await response.json();
+//   const fetchData = async () => {
+//     try {
+//       const response = await fetch("http://localhost:3333/booking");
+//       if (!response.ok) {
+//         throw new Error("An error occurred during fetch");
+//       }
+//       const result = await response.json();
 
-      // Assuming result is an array of booking objects with 'date' property
-      const dates = result.map((booking) => booking.appointmentInfo.date);
-      const dateObjectsArray = dates.map((dateString) => new Date(dateString));
+//       // Assuming result is an array of booking objects with 'date' property
+//       const dates = result.map((booking) => booking.appointmentInfo.date);
+//       const dateObjectsArray = dates.map((dateString) => new Date(dateString));
 
-      setDatesArray(dateObjectsArray);
-    } catch (error) {
-      console.error("Error fetching dates:", error);
-    }
-  };
+//       setDatesArray(dateObjectsArray);
+//     } catch (error) {
+//       console.error("Error fetching dates:", error);
+//     }
+//   };
   console.log(datesArray);
 
   const [phoneNumber, setPhoneNumber] = useState("");
