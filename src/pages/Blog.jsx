@@ -134,8 +134,8 @@ export default function Blog() {
   }
 
   function getPresentableDate(dateString) {
-    console.log("date string",dateString);
-    const date = new Date(dateString)
+    console.log("date string", dateString);
+    const date = new Date(dateString);
     console.log(date.toLocaleDateString("da-DK"));
     console.log(date.toLocaleString("da-DK"));
   }
@@ -160,16 +160,16 @@ export default function Blog() {
         {posts.length > 0
           ? posts.map((entry, index) => {
               return (
-                <div key={index} className="border border-secondary bg-warning mx-auto">
-                  <div>Titel: {entry.title}</div>
-                  <div>
-                    Billede: <img src={entry.image} width={200} height={200}></img>
+                <div key={index} className="border border-secondary bg-warning mx-auto p-3">
+                  <div className="p-3 text-center">Titel: {entry.title}</div>
+                  <div className="d-flex p-3 justify-content-center">
+                    <img src={entry.image} width={200} height={200}></img>
                   </div>
-                  <div>Resume: {entry.resume}</div>
-                  <div>Body: {entry.body}</div>
+                  <div className="p-3">Resume: {entry.resume}</div>
+                  <div className="p-3">Body: {entry.body}</div>
                   {loggedIn ? (
                     <Button
-                      className="btn-danger"
+                      className="btn-danger p-2 mx-auto d-block"
                       id={entry._id}
                       onClick={(e) => {
                         deletePostClicked(e, entry.title);
@@ -181,12 +181,13 @@ export default function Blog() {
                     ""
                   )}
 
-                  <div>
+                  <div className="p-3">
                     {comments?.find((obj) => {
                       return obj._id === entry._id && obj.show === true;
                     }) ? (
-                      <div>
+                      <div className="p-3 ">
                         <Button
+                          className="btn-primary p-2 mx-auto d-block"
                           onClick={() => {
                             const newArray = [...comments];
                             console.log("new array", newArray);
@@ -240,7 +241,7 @@ export default function Blog() {
                                 </Modal.Body>
 
                                 <Modal.Footer>
-                                  <Button type="submit" variant="primary">
+                                  <Button type="submit" className="btn-success">
                                     Opret bruger
                                   </Button>
                                   <Button
@@ -262,9 +263,10 @@ export default function Blog() {
                             postComment(e.target, entry._id);
                           }}
                         >
-                          <div>
+                          <div className="mb-4 mt-5">
                             Er du ikke på listen?{" "}
                             <Button
+                              className="btn-success"
                               onClick={() => {
                                 setShowModal(!showModal);
                               }}
@@ -272,7 +274,7 @@ export default function Blog() {
                               Opret ny bruger her
                             </Button>
                           </div>
-                          <Form.Group>
+                          <Form.Group className="mb-4">
                             <Form.Label>Hvilken bruger skriver?</Form.Label>
                             <Form.Select name="user">
                               {userList instanceof Array ? (
@@ -291,9 +293,11 @@ export default function Blog() {
 
                           <Form.Group>
                             <Form.Label>Ny kommentar:</Form.Label>
-                            <Form.Control as="textarea" rows={3} name="body" />
+                            <Form.Control className="mb-4" as="textarea" rows={3} name="body" />
                           </Form.Group>
-                          <Button type="submit">Tilføj kommentar</Button>
+                          <Button className="btn-primary p-2 mx-auto d-block my-2" type="submit">
+                            Tilføj kommentar
+                          </Button>
                         </Form>
                         <div>
                           {comments.find((obj) => {
@@ -306,10 +310,12 @@ export default function Blog() {
                                 .comments.map((comment, index) => {
                                   return (
                                     <div key={index}>
-                                      <div>{comment.body} - {getPresentableDate(comment.createdAt)}</div>
+                                      <div>
+                                        {comment.body} - {getPresentableDate(comment.createdAt)}
+                                      </div>
                                       {loggedIn ? (
                                         <Button
-                                          className="btn-danger"
+                                          className="btn-danger p-2 mx-auto d-block my-2"
                                           onClick={() => {
                                             deleteCommentClicked(comment);
                                             console.log("clicked to delete comment with id", comment._id);
@@ -337,6 +343,7 @@ export default function Blog() {
                       </div>
                     ) : (
                       <Button
+                        className="btn-primary p-2 mx-auto d-block"
                         onClick={() => {
                           getComments(entry._id);
                         }}
