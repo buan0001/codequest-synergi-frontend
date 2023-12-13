@@ -1,6 +1,6 @@
-import FetchPages from "../components/InfoPages";
+import FetchPages from "../../components/InfoPages";
 import { useSelector } from "react-redux";
-import Editor from "../components/CKEditor";
+import Editor from "../../components/CKEditor";
 import { useState } from "react";
 
 export default function Coaching() {

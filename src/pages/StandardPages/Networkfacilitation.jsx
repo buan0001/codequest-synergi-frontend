@@ -1,11 +1,10 @@
-import FetchPages from "../components/InfoPages";
+import FetchPages from "../../components/InfoPages";
 import { useSelector } from "react-redux";
-import Editor from "../components/CKEditor";
+import Editor from "../../components/CKEditor";
 
-export default function InternalTrainingCourses() {
+export default function NetworkFacilitation() {
+  const prop = "netværksfacilitering";
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  const prop = "interne uddannelsesforløb";
-
   return loggedIn ? (
     <div>
       <Editor title={prop} />

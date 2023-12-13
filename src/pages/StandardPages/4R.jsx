@@ -1,10 +1,10 @@
-import FetchPages from "../components/InfoPages";
+import FetchPages from "../../components/InfoPages";
 import { useSelector } from "react-redux";
-import Editor from "../components/CKEditor";
+import Editor from "../../components/CKEditor";
 
-export default function ManagementDevelopment() {
+export default function FourR() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  const prop = "ledelsesudvikling";
+  const prop = "4R ledelsesudvikling";
   return loggedIn ? (
     <div>
       <Editor title={prop} />

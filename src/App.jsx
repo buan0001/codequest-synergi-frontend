@@ -14,7 +14,6 @@ import Footer from "./components/Footer";
 import StandardPage from "./pages/StandardPage";
 import Blog from "./pages/Blog";
 import "./App.css";
-// import calendar from "./pages/calendar";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
