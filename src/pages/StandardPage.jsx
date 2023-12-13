@@ -2,6 +2,7 @@ import InfoPages from "../components/InfoPages";
 import { useSelector } from "react-redux";
 import Editor from "../components/CKEditor";
 import { useState } from "react";
+import { Button } from "react-bootstrap";
 
 export default function Coaching(prop) {
   // console.log(prop);
@@ -15,13 +16,13 @@ export default function Coaching(prop) {
   }
   return loggedIn ? (
     <div>
-      <button
+      <Button
         onClick={() => {
           handleEditor();
         }}
       >
         Toggle editor
-      </button>
+      </Button>
       {showEditor ? <Editor title={title} /> : <div></div>}
       <div className="p-4">
         <InfoPages title={title} />
