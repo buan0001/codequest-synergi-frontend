@@ -1,10 +1,12 @@
-import FetchPages from "../components/InfoPages";
+// import { CVImage } from "../assets/CVImage";
+import FetchPages from "../../components/InfoPages";
 import { useSelector } from "react-redux";
-import Editor from "../components/CKEditor";
+import Editor from "../../components/CKEditor";
 
-export default function Theory() {
+export default function CV() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  const prop = "ståsted";
+  console.log("login boolean:", loggedIn);
+  const prop = "cv";
   return loggedIn ? (
     <div>
       <Editor title={prop} />

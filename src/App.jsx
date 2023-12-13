@@ -14,7 +14,6 @@ import Footer from "./components/Footer";
 import StandardPage from "./pages/StandardPage";
 import Blog from "./pages/Blog";
 import "./App.css";
-// import calendar from "./pages/calendar";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,7 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
-    <div className="d-flex flex-column bg-gradient opacity-sm-100" style={{ minHeight: "100vh", maxWidth: "100vw", backgroundColor: "#f3f3f3" }}>
+    <div className="d-flex flex-column bg-gradient opacity-sm-100" style={{ minHeight: "100vh", maxWidth: "100vw", backgroundColor: "#dfd3c3" }}>
       <Header /> {/* Navbar */}
       <div style={{ marginLeft: "10%", marginRight: "10%", backgroundColor: "white", boxShadow: "1px 1px 20px 10px rgb(182 185 189)" }}>
         <div style={{ margin: "5%", backgroundColor: "#8dc6ff" }}>

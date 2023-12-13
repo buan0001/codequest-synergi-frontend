@@ -1,12 +1,10 @@
-// import { CVImage } from "../assets/CVImage";
-import FetchPages from "../components/InfoPages";
+import FetchPages from "../../components/InfoPages";
 import { useSelector } from "react-redux";
-import Editor from "../components/CKEditor";
+import Editor from "../../components/CKEditor";
 
-export default function CV() {
+export default function ManagementDevelopment() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  console.log("login boolean:", loggedIn);
-  const prop = "cv";
+  const prop = "ledelsesudvikling";
   return loggedIn ? (
     <div>
       <Editor title={prop} />

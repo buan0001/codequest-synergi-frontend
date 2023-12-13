@@ -1,6 +1,6 @@
-import FetchPages from "../components/InfoPages";
+import FetchPages from "../../components/InfoPages";
 import { useSelector } from "react-redux";
-import Editor from "../components/CKEditor";
+import Editor from "../../components/CKEditor";
 
 export default function Kunder() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
