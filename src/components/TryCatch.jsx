@@ -1,32 +1,32 @@
-export default async function tryCatch(path, query) {
-  // PATH EXAMPLE:
-  // "pages", "articles"
-  // WITH SPECIFIC ID:
-  // "pages/<id>", "blog/<id>"
-  // Query can be empty or filled. Leave it empty for get requests, otherwise fill. Post example:
-  //   {method: "POST",
-  //   body: JSON.stringify(newArticleOrBook),
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // }
-  const host = "http://localhost:3333/";
+// import "dotenv/config"
 
-  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  // /////////////////// COULD IMPLEMENT THIS TO SAVE SOME CODE EVERY TIME ITS CALLED //////////////////////// 
-  // const options = query ? {body: JSON.stringify(newArticleOrBook),
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   }} : {method: "GET"}
+export default async function tryCatch(path, method, body ) {
+  const host = "https://codequest-synergi-backend.azurewebsites.net/";
+  // const host = "http://localhost:3333/";
+  // const host = import.meta.env.REACT_APP_ONLINE_SERVICE || "http://localhost:3333/";
+
+  const options = {};
+  if (method) {
+    options.method = method;
+  }
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+  if (options.body) {
+    options.headers = {
+      "Content-Type": "application/json",
+    };
+  }
 
   try {
-    console.log(host + path, query);
-    //   const response = await fetch(`${host}${path}`);
-    const response = await fetch(host + path, query);
+    // console.log(host + path, options);
+    const response = options.method ? await fetch(host + path, options) : await fetch(host + path);
+    console.log("response",response);
     if (!response.ok) {
-      throw new Error("Der opstod en fejl ved fetch");
+      console.error("Bad fetch:", response);
+      return response;
     }
-    return await response.json();
+    return response;
   } catch (error) {
     console.error("Der opstod en fejl ved indlæsning af data:", error);
     return error;
