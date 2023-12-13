@@ -27,7 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // "#dfd3c3"
 
-export default function App({basename}) {
+export default function App() {
   return (
     <div className="d-flex flex-column bg-gradient opacity-sm-100" style={{ minHeight: "100vh", maxWidth: "100vw", backgroundColor: "#dfd3c3" }}>
       <Header /> {/* Navbar */}
