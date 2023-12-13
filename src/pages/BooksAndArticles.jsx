@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
 // import Row from "react-bootstrap/Row";
-// import Col from "react-bootstrap/Col";
 // import Modal from "react-bootstrap/Modal";
 import tryCatch from "../components/TryCatch";
 import BookArticleForm from "../components/BooksArticles/BooksArticlesForm";
@@ -122,12 +121,16 @@ export default function FetchComponent() {
     <div className="container">
       <div className="row">
         <div className="p-2 col-sm d-flex justify-content-center space-between">
-          <Form.Select size="medium"
+          <Form.Select
             onChange={(e) => {
               setShowBorA(e.target.value);
             }}
+            size="sm"
+            style={{ width: "10vw" }}
+            className="p-3"
           >
-            <option value="articles">Artikler</option> <option value="books">Bøger</option>
+            <option value="articles">Artikler</option>
+            <option value="books">Bøger</option>
           </Form.Select>
           <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
             Sorter efter titel {getSortArrow("title")}
@@ -135,7 +138,7 @@ export default function FetchComponent() {
           <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
             Sorter efter udgivelsesår {getSortArrow("releaseYear")}
           </Button>
-          <Form.Control type="text" placeholder="Søg på bøger/artikler" onChange={(e) => setSearchTerm(e.target.value)}/>
+          <Form.Control type="text" placeholder="Søg på bøger/artikler" onChange={(e) => setSearchTerm(e.target.value)} />
         </div>
       </div>
     </div>
@@ -148,11 +151,7 @@ export default function FetchComponent() {
           {sortArticles(data)
             .filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
             .map((item) => (
-              <div
-                key={item._id}
-                className="container my-2"
-                style={{ border: "red 1px solid", borderRadius: "5px" }}
-              >
+              <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
                 {/* <div key={item._id} className="p-2 col-sm d-flex justify-content-center space-between"> */}
                 <div className="row gx-4 ">
                   <h2 className="col-9">{item.title}</h2>
@@ -211,15 +210,7 @@ export default function FetchComponent() {
                     );
                   })}
                 </div>
-                <div>
-                  {item.link ? (
-                    <a href={item.link}>
-                      Link til {showBorA == "books" ? "bogen" : "artiklen"}
-                    </a>
-                  ) : (
-                    ""
-                  )}
-                </div>
+                <div>{item.link ? <a href={item.link}>Link til {showBorA == "books" ? "bogen" : "artiklen"}</a> : ""}</div>
 
                 {/* pay skal laves om */}
                 <p>
