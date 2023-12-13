@@ -59,8 +59,10 @@ export default function Blog() {
       const response = await tryCatch("blog/" + blogId, { method: "DELETE" });
       console.log("delete response", response);
       if (response) {
+        SuccessMessage("Opslag slettet")
         setPostChanged(response);
       }
+      else {ErrorMessage("Kunne ikke slette, prøv igen senere")}
     }
   }
 
@@ -82,9 +84,11 @@ export default function Blog() {
       },
     });
     if (response) {
+      SuccessMessage("Bruger oprettet!")
       setUserListChanged(response);
       setShowCreateUserModal(false);
     }
+    else {ErrorMessage("Fejl ved oprettelse")}
   }
 
   async function getComments(postID) {
@@ -110,8 +114,10 @@ export default function Blog() {
       const response = await tryCatch("comments/" + comment._id, { method: "DELETE" });
       console.log("delete response", response);
       if (response) {
+        SuccessMessage("Kommentar slettet")
         getComments(comment.postID);
       }
+      else {ErrorMessage("Kunne ikke slette kommentar, prøv igen senere")}
     }
   }
 
