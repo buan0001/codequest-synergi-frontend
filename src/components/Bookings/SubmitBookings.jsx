@@ -70,23 +70,23 @@ export default function Booking({ fetchBookings, fetchData }) {
     setStartDate(nextAvailableDate(new Date()));
   }, [datesArray]);
 
-//   const fetchData = async () => {
-//     try {
-//       const response = await fetch("http://localhost:3333/booking");
-//       if (!response.ok) {
-//         throw new Error("An error occurred during fetch");
-//       }
-//       const result = await response.json();
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:3333/booking");
+  //       if (!response.ok) {
+  //         throw new Error("An error occurred during fetch");
+  //       }
+  //       const result = await response.json();
 
-//       // Assuming result is an array of booking objects with 'date' property
-//       const dates = result.map((booking) => booking.appointmentInfo.date);
-//       const dateObjectsArray = dates.map((dateString) => new Date(dateString));
+  //       // Assuming result is an array of booking objects with 'date' property
+  //       const dates = result.map((booking) => booking.appointmentInfo.date);
+  //       const dateObjectsArray = dates.map((dateString) => new Date(dateString));
 
-//       setDatesArray(dateObjectsArray);
-//     } catch (error) {
-//       console.error("Error fetching dates:", error);
-//     }
-//   };
+  //       setDatesArray(dateObjectsArray);
+  //     } catch (error) {
+  //       console.error("Error fetching dates:", error);
+  //     }
+  //   };
   console.log(datesArray);
 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -320,7 +320,7 @@ export default function Booking({ fetchBookings, fetchData }) {
         </Form.Group>
 
         <Form.Group className="text-center mb-5 p-4" controlId="formBasicButton">
-          <Button variant="primary" type="submit" value="book">
+          <Button className="btn-lg" variant="primary" type="submit" value="book">
             Book
           </Button>
         </Form.Group>

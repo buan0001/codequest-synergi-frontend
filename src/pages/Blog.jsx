@@ -14,7 +14,7 @@ import BlogUserComments from "../components/Blog/BlogUserComments";
 export default function Blog() {
   const [userListChanged, setUserListChanged] = useState();
   const [postChanged, setPostChanged] = useState();
-  const [userComments, setUserComments] = useState()
+  const [userComments, setUserComments] = useState();
   // const [commentsChanged, setCommentsChanged] = useState();
 
   const [comments, setComments] = useState([]);
@@ -23,7 +23,7 @@ export default function Blog() {
   //   const [showComments, setShowComments] = useState([]);
   const [userList, setUserList] = useState([]);
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
-  const [showUserCommentsModal, setShowUserCommentsModal] = useState(false)
+  const [showUserCommentsModal, setShowUserCommentsModal] = useState(false);
 
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
@@ -101,7 +101,6 @@ export default function Blog() {
       } else {
         setComments([...comments, { _id: postID, comments: response, show: true }]);
       }
-
     }
   }
 
@@ -146,8 +145,6 @@ export default function Blog() {
 
     return date;
   }
-
-
 
   return (
     <div>
@@ -199,12 +196,11 @@ export default function Blog() {
                           className="btn-primary p-2 mx-auto d-block"
                           onClick={() => {
                             const newArray = [...comments];
-          
+
                             newArray.find((obj) => {
-                
                               return obj._id === entry._id;
                             }).show = false;
-                    
+
                             setComments(newArray);
                           }}
                         >
@@ -318,7 +314,7 @@ export default function Blog() {
                                 })
                                 .comments.map((comment, index) => {
                                   return (
-                                    <div key={index}>
+                                    <div key={index} className="border border-dark p-3 my-3">
                                       <div>
                                         {comment.body} - {getPresentableDate(comment.createdAt)}
                                       </div>
@@ -329,12 +325,14 @@ export default function Blog() {
                                         onClick={async () => {
                                           const response = await tryCatch("users/comments/" + comment.userID._id);
                                           if (response) {
-                                            response.userName = comment.userID.userName
+                                            response.userName = comment.userID.userName;
                                             // Make the dates reader friendly
-                                            response.forEach(post => {post.comments.forEach((comment) => comment.createdAt = getPresentableDate(comment.createdAt)); })
-                                            console.log("getting comments from one user",response);
+                                            response.forEach((post) => {
+                                              post.comments.forEach((comment) => (comment.createdAt = getPresentableDate(comment.createdAt)));
+                                            });
+                                            console.log("getting comments from one user", response);
                                             setShowUserCommentsModal(true);
-                                            setUserComments(response)
+                                            setUserComments(response);
                                           }
                                         }}
                                       >
@@ -345,7 +343,6 @@ export default function Blog() {
                                           className="btn-danger p-2 mx-auto d-block my-2"
                                           onClick={() => {
                                             deleteCommentClicked(comment);
-                                            
                                           }}
                                         >
                                           Slet kommentar
