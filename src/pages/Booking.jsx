@@ -49,11 +49,11 @@ export default function Booking() {
     <>
       {loggedIn ? (
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-12">
             <SubmitBookingComponent fetchBookings={fetchBookings} fetchData={fetchData} />
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-12">
             <Bookings bookings={bookings} fetchBookings={fetchBookings} />
           </div>
         </div>
