@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-// import SuccessMessage from "../components/SuccessMessage";
-// import ErrorMessage from "../components/ErrorMessage";
+import SuccessMessage from "../components/SuccessMessage";
+import ErrorMessage from "../components/ErrorMessage";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
@@ -31,8 +31,8 @@ export default function Blog() {
     async function fetchPosts() {
       const response = await tryCatch("blog");
       console.log("GETTING POSTS", response);
-      if (response) {
-        setPosts(response);
+      if (response.ok) {
+        setPosts(await response.json());
       }
     }
 
@@ -41,10 +41,11 @@ export default function Blog() {
 
   useEffect(() => {
     async function fetchUsers() {
-      const response = await tryCatch("users/" + loggedIn);
+      const logInFailSafe = loggedIn || false
+      const response = await tryCatch("users/" + logInFailSafe);
       console.log("GETTING USERS", response);
       if (response) {
-        setUserList(response);
+        setUserList(await response.json());
       }
     }
 
@@ -56,11 +57,11 @@ export default function Blog() {
     console.log("id to delete", blogId);
     const check = confirm(`Vil du virkelig slette opslaget ${title}?`);
     if (check) {
-      const response = await tryCatch("blog/" + blogId, { method: "DELETE" });
+      const response = await tryCatch("blog/" + blogId,  "DELETE" );
       console.log("delete response", response);
-      if (response) {
+      if (response.ok) {
         SuccessMessage("Opslag slettet")
-        setPostChanged(response);
+        setPostChanged(await response.json());
       }
       else {ErrorMessage("Kunne ikke slette, prøv igen senere")}
     }
@@ -76,16 +77,10 @@ export default function Blog() {
       newUser.admin = false;
     }
     console.log("creating user", newUser);
-    const response = await tryCatch("users", {
-      method: "POST",
-      body: JSON.stringify(newUser),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response) {
+    const response = await tryCatch("users", "POST", newUser );
+    if (response.ok) {
       SuccessMessage("Bruger oprettet!")
-      setUserListChanged(response);
+      setUserListChanged(true);
       setShowCreateUserModal(false);
     }
     else {ErrorMessage("Fejl ved oprettelse")}
@@ -93,17 +88,18 @@ export default function Blog() {
 
   async function getComments(postID) {
     const response = await tryCatch("comments/" + postID);
-    console.log("GETTING COMMENTS", response);
-    if (response) {
+    if (response.ok) {
+      const result = await response.json()
+      console.log("GETTING COMMENTS", result);
       let existingEntry = comments?.find((post) => {
         return post._id === postID;
       });
       if (existingEntry) {
-        existingEntry.comments = response;
+        existingEntry.comments = result;
         existingEntry.show = true;
         setComments([...comments]);
       } else {
-        setComments([...comments, { _id: postID, comments: response, show: true }]);
+        setComments([...comments, { _id: postID, comments: result, show: true }]);
       }
     }
   }
@@ -111,9 +107,9 @@ export default function Blog() {
   async function deleteCommentClicked(comment) {
     const check = confirm(`Vil du virkelig slette kommentaren skrevet af ${comment.userID.userName}?`);
     if (check) {
-      const response = await tryCatch("comments/" + comment._id, { method: "DELETE" });
+      const response = await tryCatch("comments/" + comment._id,  "DELETE" );
       console.log("delete response", response);
-      if (response) {
+      if (response.ok) {
         SuccessMessage("Kommentar slettet")
         getComments(comment.postID);
       }
@@ -128,14 +124,8 @@ export default function Blog() {
       postID: postId,
     };
     console.log("new comment", newComment);
-    const response = await tryCatch("comments", {
-      method: "POST",
-      body: JSON.stringify(newComment),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response) {
+    const response = await tryCatch("comments", "POST", newComment );
+    if (response.ok) {
       getComments(postId);
     }
   }
@@ -330,15 +320,16 @@ export default function Blog() {
                                         onMouseOver={(e) => (e.target.style.cursor = "pointer")}
                                         onClick={async () => {
                                           const response = await tryCatch("users/comments/" + comment.userID._id);
-                                          if (response) {
-                                            response.userName = comment.userID.userName;
+                                          if (response.ok) {
+                                            const result = await response.json()
+                                            result.userName = comment.userID.userName;
                                             // Make the dates reader friendly
-                                            response.forEach((post) => {
+                                            result.forEach((post) => {
                                               post.comments.forEach((comment) => (comment.createdAt = getPresentableDate(comment.createdAt)));
                                             });
-                                            console.log("getting comments from one user", response);
+                                            console.log("getting comments from one user", result);
                                             setShowUserCommentsModal(true);
-                                            setUserComments(response);
+                                            setUserComments(result);
                                           }
                                         }}
                                       >

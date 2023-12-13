@@ -15,15 +15,11 @@ export default function BlogForm({ updatePosts }) {
     };
 
     console.log("new post", newPost);
-    const response = await tryCatch("blog", {
-      method: "POST",
-      body: JSON.stringify(newPost),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await tryCatch("blog", "POST", newPost);
     console.log("response", response);
-    if (response){updatePosts(response)}
+    if (response) {
+      updatePosts(response);
+    }
   }
 
   return (
