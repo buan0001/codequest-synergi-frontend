@@ -6,6 +6,7 @@ import LogoutButton from "./Logout";
 import logo from "../assets/synergi-hrm logo.png";
 
 
+
 // Funktionen hedder Header selvom det er en Navbar, pga. navngivningskonflikt med Navbar i React Bootstrap.
 export default function Header() {
   // const { loggedIn } = useAuth();
@@ -15,8 +16,8 @@ export default function Header() {
       <Container className="ms-0 mw-100">
         <div className="nav align-self-center">
           {/* Synergi Logo */}
-          <Navbar.Brand href="/" className="align-self-center">
-            <img src={logo} href="/" alt="logo" width="118" height="75" />
+          <Navbar.Brand href={baseName+"/"} className="align-self-center">
+            <img src={logo} href={baseName+"/"} alt="logo" width="118" height="75" />
             Synergi HRM
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -24,7 +25,7 @@ export default function Header() {
           {/* Startside, Kalender. KALENDER SKAL MÅSKE RYKKES? !!! */}
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
-              <Nav.Link href="/">Startside</Nav.Link>
+              <Nav.Link href={baseName+"/"}>Startside</Nav.Link>
               <Nav.Link href={baseName + "/booking"}>Booking</Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -33,8 +34,8 @@ export default function Header() {
         <div>
           <Navbar.Collapse>
             <Nav>
-              <Nav.Link href={baseName+"/blog"}>Blog</Nav.Link>
-              <Nav.Link href={baseName+"/kunder"}>Kunder</Nav.Link>
+              <Nav.Link href={baseName + "/blog"}>Blog</Nav.Link>
+              <Nav.Link href={baseName + "/kunder"}>Kunder</Nav.Link>
               <NavDropdown title="Konsulentydelser" id="basic-nav-dropdown">
                 <NavDropdown.Item href={baseName + "/proceskonsultation"}>Proceskonsultation</NavDropdown.Item>
                 <NavDropdown.Item href={baseName + "/anerkendende coaching"}>Coaching af enkeltpersoner eller team</NavDropdown.Item>
@@ -46,12 +47,12 @@ export default function Header() {
               </NavDropdown>
               {/* Om mig dropdown & Kontakt */}
               <NavDropdown title="Om mig" id="basic-nav-dropdown">
-                <NavDropdown.Item href={baseName+"/theory"}>Teoretisk ståsted</NavDropdown.Item>
-                <NavDropdown.Item href={baseName+"/cv"}>CV</NavDropdown.Item>
+                <NavDropdown.Item href={baseName + "/theory"}>Teoretisk ståsted</NavDropdown.Item>
+                <NavDropdown.Item href={baseName + "/cv"}>CV</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href={baseName+"/booksandarticles"}>Bøger og artikler</NavDropdown.Item>
+                <NavDropdown.Item href={baseName + "/booksandarticles"}>Bøger og artikler</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href={baseName+"/contact"} eventKey="link-1">
+              <Nav.Link href={baseName + "/contact"} eventKey="link-1">
                 Kontakt
               </Nav.Link>
             </Nav>
