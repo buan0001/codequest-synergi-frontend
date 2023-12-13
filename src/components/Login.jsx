@@ -17,10 +17,7 @@ export default function Login() {
     dispatch(login({ username, password }));
   };
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: "80vh" }}
-    >
+    <div className="d-flex justify-content-center align-items-center" style={{ height: "80vh" }}>
       <Col md={6}>
         <Form>
           <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
@@ -34,16 +31,16 @@ export default function Login() {
                 onChange={(event) => {
                   setUsername(event.target.value);
                 }}
-                onKeyDown={(e) => {if (e.code === "Enter"){console.log("enter pressed"),handleLogin()}}}
+                onKeyDown={(e) => {
+                  if (e.code === "Enter") {
+                    console.log("enter pressed"), handleLogin();
+                  }
+                }}
               />
             </Col>
           </Form.Group>
 
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formHorizontalPassword"
-          >
+          <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
             <Form.Label column sm={3}>
               Password
             </Form.Label>
@@ -54,13 +51,15 @@ export default function Login() {
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}
-                onKeyDown={(e) => {if (e.code === "Enter"){console.log("enter pressed"), handleLogin()}}}
+                onKeyDown={(e) => {
+                  if (e.code === "Enter") {
+                    console.log("enter pressed"), handleLogin();
+                  }
+                }}
               />
             </Col>
           </Form.Group>
-          <Form.Group
-            as={Row}
-            className="mb-3">
+          <Form.Group as={Row} className="mb-3">
             <Col sm={{ span: 9, offset: 3 }}>
               <Button
                 type="button"

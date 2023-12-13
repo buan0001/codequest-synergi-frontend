@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import SuccessMessage from "../components/SuccessMessage";
-import ErrorMessage from "../components/ErrorMessage";
+// import SuccessMessage from "../components/SuccessMessage";
+// import ErrorMessage from "../components/ErrorMessage";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
@@ -172,7 +172,7 @@ export default function Blog() {
         {posts.length > 0
           ? posts.map((entry, index) => {
               return (
-                <div key={index} className="border border-secondary bg-warning mx-auto p-3">
+                <div key={index} className="border border-secondary bg-gradient mx-3 p-3" style={{ backgroundColor: "#ffe79a" }}>
                   <div className="p-3 text-center">Titel: {entry.title}</div>
                   <div className="d-flex p-3 justify-content-center">
                     <img src={entry.image} width={200} height={200}></img>

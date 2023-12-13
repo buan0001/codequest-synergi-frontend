@@ -25,6 +25,8 @@ import "react-toastify/dist/ReactToastify.css";
 // import Processconsultation from "./pages/Processconsultation";
 // import InternalTrainingCourses from "./pages/InternalTrainingCourses";
 
+// "#dfd3c3"
+
 export default function App({basename}) {
   return (
     <div className="d-flex flex-column bg-gradient opacity-sm-100" style={{ minHeight: "100vh", maxWidth: "100vw", backgroundColor: "#dfd3c3" }}>
