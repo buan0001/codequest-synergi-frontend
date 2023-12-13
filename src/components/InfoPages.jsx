@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 export default function FetchComponent(prop) {
-  console.log(prop);
+  // console.log(prop);
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -12,7 +12,6 @@ export default function FetchComponent(prop) {
           throw new Error("Der opstod en fejl ved fetch");
         }
         const result = await response.json();
-        console.log(result);
         const body = (
           <div style={{ display: "flex", flexFlow: "wrap", alignItems: "baseline", justifyContent: "flex-start", padding: "5%", color: "black" }} dangerouslySetInnerHTML={{ __html: result.body }} />
         );
