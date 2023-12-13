@@ -30,7 +30,7 @@ export default function App() {
     <div className="d-flex flex-column bg-gradient opacity-sm-100" style={{ minHeight: "100vh", maxWidth: "100vw", backgroundColor: "#dfd3c3" }}>
       <Header /> {/* Navbar */}
       <div style={{ marginLeft: "10%", marginRight: "10%", backgroundColor: "white", boxShadow: "1px 1px 20px 10px rgb(182 185 189)" }}>
-        <div style={{ margin: "5%", backgroundColor: "#8dc6ff" }}>
+        <div style={{ margin: "5%", backgroundColor: "#febe7e" }}>
           <Routes>
             <Route path="/" element={<StandardPage title={"forside"} />}></Route> {/* Home page */}
             <Route path="/contact" element={<Contact />}></Route> {/* Contact page */}
