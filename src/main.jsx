@@ -7,10 +7,10 @@ import store from "./store";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-      <Provider store={store}>
-    <BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter basename="/codequest-synergi-frontend">
         <App />
-    </BrowserRouter>
-      </Provider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
