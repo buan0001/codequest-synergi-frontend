@@ -25,9 +25,11 @@ import "react-toastify/dist/ReactToastify.css";
 // import Processconsultation from "./pages/Processconsultation";
 // import InternalTrainingCourses from "./pages/InternalTrainingCourses";
 
+// "#dfd3c3"
+
 export default function App() {
   return (
-    <div className="d-flex flex-column bg-gradient opacity-sm-100" style={{ minHeight: "100vh", maxWidth: "100vw", backgroundColor: "#dfd3c3" }}>
+    <div className="d-flex flex-column bg-gradient opacity-sm-100" style={{ minHeight: "100vh", maxWidth: "100vw", backgroundColor: "#f3f3f3" }}>
       <Header /> {/* Navbar */}
       <div style={{ marginLeft: "10%", marginRight: "10%", backgroundColor: "white", boxShadow: "1px 1px 20px 10px rgb(182 185 189)" }}>
         <div style={{ margin: "5%", backgroundColor: "#8dc6ff" }}>
