@@ -5,10 +5,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 export default function BlogUserComments({ showBool, setBool, userInfo }) {
-  function someFunction() {
-    console.log("user info?", userInfo);
-    return false;
-  }
 
   return (
     <div>
@@ -66,13 +62,7 @@ export default function BlogUserComments({ showBool, setBool, userInfo }) {
           </Modal.Dialog>
         </Modal>
       ) : (
-        <Button
-          onClick={() => {
-            someFunction();
-          }}
-        >
-          KLIK MIG @@@@@@@@@@@
-        </Button>
+        <div>Ingen brugeroplysninger fundet, beklager</div>
       )}
     </div>
   );

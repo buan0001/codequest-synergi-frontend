@@ -163,12 +163,12 @@ export default function Blog() {
           ? posts.map((entry, index) => {
               return (
                 <div key={index} className="border border-secondary bg-gradient mx-3 p-3" style={{ backgroundColor: "#ffe79a" }}>
-                  <div className="p-3 text-center">Titel: {entry.title}</div>
+                  <h2 className="p-3 text-center">{entry.title}</h2>
                   <div className="d-flex p-3 justify-content-center">
                     <img src={entry.image} width={200} height={200}></img>
                   </div>
-                  <div className="p-3">Resume: {entry.resume}</div>
-                  <div className="p-3">Body: {entry.body}</div>
+                  <div className="p-3 text-break fs-4 fst-italic">{entry.resume}</div>
+                  <div className="p-3 text-break">{entry.body}</div>
                   {loggedIn ? (
                     <Button
                       className="btn-danger p-2 mx-auto d-block"
@@ -321,7 +321,7 @@ export default function Blog() {
                                         onClick={async () => {
                                           const response = await tryCatch("users/comments/" + comment.userID._id);
                                           if (response.ok) {
-                                            const result = await response.json()
+                                            const result = await response.json();
                                             result.userName = comment.userID.userName;
                                             // Make the dates reader friendly
                                             result.forEach((post) => {
