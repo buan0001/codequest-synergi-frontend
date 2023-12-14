@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import HTTPErrorHandling from "../HTTPErrorHandling";
 
-export default function DisplayBookings({ bookings, fetchBookings, fetchData }) {
+export default function DisplayBookings({ bookings, fetchBookings }) {
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -23,7 +23,6 @@ export default function DisplayBookings({ bookings, fetchBookings, fetchData }) 
       if (response.ok) {
         // Update the data after successful deletion (remove the deleted item from the list)
         fetchBookings();
-        fetchData();
       } else {
         console.error("Failed to delete item.");
       }

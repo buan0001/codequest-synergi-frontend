@@ -48,11 +48,19 @@ export default function Blog() {
 
   async function deletePostClicked(e, title) {
     const blogId = e.target.id;
+
+    // Confirm deletion with user
     const check = confirm(`Vil du virkelig slette opslaget ${title}?`);
+
     if (check) {
+      // Send DELETE request to server
       const response = await HTTPErrorHandling("blog/" + blogId, "DELETE");
+
       if (response.ok) {
+        // Display success message
         SuccessMessage("Opslag slettet");
+
+        // Update state with the deleted post
         setPostChanged(await response.json());
       }
     }
@@ -89,23 +97,15 @@ export default function Blog() {
         existingEntry.show = true;
         setComments([...comments]);
       } else {
-        setComments([
-          ...comments,
-          { _id: postID, comments: result, show: true },
-        ]);
+        setComments([...comments, { _id: postID, comments: result, show: true }]);
       }
     }
   }
 
   async function deleteCommentClicked(comment) {
-    const check = confirm(
-      `Vil du virkelig slette kommentaren skrevet af ${comment.userID.userName}?`
-    );
+    const check = confirm(`Vil du virkelig slette kommentaren skrevet af ${comment.userID.userName}?`);
     if (check) {
-      const response = await HTTPErrorHandling(
-        "comments/" + comment._id,
-        "DELETE"
-      );
+      const response = await HTTPErrorHandling("comments/" + comment._id, "DELETE");
       if (response.ok) {
         SuccessMessage("Kommentar slettet");
         getComments(comment.postID);
@@ -156,10 +156,7 @@ export default function Blog() {
       ) : (
         ""
       )}
-      <div
-        className="d-flex p-2 bd-highlight mx-auto"
-        style={{ border: "5px solid black" }}
-      >
+      <div className="d-flex p-2 bd-highlight mx-auto" style={{ border: "5px solid black" }}>
         {posts.length > 0
           ? posts.map((entry, index) => {
               return (
