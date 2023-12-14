@@ -87,12 +87,12 @@ export default function FetchComponent() {
     // setData(result);
   }
 
-  function editClicked(e) {
-    console.log("event id", e.target.id);
-    tryCatch(``);
-    // console.log("event",e.target.key);
-    // console.log("event",e.key);
-  }
+  // function editClicked(e) {
+  //   console.log("event id", e.target.id);
+  //   tryCatch(``);
+  //   // console.log("event",e.target.key);
+  //   // console.log("event",e.key);
+  // }
 
   const sortAndShowButtons = (
     <div className="container">

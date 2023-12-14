@@ -182,7 +182,7 @@ export default function Booking({ fetchBookings, fetchData }) {
 
     try {
       // Send the form data to your backend endpoint using fetch
-      const response = await tryCatch("booking", ["POST", updatedFormData]);
+      const response = await tryCatch("booking", "POST", updatedFormData);
       // const response = await fetch("http://localhost:3333/booking", {
       //   method: "POST",
       //   headers: {

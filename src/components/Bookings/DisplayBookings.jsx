@@ -20,7 +20,7 @@ export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
 
   const handleDelete = async () => {
     try {
-      const response = await tryCatch(`/booking/${selectedId}`,["DELETE"])
+      const response = await tryCatch(`/booking/${selectedId}`,"DELETE")
 
 
       if (response.ok) {
