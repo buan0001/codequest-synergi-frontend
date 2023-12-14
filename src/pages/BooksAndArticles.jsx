@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import HTTPErrorHandling from "../components/TryCatch";
+import HTTPErrorHandling from "../components/HTTPErrorHandling";
 import BooksArticlesForm from "../components/BooksArticles/BooksArticlesForm";
 import UpdateModal from "../components/BooksArticles/UpdateModal";
 
@@ -194,7 +194,13 @@ export default function FetchComponent() {
           {showModal ? (
             <UpdateModal showModal={showModal} showBorA={showBorA} setChangedPost={setChangedPost} setShowModal={setShowModal} formData={formData}></UpdateModal>
           ) : (
-            <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
               <Button
                 style={{ height: "80px", width: "30%", margin: "auto" }}
                 onClick={() => {
@@ -203,7 +209,7 @@ export default function FetchComponent() {
               >
                 Vis/skjul oprettelsesformular
               </Button>
-              {showForm ? <BooksArticlesForm formData={""} newSubmit={setChangedPost}></BooksArticlesForm> : ""}
+              {showForm ? <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm> : ""}
             </div>
           )}
 

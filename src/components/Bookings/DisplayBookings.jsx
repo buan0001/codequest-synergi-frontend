@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import HTTPErrorHandling from "../TryCatch";
+import HTTPErrorHandling from "../HTTPErrorHandling";
 
-export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
+export default function DisplayBookings({ bookings, fetchBookings, fetchData }) {
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -20,7 +20,10 @@ export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
 
   const handleDelete = async () => {
     try {
-      const response = await HTTPErrorHandling(`/booking/${selectedId}`, "DELETE");
+      const response = await HTTPErrorHandling(
+        `/booking/${selectedId}`,
+        "DELETE"
+      );
 
       if (response.ok) {
         console.log(`Item with ID ${selectedId} deleted successfully.`);
@@ -78,7 +81,11 @@ export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
                   <td>{item.contactInfo.email}</td>
                   <td>{item.contactInfo.phoneNumber}</td>
                   <td>
-                    <Button variant="danger" size="sm" onClick={() => handleShowModal(item._id)}>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleShowModal(item._id)}
+                    >
                       Slet
                     </Button>
                   </td>
@@ -101,7 +108,10 @@ export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
             <div>
               <p>Er du sikker på du vil slette denne booking?</p>
               <p>
-                {selectedItem.contactInfo.firstName} {selectedItem.contactInfo.lastName}, {selectedItem.appointmentInfo.service} d. {formatDateTime(selectedItem.appointmentInfo.date)}
+                {selectedItem.contactInfo.firstName}{" "}
+                {selectedItem.contactInfo.lastName},{" "}
+                {selectedItem.appointmentInfo.service} d.{" "}
+                {formatDateTime(selectedItem.appointmentInfo.date)}
               </p>
             </div>
           )}

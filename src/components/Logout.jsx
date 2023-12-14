@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logout } from "../features/LoginState";
 
-export default function LogoutButton() {
+export default function Logout() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
   const dispatch = useDispatch();
 

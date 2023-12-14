@@ -51,7 +51,9 @@ function Edit({ title, callUpdate }) {
             <div style={{ width: "85vw" }}>
               <CKEditor
                 editor={ClassicEditor}
-                config={{ toolbar: { removeItems: ["insertTable", "insertImage"] } }}
+                config={{
+                  toolbar: { removeItems: ["insertTable", "insertImage"] },
+                }}
                 onReady={async (editor) => {
                   await fetchPage(editor);
                 }}

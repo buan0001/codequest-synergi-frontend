@@ -16,14 +16,14 @@ import da from "date-fns/locale/da";
 // Components
 import errorMessage from "../ErrorMessage";
 import SuccessMessage from "../SuccessMessage";
-import HTTPErrorHandling from "../TryCatch";
+import HTTPErrorHandling from "../HTTPErrorHandling";
 
 registerLocale("da", da);
 setDefaultLocale("da");
 
 // https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
 
-export default function Booking({ fetchBookings, fetchData }) {
+export default function SubmitBookings({ fetchBookings, fetchData }) {
   const [datesArray, setDatesArray] = useState([]);
 
   const [startDate, setStartDate] = useState(null);
@@ -148,7 +148,11 @@ export default function Booking({ fetchBookings, fetchData }) {
 
     try {
       // Send the form data to your backend endpoint using fetch
-      const response = await HTTPErrorHandling("booking", "POST", updatedFormData);
+      const response = await HTTPErrorHandling(
+        "booking",
+        "POST",
+        updatedFormData
+      );
 
       const responseData = await response.json();
       console.log("Server response:", responseData);
@@ -190,7 +194,12 @@ export default function Booking({ fetchBookings, fetchData }) {
             Fornavn:
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="text" name="firstName" placeholder="Fornavn" required />
+            <Form.Control
+              type="text"
+              name="firstName"
+              placeholder="Fornavn"
+              required
+            />
           </Col>
         </Form.Group>
 
@@ -199,7 +208,12 @@ export default function Booking({ fetchBookings, fetchData }) {
             Efternavn:
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
+            <Form.Control
+              type="text"
+              name="lastName"
+              placeholder="Efternavn"
+              required
+            />
           </Col>
         </Form.Group>
 
@@ -208,7 +222,12 @@ export default function Booking({ fetchBookings, fetchData }) {
             Email
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="email" name="email" placeholder="Din E-mail" required />
+            <Form.Control
+              type="email"
+              name="email"
+              placeholder="Din E-mail"
+              required
+            />
           </Col>
         </Form.Group>
 
@@ -217,7 +236,14 @@ export default function Booking({ fetchBookings, fetchData }) {
             Tlf. Nummer
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" onChange={handlePhoneNumberChange} aria-describedby="phoneNumberError" required />
+            <Form.Control
+              type="number"
+              name="phoneNumber"
+              placeholder="Dit tlf. nummer"
+              onChange={handlePhoneNumberChange}
+              aria-describedby="phoneNumberError"
+              required
+            />
             {phoneNumberError && (
               <div id="phoneNumberError" className="form-text text-danger">
                 {phoneNumberError}
@@ -231,25 +257,46 @@ export default function Booking({ fetchBookings, fetchData }) {
             Vælg ydelse:
           </Form.Label>
           <Col sm={4}>
-            <Form.Select aria-label="Default select example" name="service" defaultValue="Vælg konsulent ydelse" required>
+            <Form.Select
+              aria-label="Default select example"
+              name="service"
+              defaultValue="Vælg konsulent ydelse"
+              required
+            >
               <option disabled>Vælg konsulent ydelse</option>
               <option value="Proceskonsultation">Proceskonsultation</option>
-              <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
+              <option value="Coaching af enkeltpersoner eller grupper">
+                Coaching af enkeltpersoner eller grupper
+              </option>
               <option value="Kreativ facilitering">Kreativ facilitering</option>
               <option value="Teamudvikling">Teamudvikling</option>
-              <option value="Facilitering af ledernetværk og træning">Facilitering af ledernetværk og træning</option>
+              <option value="Facilitering af ledernetværk og træning">
+                Facilitering af ledernetværk og træning
+              </option>
               <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
-              <option value="Interne skræddersyede uddannelses- og træningsforløb">Interne skræddersyede uddannelses- og træningsforløb</option>
+              <option value="Interne skræddersyede uddannelses- og træningsforløb">
+                Interne skræddersyede uddannelses- og træningsforløb
+              </option>
             </Form.Select>
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
+        <Form.Group
+          as={Row}
+          className="mb-3 justify-content-center"
+          controlId="exampleFormControlTextarea1"
+        >
           <Form.Label column sm={2}>
             Besked (valgfrit)
           </Form.Label>
           <Col sm={4}>
-            <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} />
+            <Form.Control
+              as="textarea"
+              className="bg-light"
+              name="message"
+              placeholder="Kort uddybning af grunden til du booker.."
+              rows={4}
+            />
           </Col>
         </Form.Group>
 
@@ -274,8 +321,16 @@ export default function Booking({ fetchBookings, fetchData }) {
           </Col>
         </Form.Group>
 
-        <Form.Group className="text-center mb-5 p-4" controlId="formBasicButton">
-          <Button className="btn-lg" variant="primary" type="submit" value="book">
+        <Form.Group
+          className="text-center mb-5 p-4"
+          controlId="formBasicButton"
+        >
+          <Button
+            className="btn-lg"
+            variant="primary"
+            type="submit"
+            value="book"
+          >
             Book
           </Button>
         </Form.Group>

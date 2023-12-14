@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import HTTPErrorHandling from "../TryCatch";
+import HTTPErrorHandling from "../HTTPErrorHandling";
 
 export default function BooksArticlesForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle }) {
   const [formCreateType, setFormCreateType] = useState("articles");
@@ -11,7 +11,11 @@ export default function BooksArticlesForm({ formData, newSubmit, methodToUse = "
     methodToUse === "POST"
       ? [{ placement: 0 }]
       : formData.authors.map((author, index) => {
-          return { firstName: author.firstName, lastName: author.lastName, placement: index };
+          return {
+            firstName: author.firstName,
+            lastName: author.lastName,
+            placement: index,
+          };
         })
   );
 
@@ -21,7 +25,10 @@ export default function BooksArticlesForm({ formData, newSubmit, methodToUse = "
       releaseYear: form.releaseYear,
       publisher: form.publisher,
       authors: authorField.map((field, index) => {
-        return { firstName: authorField[index].firstName, lastName: authorField[index].lastName };
+        return {
+          firstName: authorField[index].firstName,
+          lastName: authorField[index].lastName,
+        };
       }),
       link: form.link,
       isPay: form.isPay,
