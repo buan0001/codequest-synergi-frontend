@@ -38,6 +38,8 @@ og brug open in browser genvejen.
   press o + enter to open in browser
 ```
 
+For at tilgå administrator siden, gå til http://localhost:5173/codequest-synergi-frontend/admin/ og login. Både brugernavn og kodeord er "admin".
+
 Hvis du kører hjemmesiden lokalt, kommer siderne først frem, hvis backenden også kører.
 
 Link til backend repository:
