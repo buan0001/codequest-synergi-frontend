@@ -7,8 +7,6 @@ export default function DisplayBookings({ bookings, fetchBookings, fetchData }) 
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  console.log("bookings:", bookings);
-
   const formatDateTime = (dateTime) => {
     const options = {
       year: "numeric",
@@ -20,13 +18,9 @@ export default function DisplayBookings({ bookings, fetchBookings, fetchData }) 
 
   const handleDelete = async () => {
     try {
-      const response = await HTTPErrorHandling(
-        `/booking/${selectedId}`,
-        "DELETE"
-      );
+      const response = await HTTPErrorHandling(`/booking/${selectedId}`, "DELETE");
 
       if (response.ok) {
-        console.log(`Item with ID ${selectedId} deleted successfully.`);
         // Update the data after successful deletion (remove the deleted item from the list)
         fetchBookings();
         fetchData();
@@ -81,11 +75,7 @@ export default function DisplayBookings({ bookings, fetchBookings, fetchData }) 
                   <td>{item.contactInfo.email}</td>
                   <td>{item.contactInfo.phoneNumber}</td>
                   <td>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleShowModal(item._id)}
-                    >
+                    <Button variant="danger" size="sm" onClick={() => handleShowModal(item._id)}>
                       Slet
                     </Button>
                   </td>
@@ -108,10 +98,7 @@ export default function DisplayBookings({ bookings, fetchBookings, fetchData }) 
             <div>
               <p>Er du sikker på du vil slette denne booking?</p>
               <p>
-                {selectedItem.contactInfo.firstName}{" "}
-                {selectedItem.contactInfo.lastName},{" "}
-                {selectedItem.appointmentInfo.service} d.{" "}
-                {formatDateTime(selectedItem.appointmentInfo.date)}
+                {selectedItem.contactInfo.firstName} {selectedItem.contactInfo.lastName}, {selectedItem.appointmentInfo.service} d. {formatDateTime(selectedItem.appointmentInfo.date)}
               </p>
             </div>
           )}

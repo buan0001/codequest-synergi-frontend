@@ -21,8 +21,6 @@ import HTTPErrorHandling from "../HTTPErrorHandling";
 registerLocale("da", da);
 setDefaultLocale("da");
 
-// https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
-
 export default function SubmitBookings({ fetchBookings, fetchData }) {
   const [datesArray, setDatesArray] = useState([]);
 
@@ -53,7 +51,7 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
         }
       }
 
-      // chech if date is already booked
+      // Check if date is already booked
       const isBooked = datesArray.some((date) => {
         const BookedDate = new Date(date);
         return availableDay.toDateString() === BookedDate.toDateString();
@@ -63,16 +61,14 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
         return nextAvailableDate(availableDay);
       }
 
-      console.log("next available Day ", availableDay);
-
       return availableDay;
     }
 
     setStartDate(nextAvailableDate(new Date()));
   }, [datesArray]);
-  console.log(datesArray);
 
   const [phoneNumber, setPhoneNumber] = useState("");
+  console.log(phoneNumber);
   const [phoneNumberError, setPhoneNumberError] = useState("");
 
   const handlePhoneNumberChange = (event) => {
@@ -80,12 +76,11 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
     setPhoneNumber(value);
 
     // Validate phone number length (example: minLength = 8)
-    const minLength = 8;
-    if (value.length < minLength) {
-      setPhoneNumberError("Phone number should be at least 8 digits.");
+    const length = 8;
+    if (value.length != length) {
+      setPhoneNumberError("Telefonnummeret skal være 8 cifre.");
     } else {
       setPhoneNumberError(""); // Clear the error message if the input is valid
-      console.log(phoneNumber);
     }
   };
 
@@ -94,11 +89,11 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
 
     if (isNaN(parsedDate.getTime())) {
       console.error("Invalid date:", dateString);
-      return null; // Return null or handle the invalid date case accordingly
+      // Return null or handle the invalid date case accordingly
+      return null;
     }
     // Convert Date object to ISO date string
     const isoDateString = parsedDate.toISOString();
-    // console.log("ISO Date: " + isoDateString);
 
     return isoDateString;
   };
@@ -127,8 +122,6 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
       return; // Prevent form submission if there's an error
     }
 
-    console.log("startdate", startDate);
-
     const isoDate = parseDateString(startDate);
 
     // Get other form data
@@ -148,14 +141,9 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
 
     try {
       // Send the form data to your backend endpoint using fetch
-      const response = await HTTPErrorHandling(
-        "booking",
-        "POST",
-        updatedFormData
-      );
+      const response = await HTTPErrorHandling("booking", "POST", updatedFormData);
 
       const responseData = await response.json();
-      console.log("Server response:", responseData);
 
       if (responseData?.message?.includes("already exists")) {
         errorMessage("Dato'en var desværre optaget, venligst vælg en ny!");
@@ -173,8 +161,6 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
       console.error("Error:", error);
       errorMessage("Din booking blev ikke gennemført, prøv igen!");
     }
-
-    console.log("Form Data", updatedFormData);
   };
 
   return (
@@ -194,12 +180,7 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
             Fornavn:
           </Form.Label>
           <Col sm={4}>
-            <Form.Control
-              type="text"
-              name="firstName"
-              placeholder="Fornavn"
-              required
-            />
+            <Form.Control type="text" name="firstName" placeholder="Fornavn" required />
           </Col>
         </Form.Group>
 
@@ -208,12 +189,7 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
             Efternavn:
           </Form.Label>
           <Col sm={4}>
-            <Form.Control
-              type="text"
-              name="lastName"
-              placeholder="Efternavn"
-              required
-            />
+            <Form.Control type="text" name="lastName" placeholder="Efternavn" required />
           </Col>
         </Form.Group>
 
@@ -222,12 +198,7 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
             Email
           </Form.Label>
           <Col sm={4}>
-            <Form.Control
-              type="email"
-              name="email"
-              placeholder="Din E-mail"
-              required
-            />
+            <Form.Control type="email" name="email" placeholder="Din E-mail" required />
           </Col>
         </Form.Group>
 
@@ -236,14 +207,7 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
             Tlf. Nummer
           </Form.Label>
           <Col sm={4}>
-            <Form.Control
-              type="number"
-              name="phoneNumber"
-              placeholder="Dit tlf. nummer"
-              onChange={handlePhoneNumberChange}
-              aria-describedby="phoneNumberError"
-              required
-            />
+            <Form.Control type="number" name="phoneNumber" placeholder="Dit tlf. nummer" onChange={handlePhoneNumberChange} aria-describedby="phoneNumberError" required />
             {phoneNumberError && (
               <div id="phoneNumberError" className="form-text text-danger">
                 {phoneNumberError}
@@ -257,46 +221,25 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
             Vælg ydelse:
           </Form.Label>
           <Col sm={4}>
-            <Form.Select
-              aria-label="Default select example"
-              name="service"
-              defaultValue="Vælg konsulent ydelse"
-              required
-            >
+            <Form.Select aria-label="Default select example" name="service" defaultValue="Vælg konsulent ydelse" required>
               <option disabled>Vælg konsulent ydelse</option>
               <option value="Proceskonsultation">Proceskonsultation</option>
-              <option value="Coaching af enkeltpersoner eller grupper">
-                Coaching af enkeltpersoner eller grupper
-              </option>
+              <option value="Coaching af enkeltpersoner eller grupper">Coaching af enkeltpersoner eller grupper</option>
               <option value="Kreativ facilitering">Kreativ facilitering</option>
               <option value="Teamudvikling">Teamudvikling</option>
-              <option value="Facilitering af ledernetværk og træning">
-                Facilitering af ledernetværk og træning
-              </option>
+              <option value="Facilitering af ledernetværk og træning">Facilitering af ledernetværk og træning</option>
               <option value="4R Ledelsesudvikling">4R Ledelsesudvikling</option>
-              <option value="Interne skræddersyede uddannelses- og træningsforløb">
-                Interne skræddersyede uddannelses- og træningsforløb
-              </option>
+              <option value="Interne skræddersyede uddannelses- og træningsforløb">Interne skræddersyede uddannelses- og træningsforløb</option>
             </Form.Select>
           </Col>
         </Form.Group>
 
-        <Form.Group
-          as={Row}
-          className="mb-3 justify-content-center"
-          controlId="exampleFormControlTextarea1"
-        >
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="exampleFormControlTextarea1">
           <Form.Label column sm={2}>
             Besked (valgfrit)
           </Form.Label>
           <Col sm={4}>
-            <Form.Control
-              as="textarea"
-              className="bg-light"
-              name="message"
-              placeholder="Kort uddybning af grunden til du booker.."
-              rows={4}
-            />
+            <Form.Control as="textarea" className="bg-light" name="message" placeholder="Kort uddybning af grunden til du booker.." rows={4} />
           </Col>
         </Form.Group>
 
@@ -321,16 +264,8 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
           </Col>
         </Form.Group>
 
-        <Form.Group
-          className="text-center mb-5 p-4"
-          controlId="formBasicButton"
-        >
-          <Button
-            className="btn-lg"
-            variant="primary"
-            type="submit"
-            value="book"
-          >
+        <Form.Group className="text-center mb-5 p-4" controlId="formBasicButton">
+          <Button className="btn-lg" variant="primary" type="submit" value="book">
             Book
           </Button>
         </Form.Group>

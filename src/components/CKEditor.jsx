@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import "../App.css";
 import SuccessMessage from "./SuccessMessage";
-import HTTPErrorHandling from "./TryCatch";
+import HTTPErrorHandling from "./HTTPErrorHandling";
 
 function Edit({ title, callUpdate }) {
   const [textContent, setTextContent] = useState();

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import tryCatch from "./HTTPErrorHandling";
+import HTTPErrorHandling from "./HTTPErrorHandling";
 
 export default function BooksAndArticles() {
   const [data, setData] = useState("");
@@ -37,17 +37,9 @@ export default function BooksAndArticles() {
 
   const sortArticles = (articles) => {
     if (sortBy === "title") {
-      return articles.sort((a, b) =>
-        sortOrder === "asc"
-          ? a.title.localeCompare(b.title)
-          : b.title.localeCompare(a.title)
-      );
+      return articles.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
     } else if (sortBy === "releaseYear") {
-      return articles.sort((a, b) =>
-        sortOrder === "asc"
-          ? a.releaseYear - b.releaseYear
-          : b.releaseYear - a.releaseYear
-      );
+      return articles.sort((a, b) => (sortOrder === "asc" ? a.releaseYear - b.releaseYear : b.releaseYear - a.releaseYear));
     } else {
       return articles;
     }
@@ -55,7 +47,7 @@ export default function BooksAndArticles() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await tryCatch(bookOrArticle);
+      const response = await HTTPErrorHandling(bookOrArticle);
       console.log("response", response);
       if (response) {
         setData(response);
@@ -84,7 +76,7 @@ export default function BooksAndArticles() {
       resume: form.resume,
     };
     console.log("new article", newArticleOrBook);
-    const response = await tryCatch(bookOrArticle, {
+    const response = await HTTPErrorHandling(bookOrArticle, {
       method: "POST",
       body: JSON.stringify(newArticleOrBook),
       headers: {
@@ -100,7 +92,7 @@ export default function BooksAndArticles() {
 
   function editClicked(e) {
     console.log("event id", e.target.id);
-    tryCatch(``);
+    HTTPErrorHandling(``);
     // console.log("event",e.target.key);
     // console.log("event",e.key);
   }
@@ -114,21 +106,12 @@ export default function BooksAndArticles() {
               setBookOrArticle(e.target.value);
             }}
           >
-            <option value="articles">Artikler</option>{" "}
-            <option value="books">Bøger</option>
+            <option value="articles">Artikler</option> <option value="books">Bøger</option>
           </select>
-          <Button
-            onClick={() => handleSort("title")}
-            variant="outline-secondary"
-            className="mx-2"
-          >
+          <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
             Sorter efter titel {getSortArrow("title")}
           </Button>
-          <Button
-            onClick={() => handleSort("releaseYear")}
-            variant="outline-secondary"
-            className="mx-2"
-          >
+          <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
             Sorter efter udgivelsesår {getSortArrow("releaseYear")}
           </Button>
         </div>
@@ -141,11 +124,7 @@ export default function BooksAndArticles() {
       {data ? (
         <div style={{ margin: "10px" }}>
           {sortArticles(data).map((item) => (
-            <div
-              key={item._id}
-              className="container my-2"
-              style={{ border: "red 1px solid", borderRadius: "5px" }}
-            >
+            <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
               {/* <div key={item._id} className="p-2 col-sm d-flex justify-content-center space-between"> */}
               <div className="row gx-4 ">
                 <h2 className="col-9">{item.title}</h2>
@@ -233,9 +212,7 @@ export default function BooksAndArticles() {
               onSubmit={(e) => {
                 e.preventDefault();
                 console.log("target", new FormData(e.target));
-                const formEntries = Object.fromEntries(
-                  new FormData(e.target).entries()
-                );
+                const formEntries = Object.fromEntries(new FormData(e.target).entries());
                 console.log("form entries", formEntries);
                 handleSubmit(formEntries);
               }}
@@ -269,60 +246,30 @@ export default function BooksAndArticles() {
               </select>
               <div>
                 {/* Titel, udgivelsesår, udgiver */}
-                <Form.Group
-                  as={Row}
-                  className="mb-3 justify-content-center"
-                  controlId="formGroupName"
-                >
+                <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
                   <Form.Label column sm={2}>
                     Titel
                   </Form.Label>
                   <Col sm={3}>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      className="bg-light"
-                      placeholder="Titel"
-                      required
-                    />
+                    <Form.Control type="text" name="title" className="bg-light" placeholder="Titel" required />
                   </Col>
                 </Form.Group>
 
-                <Form.Group
-                  as={Row}
-                  className="mb-3 justify-content-center"
-                  controlId="formGroupName"
-                >
+                <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
                   <Form.Label column sm={2}>
                     Udgivelsesår
                   </Form.Label>
                   <Col sm={3}>
-                    <Form.Control
-                      type="number"
-                      name="releaseYear"
-                      className="bg-light"
-                      placeholder="Årstal"
-                      required
-                    />
+                    <Form.Control type="number" name="releaseYear" className="bg-light" placeholder="Årstal" required />
                   </Col>
                 </Form.Group>
 
-                <Form.Group
-                  as={Row}
-                  className="mb-3 justify-content-center"
-                  controlId="formGroupName"
-                >
+                <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
                   <Form.Label column sm={2}>
                     Udgiver
                   </Form.Label>
                   <Col sm={3}>
-                    <Form.Control
-                      type="text"
-                      name="publisher"
-                      className="bg-light"
-                      placeholder="Navn på udgiver"
-                      required
-                    />
+                    <Form.Control type="text" name="publisher" className="bg-light" placeholder="Navn på udgiver" required />
                   </Col>
                 </Form.Group>
               </div>
@@ -333,31 +280,15 @@ export default function BooksAndArticles() {
                   return (
                     <div key={field}>
                       <div>
-                        <Form.Group
-                          as={Row}
-                          className="mb-3 justify-content-center"
-                          controlId="formGroupName"
-                        >
+                        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
                           <Form.Label column sm={2}>
                             Forfatter {index + 1}:
                           </Form.Label>
                           <Col sm={3}>
-                            <Form.Control
-                              type="text"
-                              name={"firstName" + index}
-                              className="bg-light"
-                              placeholder="Fornavn"
-                              required
-                            />
+                            <Form.Control type="text" name={"firstName" + index} className="bg-light" placeholder="Fornavn" required />
                           </Col>
                           <Col sm={3}>
-                            <Form.Control
-                              type="text"
-                              name={"lastName" + index}
-                              className="bg-light"
-                              placeholder="Efternavn"
-                              required
-                            />
+                            <Form.Control type="text" name={"lastName" + index} className="bg-light" placeholder="Efternavn" required />
                           </Col>
                         </Form.Group>
                       </div>
@@ -396,21 +327,12 @@ export default function BooksAndArticles() {
               </div>
 
               {/* Link til artikel */}
-              <Form.Group
-                as={Row}
-                className="mb-3 justify-content-center"
-                controlId="formGroupName"
-              >
+              <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
                 <Form.Label column sm={2}>
                   Link til læsning/køb
                 </Form.Label>
                 <Col sm={3}>
-                  <Form.Control
-                    type="text"
-                    name="link"
-                    className="bg-light"
-                    placeholder="Link"
-                  />
+                  <Form.Control type="text" name="link" className="bg-light" placeholder="Link" />
                 </Col>
               </Form.Group>
 
@@ -432,33 +354,17 @@ export default function BooksAndArticles() {
                 </Form.Label>
               </Form.Group>
 
-              <Form.Group
-                as={Row}
-                className="mb-3 justify-content-center"
-                controlId="formGroupText"
-              >
+              <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupText">
                 <Form.Label column sm={1}>
                   Kort resume
                 </Form.Label>
                 <Col sm={4}>
-                  <Form.Control
-                    as="textarea"
-                    className="bg-light"
-                    name="resume"
-                    rows={4}
-                  />
+                  <Form.Control as="textarea" className="bg-light" name="resume" rows={4} />
                 </Col>
               </Form.Group>
 
-              <Form.Group
-                className="mb-3 text-center"
-                controlId="formBasicButton"
-              >
-                <Button
-                  type="submit"
-                  variant="outline-secondary"
-                  className="mx-2"
-                >
+              <Form.Group className="mb-3 text-center" controlId="formBasicButton">
+                <Button type="submit" variant="outline-secondary" className="mx-2">
                   Opret artikel
                 </Button>
               </Form.Group>
