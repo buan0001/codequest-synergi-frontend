@@ -2,16 +2,12 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
-// import Row from "react-bootstrap/Row";
-// import Modal from "react-bootstrap/Modal";
 import tryCatch from "../components/TryCatch";
 import BookArticleForm from "../components/BooksArticles/BooksArticlesForm";
 import UpdateModal from "../components/BooksArticles/UpdateModal";
 
 export default function FetchComponent() {
-  // const [authorField, setAuthorField] = useState([0]);
-  // const [isPay, setIsPay] = useState(false);
-  // const [formCreateType, setFormCreateType] = useState("articles")
+
 
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState("");
@@ -65,7 +61,6 @@ export default function FetchComponent() {
     const id = e.target.id;
     console.log("delete this id", id);
     const confirmCheck = confirm("Vil du virkelig slette?");
-    // console.log("did you confirm?", confirmCheck);
     if (confirmCheck) {
       const res = await tryCatch(showBorA + "/" + id,  "DELETE" );
       console.log("RES", res);
@@ -123,7 +118,6 @@ export default function FetchComponent() {
             .filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
             .map((item) => (
               <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
-                {/* <div key={item._id} className="p-2 col-sm d-flex justify-content-center space-between"> */}
                 <div className="row gx-4 ">
                   <h2 className="col-9">{item.title}</h2>
                   {loggedIn ? (
@@ -182,8 +176,6 @@ export default function FetchComponent() {
                   })}
                 </div>
                 <div>{item.link ? <a href={item.link}>Link til {showBorA == "books" ? "bogen" : "artiklen"}</a> : ""}</div>
-
-                {/* pay skal laves om */}
                 <p>
                   <b>Adgang: </b>
                   {item.pay == false ? "Gratis" : "Betalt"}

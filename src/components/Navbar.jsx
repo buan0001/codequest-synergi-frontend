@@ -9,7 +9,6 @@ import logo from "../assets/synergi-hrm logo.png";
 
 // Funktionen hedder Header selvom det er en Navbar, pga. navngivningskonflikt med Navbar i React Bootstrap.
 export default function Header() {
-  // const { loggedIn } = useAuth();
   const baseName = "/codequest-synergi-frontend";
   return (
     <Navbar expand="lg" className="bg-body-tertiary sticky-top" style={{ boxShadow: "1px 1px 10px 5px rgb(182 185 189)" }}>
@@ -22,7 +21,7 @@ export default function Header() {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-          {/* Startside, Kalender. KALENDER SKAL MÅSKE RYKKES? !!! */}
+          {/* Startside */}
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
               <Nav.Link href={baseName+"/"}>Startside</Nav.Link>

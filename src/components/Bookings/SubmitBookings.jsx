@@ -70,24 +70,6 @@ export default function Booking({ fetchBookings, fetchData }) {
 
     setStartDate(nextAvailableDate(new Date()));
   }, [datesArray]);
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:3333/booking");
-  //       if (!response.ok) {
-  //         throw new Error("An error occurred during fetch");
-  //       }
-  //       const result = await response.json();
-
-  //       // Assuming result is an array of booking objects with 'date' property
-  //       const dates = result.map((booking) => booking.appointmentInfo.date);
-  //       const dateObjectsArray = dates.map((dateString) => new Date(dateString));
-
-  //       setDatesArray(dateObjectsArray);
-  //     } catch (error) {
-  //       console.error("Error fetching dates:", error);
-  //     }
-  //   };
   console.log(datesArray);
 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -121,20 +103,6 @@ export default function Booking({ fetchBookings, fetchData }) {
     return isoDateString;
   };
 
-  // to test it takes the next right date use
-  // this date format in new Date("12-09-2023") --> mm-dd-yyyy;
-  // const [startDate, setStartDate] = useState(() =>
-  //   nextAvailableDate(new Date())
-  // );
-
-  // // updating the shown date to the next day
-  // // when 'inline' in datePickerform is off
-  //   const getNextDay = () => {
-  //     const today = new Date();
-  //     const nextDay = new Date(today);
-  //     nextDay.setDate(today.getDate() + 1);
-  //     return nextDay;
-  //   };
 
   const excludeWeekends = (date) => {
     // Returns false if the day is Saturday or Sunday - from date-fns library
@@ -143,8 +111,7 @@ export default function Booking({ fetchBookings, fetchData }) {
 
   const excludePastDatesAndToday = (date) => {
     const today = new Date();
-    // console.log(date);
-    // console.log(today);
+
     return date >= today;
   };
 
@@ -183,13 +150,6 @@ export default function Booking({ fetchBookings, fetchData }) {
     try {
       // Send the form data to your backend endpoint using fetch
       const response = await tryCatch("booking", "POST", updatedFormData);
-      // const response = await fetch("http://localhost:3333/booking", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(updatedFormData),
-      // });
 
       const responseData = await response.json();
       console.log("Server response:", responseData);
@@ -213,7 +173,7 @@ export default function Booking({ fetchBookings, fetchData }) {
 
     console.log("Form Data", updatedFormData);
 
-    // console.log("Form Data", updatedFormData);
+    
   };
 
   return (
@@ -303,18 +263,17 @@ export default function Booking({ fetchBookings, fetchData }) {
           <Col sm={4}>
             <DatePicker
               todayButton="I dag"
-              // showIcon
+              
               selected={startDate}
               onChange={(date) => {
                 setStartDate(date);
               }}
-              // withPortal
+              
               locale="da"
               dateFormat="dd-MM-yyyy"
               name="date"
               inline
-              // // when inline is off use placeHolderText
-              // placeholderText={` ${getNextDay().toLocaleDateString("da")}`}
+
               filterDate={filterDate}
               excludeDates={datesArray}
             />

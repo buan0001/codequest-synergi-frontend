@@ -1,9 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import BookArticleForm from "./BooksArticlesForm";
-// showModal showBorA setChangedPost setShowModal
 export default function UpdateModal({showModal, showBorA, setChangedPost, setShowModal,formData}){
-//   const [showModal, setShowModal] = useState(false);
     return (
       <div>
         <Modal show={showModal} dialogClassName="" size="xl">
@@ -29,7 +27,6 @@ export default function UpdateModal({showModal, showBorA, setChangedPost, setSho
               >
                 Luk
               </Button>
-              {/* <Button variant="primary">Gem ændringer</Button> */}
             </Modal.Footer>
           </Modal.Dialog>
         </Modal>

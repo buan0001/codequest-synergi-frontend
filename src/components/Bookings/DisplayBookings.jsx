@@ -26,7 +26,6 @@ export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
       if (response.ok) {
         console.log(`Item with ID ${selectedId} deleted successfully.`);
         // Update the data after successful deletion (remove the deleted item from the list)
-        // bookings.filter((item) => item.id !== selectedId);
         fetchBookings();
         fetchData();
       } else {

@@ -4,8 +4,6 @@ import ErrorMessage from "../components/ErrorMessage";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
-// import Row from "react-bootstrap/Row";
-// import Col from "react-bootstrap/Col";
 import { Modal } from "react-bootstrap";
 import tryCatch from "../components/TryCatch";
 import BlogForm from "../components/Blog/BlogForm";
@@ -15,12 +13,10 @@ export default function Blog() {
   const [userListChanged, setUserListChanged] = useState();
   const [postChanged, setPostChanged] = useState();
   const [userComments, setUserComments] = useState();
-  // const [commentsChanged, setCommentsChanged] = useState();
 
   const [comments, setComments] = useState([]);
   const [posts, setPosts] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  //   const [showComments, setShowComments] = useState([]);
   const [userList, setUserList] = useState([]);
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [showUserCommentsModal, setShowUserCommentsModal] = useState(false);
@@ -70,7 +66,7 @@ export default function Blog() {
   async function createUser(event) {
     const form = event.target;
     const newUser = { userName: form.userName.value };
-    // console.log("form admin",form.admin.value);
+    
     if (loggedIn && form.admin.value === "true") {
       newUser.admin = true;
     } else {
@@ -131,7 +127,7 @@ export default function Blog() {
   }
 
   function getPresentableDate(dateString) {
-    // console.log("date string",dateString);
+    
     const date = new Date(dateString).toLocaleDateString("da-DK", {
       weekday: "short",
       year: "numeric",
@@ -367,7 +363,7 @@ export default function Blog() {
                       </div>
                     )}
                     <div>
-                      {/* {showUserCommentsModal ? <BlogUserComments/> : (() => {console.log("not showing user comments");return "hej";})} */}
+                      
                       {showUserCommentsModal ? <BlogUserComments showBool={showUserCommentsModal} setBool={setShowUserCommentsModal} userInfo={userComments}></BlogUserComments> : ""}
                     </div>
                   </div>

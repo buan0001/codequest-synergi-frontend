@@ -8,7 +8,6 @@ export default function StandardPage({title}) {
   const [showEditor, setShowEditor] = useState(false);
   const [updatePage, setUpdatePage] = useState(false)
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  //   const prop = "anerkendende coaching";
   function handleEditor() {
     setShowEditor(!showEditor);
   }

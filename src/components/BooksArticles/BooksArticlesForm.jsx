@@ -1,16 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
-// import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-// import tryCatch from "../components/TryCatch";
 import tryCatch from "../TryCatch";
 
 export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle}) {
-  //   const [changedPost, setChangedPost] = useState("");
-  //   const [showBorA, setShowBorA] = useState("articles");
-  //   const [isPay, setIsPay] = useState(false);
   const [formCreateType, setFormCreateType] = useState("articles");
   const [authorField, setAuthorField] = useState(
     methodToUse === "POST"
@@ -19,20 +14,13 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
           return { firstName: author.firstName, lastName: author.lastName, placement: index };
         })
   );
-  // const [formData, setFormData] = useState("");
-  // const thingToMap = methodToUse === "POST" ? authorField : formData.authors;
-  // if (methodToUse === "PATCH"){setAuthorField(formData.authors.map(author => {
-  //   return {firstName: author.firstName, lastName: author.lastName}
-  // }))}
   console.log("methodToUse", methodToUse);
   
   async function handleSubmit(form) {
     console.log("author field", authorField);
     console.log("form data",formData);
-    // console.log("PROPS", props);
     console.log("form,", form);
     console.log("method to use,", methodToUse);
-    // console.log("book or article?", formCreateType);
     const newArticleOrBook = {
       title: form.title,
       releaseYear: form.releaseYear,
@@ -47,7 +35,6 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
     console.log("new article", newArticleOrBook);
     let path = form.bookOrArticle;
     if (methodToUse === "PATCH"){newArticleOrBook._id = formData._id}
-    // let path = methodToUse === "POST" ? form.bookOrArticle : `${form.bookOrArticle}/${formData._id}`;
     console.log("path", path);
     const response = await tryCatch(path, methodToUse, newArticleOrBook);
     console.log(response);
@@ -163,17 +150,17 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                           const id = Number(e.target.id);
                           console.log("ID", id);
                           const newField = authorField.filter((entry) => {
-                            // console.log("entry.placement", entry);
+                            
                             return entry.placement !== id;
                           });
                           newField.forEach((entry, index) => {
-                            // console.log("index", index);
+                            
                             entry.placement = index;
                           });
-                          // console.log("newField", newField);
-                          // console.log("newField length", newField.length);
+                          
+                          
                           if (newField.length !== 0) {
-                            // newField.pop();
+                            
                             setAuthorField(newField);
                           }
                         }}
@@ -219,19 +206,6 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
               >
                 Tilføj ny forfatter
               </Button>
-              {/* <Button
-                onClick={() => {
-                  const newField = [...authorField];
-                  if (newField.length > 1) {
-                    newField.pop();
-                    setAuthorField(newField);
-                  }
-                }}
-                variant="outline-secondary"
-                className="mx-2"
-              >
-                Fjern seneste forfatter
-              </Button> */}
             </div>
           </div>
         </div>
@@ -248,20 +222,16 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
 
         <Form.Group as={Row} className="mb-3 justify-content-center">
           <Form.Label column sm={5}>
-            {/* Betalingsartikel? <select type="select" name="pay" /> */}
             Betalt adgang?
             <Form.Select
               defaultValue={formData.pay || ""}
               name="isPay"
               id=""
-              //   onChange={(e) => {
-              //     setIsPay(e.target.value === "true");
-              //   }}
+       
             >
               <option value="false">Gratis</option>
               <option value="true">Betalt</option>
             </Form.Select>
-            {/* Betalingsartikel? <input type="checkbox" name="pay" /> */}
           </Form.Label>
         </Form.Group>
 

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import tryCatch from "./TryCatch";
 
 export default function FetchComponent({ title, update }) {
-  // console.log(prop);
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -20,7 +19,7 @@ export default function FetchComponent({ title, update }) {
     };
 
     fetchData();
-  }, [title, update]); // Dependency that decides how many times the effect runs
+  }, [title, update]);
 
   return (
     <div style={{ margin: "2%" }}>

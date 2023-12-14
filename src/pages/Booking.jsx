@@ -8,7 +8,6 @@ import { useState, useEffect } from "react";
 import Bookings from "../components/Bookings/DisplayBookings";
 import SubmitBookingComponent from "../components/Bookings/SubmitBookings";
 import tryCatch from "../components/TryCatch";
-// import tryCatch from "../components/TryCatch";
 
 export default function Booking() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);

@@ -1,5 +1,3 @@
-// import * as React from "react";
-// import { useForm } from "react-hook-form";
 import emailjs from "@emailjs/browser";
 import { useRef } from "react";
 import Form from "react-bootstrap/Form";
@@ -46,7 +44,6 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="text" className="bg-light" placeholder="Fornavn" name="fornavn" required />
-            {/* <span style={{ color: "red" }}>{errors.firstname?.message}</span> */}
           </Col>
         </Form.Group>
 
@@ -56,7 +53,6 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="text" className="bg-light" placeholder="Efternavn" name="efternavn" required />
-            {/* <span>{errors.lastname?.message}</span> */}
           </Col>
         </Form.Group>
 
@@ -66,7 +62,6 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="email" className="bg-light" placeholder="Email" name="email" required />
-            {/* <span>{errors.email?.message}</span> */}
           </Col>
         </Form.Group>
 
@@ -76,7 +71,7 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="number" className="bg-light" placeholder="Telefon nummer" name="telefon" required />
-            {/* <span>{errors.phone?.message}</span> */}
+
           </Col>
         </Form.Group>
 
@@ -86,7 +81,6 @@ export default function Contact() {
           </Form.Label>
           <Col sm={3}>
             <Form.Control type="text" className="bg-light" placeholder="Virksomhedens navn (valgfrit)" name="virksomhed" />
-            {/* <span>{errors.company?.message}</span> */}
           </Col>
         </Form.Group>
 
