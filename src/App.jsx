@@ -1,6 +1,5 @@
 // Main component for the application.
 // Renders the header, main content, and footer.
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Navbar";
 import Booksandarticles from "./pages/BooksAndArticles";
