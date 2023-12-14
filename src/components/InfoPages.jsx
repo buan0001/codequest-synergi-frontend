@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import HTTPErrorHandling from "./HTTPErrorHandling";
 
 // Gets data from the backend and renders it
-export default function FetchComponent({ title, update }) {
+export default function InfoPages({ title, update }) {
   const [data, setData] = useState();
 
   useEffect(() => {

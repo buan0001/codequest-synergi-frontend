@@ -23,7 +23,7 @@ setDefaultLocale("da");
 
 // https://date-fns.org/v2.16.1/docs/eachDayOfInterval ---> til exclude af dage i databasen
 
-export default function Booking({ fetchBookings, fetchData }) {
+export default function SubmitBookings({ fetchBookings, fetchData }) {
   const [datesArray, setDatesArray] = useState([]);
 
   const [startDate, setStartDate] = useState(null);

@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import tryCatch from "./HTTPErrorHandling";
 
-export default function FetchComponent() {
+export default function BooksAndArticles() {
   const [data, setData] = useState("");
   const [authorField, setAuthorField] = useState([0]);
   const [newPost, setNewPost] = useState("");

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import HTTPErrorHandling from "../HTTPErrorHandling";
 
-export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
+export default function DisplayBookings({ bookings, fetchBookings, fetchData }) {
   const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
