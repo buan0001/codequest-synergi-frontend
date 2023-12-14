@@ -176,7 +176,7 @@ export default function Booking({ fetchBookings, fetchData }) {
     const updatedFormData = {
       ...formEntries,
       phoneNumber,
-      date: isoDate,
+      date: isoDate
       // lastDay: isoLastDay,
     };
 
@@ -196,7 +196,7 @@ export default function Booking({ fetchBookings, fetchData }) {
 
       if (responseData?.message?.includes("already exists")) {
         errorMessage("Dato'en var desværre optaget, venligst vælg en ny!");
-        fetchData(); // Fetch updated booking dates after unsuccessful booking
+        fetchData(setDatesArray); // Fetch updated booking dates after unsuccessful booking
         return;
       } else if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -204,7 +204,7 @@ export default function Booking({ fetchBookings, fetchData }) {
         SuccessMessage("Din booking er gennemført!");
         event.target.reset(); // Reset the form on successful booking
         fetchBookings(); // Fetch updated booking dates after successful booking
-        fetchData();
+        fetchData(setDatesArray);
       }
     } catch (error) {
       console.error("Error:", error);

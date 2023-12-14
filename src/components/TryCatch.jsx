@@ -32,3 +32,5 @@ export default async function tryCatch(path, method, body ) {
     return error;
   }
 }
+
+// HTTPErrorHandling - nyt navn 
