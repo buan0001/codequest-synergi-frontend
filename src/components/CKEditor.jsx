@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import "../App.css";
 import SuccessMessage from "./SuccessMessage";
 import HTTPErrorHandling from "./HTTPErrorHandling";
+import ErrorMessage from "./ErrorMessage";
 
 function Edit({ title, callUpdate }) {
   const [textContent, setTextContent] = useState();
@@ -31,8 +32,9 @@ function Edit({ title, callUpdate }) {
     const response = await HTTPErrorHandling(routeToUse, "PATCH", data);
     if (response.ok) {
       SuccessMessage(`${title} blev redigeret!`);
-      callUpdate(true);
+      callUpdate(response);
     }
+    else {ErrorMessage("Kunne ikke opdatere lige nu, prøv igen senere")}
   }
 
   return (
