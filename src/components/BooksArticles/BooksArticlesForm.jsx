@@ -49,13 +49,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
     if (methodToUse === "PATCH"){newArticleOrBook._id = formData._id}
     // let path = methodToUse === "POST" ? form.bookOrArticle : `${form.bookOrArticle}/${formData._id}`;
     console.log("path", path);
-    const response = await tryCatch(path, {
-      method: methodToUse,
-      body: JSON.stringify(newArticleOrBook),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await tryCatch(path, methodToUse, newArticleOrBook);
     console.log(response);
     if (response) {
       newSubmit(response)

@@ -16,6 +16,7 @@ import da from "date-fns/locale/da";
 // Components
 import errorMessage from "../ErrorMessage";
 import SuccessMessage from "../SuccessMessage";
+import tryCatch from "../TryCatch";
 
 registerLocale("da", da);
 setDefaultLocale("da");
@@ -181,13 +182,14 @@ export default function Booking({ fetchBookings, fetchData }) {
 
     try {
       // Send the form data to your backend endpoint using fetch
-      const response = await fetch("http://localhost:3333/booking", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedFormData),
-      });
+      const response = await tryCatch("booking", "POST", updatedFormData);
+      // const response = await fetch("http://localhost:3333/booking", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(updatedFormData),
+      // });
 
       const responseData = await response.json();
       console.log("Server response:", responseData);
