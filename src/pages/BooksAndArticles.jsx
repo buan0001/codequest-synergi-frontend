@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import HTTPErrorHandling from "../components/TryCatch";
+import HTTPErrorHandling from "../components/HTTPErrorHandling";
 import BookArticleForm from "../components/BooksArticles/BooksArticlesForm";
 import UpdateModal from "../components/BooksArticles/UpdateModal";
 
@@ -37,9 +37,17 @@ export default function FetchComponent() {
 
   const sortBooksAndArticles = (item) => {
     if (sortBy === "title") {
-      return item.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
+      return item.sort((a, b) =>
+        sortOrder === "asc"
+          ? a.title.localeCompare(b.title)
+          : b.title.localeCompare(a.title)
+      );
     } else if (sortBy === "releaseYear") {
-      return item.sort((a, b) => (sortOrder === "asc" ? a.releaseYear - b.releaseYear : b.releaseYear - a.releaseYear));
+      return item.sort((a, b) =>
+        sortOrder === "asc"
+          ? a.releaseYear - b.releaseYear
+          : b.releaseYear - a.releaseYear
+      );
     } else {
       return item;
     }
@@ -93,13 +101,25 @@ export default function FetchComponent() {
             <option value="articles">Artikler</option>
             <option value="books">Bøger</option>
           </Form.Select>
-          <Button onClick={() => handleSort("title")} variant="outline-secondary" className="mx-2">
+          <Button
+            onClick={() => handleSort("title")}
+            variant="outline-secondary"
+            className="mx-2"
+          >
             Sorter efter titel {getSortArrow("title")}
           </Button>
-          <Button onClick={() => handleSort("releaseYear")} variant="outline-secondary" className="mx-2">
+          <Button
+            onClick={() => handleSort("releaseYear")}
+            variant="outline-secondary"
+            className="mx-2"
+          >
             Sorter efter udgivelsesår {getSortArrow("releaseYear")}
           </Button>
-          <Form.Control type="text" placeholder="Søg på bøger/artikler" onChange={(e) => setSearchTerm(e.target.value)} />
+          <Form.Control
+            type="text"
+            placeholder="Søg på bøger/artikler"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
       </div>
     </div>
@@ -110,9 +130,15 @@ export default function FetchComponent() {
       {data ? (
         <div style={{ margin: "10px" }}>
           {sortBooksAndArticles(data)
-            .filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            .filter((item) =>
+              item.title.toLowerCase().includes(searchTerm.toLowerCase())
+            )
             .map((item) => (
-              <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
+              <div
+                key={item._id}
+                className="container my-2"
+                style={{ border: "red 1px solid", borderRadius: "5px" }}
+              >
                 <div className="row gx-4 ">
                   <h2 className="col-9">{item.title}</h2>
                   {loggedIn ? (
@@ -170,7 +196,15 @@ export default function FetchComponent() {
                     );
                   })}
                 </div>
-                <div>{item.link ? <a href={item.link}>Link til {showBorA == "books" ? "bogen" : "artiklen"}</a> : ""}</div>
+                <div>
+                  {item.link ? (
+                    <a href={item.link}>
+                      Link til {showBorA == "books" ? "bogen" : "artiklen"}
+                    </a>
+                  ) : (
+                    ""
+                  )}
+                </div>
                 <p>
                   <b>Adgang: </b>
                   {item.pay == false ? "Gratis" : "Betalt"}
@@ -192,9 +226,21 @@ export default function FetchComponent() {
       {loggedIn ? (
         <div>
           {showModal ? (
-            <UpdateModal showModal={showModal} showBorA={showBorA} setChangedPost={setChangedPost} setShowModal={setShowModal} formData={formData}></UpdateModal>
+            <UpdateModal
+              showModal={showModal}
+              showBorA={showBorA}
+              setChangedPost={setChangedPost}
+              setShowModal={setShowModal}
+              formData={formData}
+            ></UpdateModal>
           ) : (
-            <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
               <Button
                 style={{ height: "80px", width: "30%", margin: "auto" }}
                 onClick={() => {
@@ -203,7 +249,14 @@ export default function FetchComponent() {
               >
                 Vis/skjul oprettelsesformular
               </Button>
-              {showForm ? <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm> : ""}
+              {showForm ? (
+                <BookArticleForm
+                  formData={""}
+                  newSubmit={setChangedPost}
+                ></BookArticleForm>
+              ) : (
+                ""
+              )}
             </div>
           )}
 

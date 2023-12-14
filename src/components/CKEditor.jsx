@@ -2,7 +2,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import "../App.css";
 import { useState } from "react";
-import HTTPErrorHandling from "./TryCatch";
+import HTTPErrorHandling from "./HTTPErrorHandling";
 import { Button } from "react-bootstrap";
 import SuccessMessage from "./SuccessMessage";
 
@@ -53,7 +53,9 @@ function Edit({ title, callUpdate }) {
             <div style={{ width: "85vw" }}>
               <CKEditor
                 editor={ClassicEditor}
-                config={{ toolbar: { removeItems: ["insertTable", "insertImage"] } }}
+                config={{
+                  toolbar: { removeItems: ["insertTable", "insertImage"] },
+                }}
                 onReady={async (editor) => {
                   await fetchPage(editor);
                 }}

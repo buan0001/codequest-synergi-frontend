@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 // Components
 import Bookings from "../components/Bookings/DisplayBookings";
 import SubmitBookingComponent from "../components/Bookings/SubmitBookings";
-import HTTPErrorHandling from "../components/TryCatch";
+import HTTPErrorHandling from "../components/HTTPErrorHandling";
 
 export default function Booking() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
@@ -18,7 +18,10 @@ export default function Booking() {
     const response = await HTTPErrorHandling("booking");
 
     const data = await response.json();
-    const sortedData = data.sort((b, a) => new Date(b.appointmentInfo.date) - new Date(a.appointmentInfo.date));
+    const sortedData = data.sort(
+      (b, a) =>
+        new Date(b.appointmentInfo.date) - new Date(a.appointmentInfo.date)
+    );
     setBookings(sortedData);
   };
 
@@ -49,7 +52,10 @@ export default function Booking() {
       {loggedIn ? (
         <div className="row">
           <div className="col-md-12">
-            <SubmitBookingComponent fetchBookings={fetchBookings} fetchData={fetchData} />
+            <SubmitBookingComponent
+              fetchBookings={fetchBookings}
+              fetchData={fetchData}
+            />
           </div>
 
           <div className="col-md-12">
@@ -59,7 +65,10 @@ export default function Booking() {
       ) : (
         <div>
           <div>
-            <SubmitBookingComponent fetchBookings={bookings} fetchData={fetchData} />
+            <SubmitBookingComponent
+              fetchBookings={bookings}
+              fetchData={fetchData}
+            />
           </div>
         </div>
       )}
