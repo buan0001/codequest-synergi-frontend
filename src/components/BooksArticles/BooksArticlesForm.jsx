@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import HTTPErrorHandling from "../HTTPErrorHandling";
 
-export default function BooksArticlesForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle }) {
+export default function BooksArticlesForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle, setShowModal }) {
   const [formCreateType, setFormCreateType] = useState("articles");
   const [authorField, setAuthorField] = useState(
     methodToUse === "POST"
@@ -42,8 +42,9 @@ export default function BooksArticlesForm({ formData, newSubmit, methodToUse = "
     }
 
     const response = await HTTPErrorHandling(path, methodToUse, newArticleOrBook);
-    if (response) {
+    if (response.ok) {
       newSubmit(response);
+      setShowModal(response);
     }
   }
 

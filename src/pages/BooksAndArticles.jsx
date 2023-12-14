@@ -71,7 +71,7 @@ export default function FetchComponent() {
     const id = e.target.id;
     const res = await HTTPErrorHandling(showBorA + "/" + id);
     if (res.ok) {
-      const result = res.json();
+      const result = await res.json()
       setFormData(result);
       setShowModal(!showModal);
       scrollTo({ top: 100, behavior: "smooth" });

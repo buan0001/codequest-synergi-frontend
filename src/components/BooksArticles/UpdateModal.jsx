@@ -18,7 +18,7 @@ export default function UpdateModal({ showModal, showBorA, setChangedPost, setSh
           </Modal.Header>
           <Modal.Body>
             {/* Render the BooksArticlesForm component with the provided props */}
-            <BooksArticlesForm formData={formData} newSubmit={setChangedPost} methodToUse={"PATCH"} bookOrArticle={showBorA}></BooksArticlesForm>
+            <BooksArticlesForm formData={formData} newSubmit={setChangedPost} methodToUse={"PATCH"} bookOrArticle={showBorA} setShowModal={setShowModal}></BooksArticlesForm>
           </Modal.Body>
 
           <Modal.Footer>
