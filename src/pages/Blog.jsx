@@ -154,7 +154,7 @@ export default function Blog() {
           {showForm ? <BlogForm updatePosts={setPostChanged}></BlogForm> : ""}
         </div>
       ) : (
-        <div>Not logged in</div>
+        ""
       )}
       <div
         className="d-flex p-2 bd-highlight mx-auto"
@@ -163,11 +163,7 @@ export default function Blog() {
         {posts.length > 0
           ? posts.map((entry, index) => {
               return (
-                <div
-                  key={index}
-                  className="border border-secondary bg-gradient mx-3 p-3"
-                  style={{ backgroundColor: "#ffe79a" }}
-                >
+                <div key={index} className="border border-secondary bg-gradient mx-3 p-3" style={{ backgroundColor: "#ffe79a" }}>
                   <h2 className="p-3 text-center">{entry.title}</h2>
                   <div className="d-flex p-3 justify-content-center">
                     <img src={entry.image} width={200} height={200}></img>
@@ -175,15 +171,17 @@ export default function Blog() {
                   <div className="p-3 text-break fs-4 fst-italic">{entry.resume}</div>
                   <div className="p-3 text-break">{entry.body}</div>
                   {loggedIn ? (
-                    <Button
-                      className="btn-danger p-2 mx-auto d-block"
-                      id={entry._id}
-                      onClick={(e) => {
-                        deletePostClicked(e, entry.title);
-                      }}
-                    >
-                      Slet opslag
-                    </Button>
+                    <div className="flex">
+                      <Button
+                        className="btn-danger p-2 mx-auto d-block"
+                        id={entry._id}
+                        onClick={(e) => {
+                          deletePostClicked(e, entry.title);
+                        }}
+                      >
+                        Slet opslag
+                      </Button>
+                    </div>
                   ) : (
                     ""
                   )}
@@ -209,11 +207,7 @@ export default function Blog() {
                         </Button>
 
                         <div>
-                          <Modal
-                            show={showCreateUserModal}
-                            dialogClassName=""
-                            size="xl"
-                          >
+                          <Modal show={showCreateUserModal} dialogClassName="" size="xl">
                             <Modal.Dialog size="xl" className="text-dark">
                               <Modal.Header
                                 closeButton
@@ -232,10 +226,7 @@ export default function Blog() {
                                 <Modal.Body>
                                   <Form.Group>
                                     <Form.Label>Navn</Form.Label>
-                                    <Form.Control
-                                      type="text"
-                                      name="userName"
-                                    ></Form.Control>
+                                    <Form.Control type="text" name="userName"></Form.Control>
                                   </Form.Group>
                                   {loggedIn ? (
                                     <Form.Group>
@@ -306,17 +297,9 @@ export default function Blog() {
 
                           <Form.Group>
                             <Form.Label>Ny kommentar:</Form.Label>
-                            <Form.Control
-                              className="mb-4"
-                              as="textarea"
-                              rows={3}
-                              name="body"
-                            />
+                            <Form.Control className="mb-4" as="textarea" rows={3} name="body" />
                           </Form.Group>
-                          <Button
-                            className="btn-primary p-2 mx-auto d-block my-2"
-                            type="submit"
-                          >
+                          <Button className="btn-primary p-2 mx-auto d-block my-2" type="submit">
                             Tilføj kommentar
                           </Button>
                         </Form>
@@ -330,38 +313,22 @@ export default function Blog() {
                                 })
                                 .comments.map((comment, index) => {
                                   return (
-                                    <div
-                                      key={index}
-                                      className="border border-dark p-3 my-3"
-                                    >
+                                    <div key={index} className="border border-dark p-3 my-3">
                                       <div>
-                                        {comment.body} -{" "}
-                                        {getPresentableDate(comment.createdAt)}
+                                        {comment.body} - {getPresentableDate(comment.createdAt)}
                                       </div>
 
                                       <div
                                         className="text-primary font-weight-bold"
-                                        onMouseOver={(e) =>
-                                          (e.target.style.cursor = "pointer")
-                                        }
+                                        onMouseOver={(e) => (e.target.style.cursor = "pointer")}
                                         onClick={async () => {
-                                          const response =
-                                            await HTTPErrorHandling(
-                                              "users/comments/" +
-                                                comment.userID._id
-                                            );
+                                          const response = await HTTPErrorHandling("users/comments/" + comment.userID._id);
                                           if (response.ok) {
                                             const result = await response.json();
                                             result.userName = comment.userID.userName;
                                             // Make the dates reader friendly
                                             result.forEach((post) => {
-                                              post.comments.forEach(
-                                                (comment) =>
-                                                  (comment.createdAt =
-                                                    getPresentableDate(
-                                                      comment.createdAt
-                                                    ))
-                                              );
+                                              post.comments.forEach((comment) => (comment.createdAt = getPresentableDate(comment.createdAt)));
                                             });
                                             setShowUserCommentsModal(true);
                                             setUserComments(result);
@@ -397,23 +364,11 @@ export default function Blog() {
                             getComments(entry._id);
                           }}
                         >
-                          {entry.commentsAllowed
-                            ? "Vis kommentarer"
-                            : "Kommentarer slået fra"}
+                          {entry.commentsAllowed ? "Vis kommentarer" : "Kommentarer slået fra"}
                         </Button>
                       </div>
                     )}
-                    <div>
-                      {showUserCommentsModal ? (
-                        <BlogUserComments
-                          showBool={showUserCommentsModal}
-                          setBool={setShowUserCommentsModal}
-                          userInfo={userComments}
-                        ></BlogUserComments>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                    <div>{showUserCommentsModal ? <BlogUserComments showBool={showUserCommentsModal} setBool={setShowUserCommentsModal} userInfo={userComments}></BlogUserComments> : ""}</div>
                   </div>
                 </div>
               );

@@ -20,7 +20,7 @@ export default function BlogForm({ updatePosts }) {
     const response = await HTTPErrorHandling("blog", "POST", newPost);
     console.log("response", response);
     // If the response is successful, update the posts
-    if (response) {
+    if (response.ok) {
       updatePosts(response);
     }
   }
