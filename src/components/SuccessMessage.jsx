@@ -14,8 +14,3 @@ const SuccessMessage = (messageString) => {
 };
 
 export default SuccessMessage;
-
-// how to use:
-// 1. import SuccessMessage
-// 2. insert when it's to be shown:
-// SuccessMessage("The text you want shown");

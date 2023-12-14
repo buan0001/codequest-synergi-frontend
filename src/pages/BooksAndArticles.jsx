@@ -2,13 +2,11 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import Form from "react-bootstrap/Form";
-import tryCatch from "../components/TryCatch";
+import HTTPErrorHandling from "../components/TryCatch";
 import BookArticleForm from "../components/BooksArticles/BooksArticlesForm";
 import UpdateModal from "../components/BooksArticles/UpdateModal";
 
 export default function FetchComponent() {
-
-
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState("");
   const [changedPost, setChangedPost] = useState("");
@@ -17,7 +15,7 @@ export default function FetchComponent() {
   const [showBorA, setShowBorA] = useState("articles");
   const [formData, setFormData] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [showForm, setShowForm] = useState(false)
+  const [showForm, setShowForm] = useState(false);
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
   const handleSort = (key) => {
@@ -47,7 +45,7 @@ export default function FetchComponent() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await tryCatch(showBorA);
+      const response = await HTTPErrorHandling(showBorA);
       console.log("response", response);
       if (response.ok) {
         setData(await response.json());
@@ -62,7 +60,7 @@ export default function FetchComponent() {
     console.log("delete this id", id);
     const confirmCheck = confirm("Vil du virkelig slette?");
     if (confirmCheck) {
-      const res = await tryCatch(showBorA + "/" + id,  "DELETE" );
+      const res = await HTTPErrorHandling(showBorA + "/" + id, "DELETE");
       console.log("RES", res);
       if (res.ok) {
         setChangedPost(await res.json());
@@ -72,9 +70,9 @@ export default function FetchComponent() {
   async function editClicked(e) {
     const id = e.target.id;
     console.log("event id", e.target.id);
-    const res = await tryCatch(showBorA + "/" + id);
+    const res = await HTTPErrorHandling(showBorA + "/" + id);
     if (res.ok) {
-      const result = res.json()
+      const result = res.json();
       setFormData(result);
       setShowModal(!showModal);
       console.log("result", result);

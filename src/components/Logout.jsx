@@ -9,7 +9,6 @@ export default function LogoutButton() {
 
   const handleLogout = (event) => {
     event.preventDefault();
-    console.log("Logging in...");
     dispatch(logout());
   };
 
@@ -18,7 +17,7 @@ export default function LogoutButton() {
       <div>
         <Button
           variant="outline-danger"
-          onClick={() => {
+          onClick={(event) => {
             handleLogout(event);
           }}
         >

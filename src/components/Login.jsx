@@ -7,15 +7,20 @@ import { useState } from "react";
 import { login } from "../features/LoginState";
 
 export default function Login() {
+  // State variable to store the username entered by the user
   const [username, setUsername] = useState("");
+  // State variable to store the password entered by the user
   const [password, setPassword] = useState("");
+  // Redux hook to access the dispatch function
   const dispatch = useDispatch();
 
   const handleLogin = (event) => {
+    // Prevents the default form submission behavior
     event?.preventDefault();
-    console.log("Logging in...");
+    // Dispatches the login action with the username and password
     dispatch(login({ username, password }));
   };
+
   return (
     <div className="d-flex justify-content-center align-items-center" style={{ height: "80vh" }}>
       <Col md={6}>
@@ -29,11 +34,13 @@ export default function Login() {
                 type="username"
                 placeholder="Brugernavn"
                 onChange={(event) => {
+                  // Updates the username state when the input value changes
                   setUsername(event.target.value);
                 }}
                 onKeyDown={(e) => {
                   if (e.code === "Enter") {
-                    console.log("enter pressed"), handleLogin();
+                    // Calls handleLogin function when Enter key is pressed
+                    handleLogin();
                   }
                 }}
               />
@@ -49,11 +56,12 @@ export default function Login() {
                 type="password"
                 placeholder="Password"
                 onChange={(event) => {
+                  // Updates the password state when the input value changes
                   setPassword(event.target.value);
                 }}
                 onKeyDown={(e) => {
                   if (e.code === "Enter") {
-                    console.log("enter pressed"), handleLogin();
+                    handleLogin();
                   }
                 }}
               />
@@ -63,7 +71,7 @@ export default function Login() {
             <Col sm={{ span: 9, offset: 3 }}>
               <Button
                 type="button"
-                onClick={() => {
+                onClick={(event) => {
                   handleLogin(event);
                 }}
               >

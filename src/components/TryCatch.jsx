@@ -1,17 +1,19 @@
-// import "dotenv/config"
-
-export default async function tryCatch(path, method, body ) {
+export default async function HTTPErrorHandling(path, method, body) {
   const host = "https://codequest-synergi-backend.azurewebsites.net/";
-  // const host = "http://localhost:3333/";
-  // const host = import.meta.env.REACT_APP_ONLINE_SERVICE || "http://localhost:3333/";
 
   const options = {};
+
+  // Set the HTTP method if provided
   if (method) {
     options.method = method;
   }
+
+  // Set the request body if provided
   if (body) {
     options.body = JSON.stringify(body);
   }
+
+  // Set the request headers if body is present
   if (options.body) {
     options.headers = {
       "Content-Type": "application/json",
@@ -19,17 +21,18 @@ export default async function tryCatch(path, method, body ) {
   }
 
   try {
+    // Make the API request
     const response = options.method ? await fetch(host + path, options) : await fetch(host + path);
-    console.log("response",response);
+
+    // Check if the response is not OK
     if (!response.ok) {
       console.error("Bad fetch:", response);
       return response;
     }
+
     return response;
   } catch (error) {
-    console.error("Der opstod en fejl ved indlæsning af data:", error);
+    console.error("An error occurred while loading data:", error);
     return error;
   }
 }
-
-// HTTPErrorHandling - nyt navn 

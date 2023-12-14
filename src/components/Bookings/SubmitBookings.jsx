@@ -16,7 +16,7 @@ import da from "date-fns/locale/da";
 // Components
 import errorMessage from "../ErrorMessage";
 import SuccessMessage from "../SuccessMessage";
-import tryCatch from "../TryCatch";
+import HTTPErrorHandling from "../TryCatch";
 
 registerLocale("da", da);
 setDefaultLocale("da");
@@ -103,7 +103,6 @@ export default function Booking({ fetchBookings, fetchData }) {
     return isoDateString;
   };
 
-
   const excludeWeekends = (date) => {
     // Returns false if the day is Saturday or Sunday - from date-fns library
     return !isWeekend(date);
@@ -143,13 +142,13 @@ export default function Booking({ fetchBookings, fetchData }) {
     const updatedFormData = {
       ...formEntries,
       phoneNumber,
-      date: isoDate
+      date: isoDate,
       // lastDay: isoLastDay,
     };
 
     try {
       // Send the form data to your backend endpoint using fetch
-      const response = await tryCatch("booking", "POST", updatedFormData);
+      const response = await HTTPErrorHandling("booking", "POST", updatedFormData);
 
       const responseData = await response.json();
       console.log("Server response:", responseData);
@@ -172,8 +171,6 @@ export default function Booking({ fetchBookings, fetchData }) {
     }
 
     console.log("Form Data", updatedFormData);
-
-    
   };
 
   return (
@@ -263,17 +260,14 @@ export default function Booking({ fetchBookings, fetchData }) {
           <Col sm={4}>
             <DatePicker
               todayButton="I dag"
-              
               selected={startDate}
               onChange={(date) => {
                 setStartDate(date);
               }}
-              
               locale="da"
               dateFormat="dd-MM-yyyy"
               name="date"
               inline
-
               filterDate={filterDate}
               excludeDates={datesArray}
             />

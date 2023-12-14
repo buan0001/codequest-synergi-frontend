@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 // Components
 import Bookings from "../components/Bookings/DisplayBookings";
 import SubmitBookingComponent from "../components/Bookings/SubmitBookings";
-import tryCatch from "../components/TryCatch";
+import HTTPErrorHandling from "../components/TryCatch";
 
 export default function Booking() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
@@ -16,7 +16,7 @@ export default function Booking() {
   const [bookings, setBookings] = useState([]);
 
   const fetchBookings = async () => {
-    const response = await tryCatch("booking");
+    const response = await HTTPErrorHandling("booking");
 
     const data = await response.json();
     const sortedData = data.sort((b, a) => new Date(b.appointmentInfo.date) - new Date(a.appointmentInfo.date));
@@ -30,7 +30,7 @@ export default function Booking() {
 
   const fetchData = async (setDatesArray) => {
     try {
-      const response = await tryCatch("booking");
+      const response = await HTTPErrorHandling("booking");
       if (!response.ok) {
         throw new Error("An error occurred during fetch");
       }

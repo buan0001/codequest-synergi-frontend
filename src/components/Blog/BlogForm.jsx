@@ -2,7 +2,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import tryCatch from "../TryCatch";
+import HTTPErrorHandling from "../TryCatch";
+
 export default function BlogForm({ updatePosts }) {
   async function handleSubmit(formEntries) {
     const newPost = {
@@ -14,7 +15,7 @@ export default function BlogForm({ updatePosts }) {
     };
 
     console.log("new post", newPost);
-    const response = await tryCatch("blog", "POST", newPost);
+    const response = await HTTPErrorHandling("blog", "POST", newPost);
     console.log("response", response);
     if (response) {
       updatePosts(response);

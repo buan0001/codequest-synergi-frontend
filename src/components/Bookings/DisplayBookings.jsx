@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import tryCatch from "../TryCatch";
+import HTTPErrorHandling from "../TryCatch";
 
 export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
   const [selectedId, setSelectedId] = useState(null);
@@ -20,8 +20,7 @@ export default function FetchComponent({ bookings, fetchBookings, fetchData }) {
 
   const handleDelete = async () => {
     try {
-      const response = await tryCatch(`/booking/${selectedId}`,"DELETE")
-
+      const response = await HTTPErrorHandling(`/booking/${selectedId}`, "DELETE");
 
       if (response.ok) {
         console.log(`Item with ID ${selectedId} deleted successfully.`);
