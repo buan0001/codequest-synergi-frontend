@@ -6,6 +6,7 @@ import HTTPErrorHandling from "../HTTPErrorHandling";
 
 export default function BlogForm({ updatePosts }) {
   async function handleSubmit(formEntries) {
+    // Create a new post object with the form entries
     const newPost = {
       title: formEntries.title,
       image: formEntries.image,
@@ -15,8 +16,10 @@ export default function BlogForm({ updatePosts }) {
     };
 
     console.log("new post", newPost);
+    // Send a POST request to the server with the new post data
     const response = await HTTPErrorHandling("blog", "POST", newPost);
     console.log("response", response);
+    // If the response is successful, update the posts
     if (response) {
       updatePosts(response);
     }
@@ -36,15 +39,16 @@ export default function BlogForm({ updatePosts }) {
         onSubmit={(e) => {
           e.preventDefault();
           console.log("target", new FormData(e.target));
-          const formEntries = Object.fromEntries(
-            new FormData(e.target).entries()
-          );
+          // Convert the form data into an object
+          const formEntries = Object.fromEntries(new FormData(e.target).entries());
           console.log("form entries", formEntries);
+          // Handle the form submission
           handleSubmit(formEntries);
         }}
         onChange={(e) => {
           const element = e.target;
           if (element.type == "text") {
+            // Adjust the width of the text input based on its value length
             if (!element.style.minWidth) {
               element.style.minWidth = "200px";
               element.style.maxWidth = "40vw";
@@ -54,76 +58,39 @@ export default function BlogForm({ updatePosts }) {
         }}
       >
         <div>
-          <Form.Group
-            as={Row}
-            className="mb-3 justify-content-center"
-            controlId="formGroupName"
-          >
+          <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
             <Form.Label column sm={2}>
               Titel
             </Form.Label>
             <Col sm={3}>
-              <Form.Control
-                type="text"
-                name="title"
-                className="bg-light"
-                placeholder="Titel"
-                required
-              />
+              <Form.Control type="text" name="title" className="bg-light" placeholder="Titel" required />
             </Col>
           </Form.Group>
         </div>
 
-        <Form.Group
-          as={Row}
-          className="mb-3 justify-content-center"
-          controlId="formGroupName"
-        >
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupName">
           <Form.Label column sm={2}>
             Link til billede
           </Form.Label>
           <Col sm={3}>
-            <Form.Control
-              type="text"
-              name="image"
-              className="bg-light"
-              placeholder="URL til thumbnail"
-            />
+            <Form.Control type="text" name="image" className="bg-light" placeholder="URL til thumbnail" />
           </Col>
         </Form.Group>
 
-        <Form.Group
-          as={Row}
-          className="mb-3 justify-content-center"
-          controlId="formGroupText"
-        >
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupText">
           <Form.Label column sm={1}>
             Resume
           </Form.Label>
           <Col sm={4}>
-            <Form.Control
-              as="textarea"
-              className="bg-light"
-              name="resume"
-              rows={4}
-            />
+            <Form.Control as="textarea" className="bg-light" name="resume" rows={4} />
           </Col>
         </Form.Group>
-        <Form.Group
-          as={Row}
-          className="mb-3 justify-content-center"
-          controlId="formGroupText"
-        >
+        <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formGroupText">
           <Form.Label column sm={1}>
             Fri tekst
           </Form.Label>
           <Col sm={4}>
-            <Form.Control
-              as="textarea"
-              className="bg-light"
-              name="body"
-              rows={4}
-            />
+            <Form.Control as="textarea" className="bg-light" name="body" rows={4} />
           </Col>
         </Form.Group>
 
@@ -138,11 +105,7 @@ export default function BlogForm({ updatePosts }) {
         </Form.Group>
 
         <Form.Group className="mb-3 text-center" controlId="formBasicButton">
-          <Button
-            type="submit"
-            variant="outline-secondary"
-            className="mx-2 btn-dark text-warning"
-          >
+          <Button type="submit" variant="outline-secondary" className="mx-2 btn-dark text-warning">
             Opret
           </Button>
         </Form.Group>

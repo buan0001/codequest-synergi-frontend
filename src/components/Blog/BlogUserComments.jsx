@@ -6,7 +6,6 @@ import Col from "react-bootstrap/Col";
 
 export default function BlogUserComments({ showBool, setBool, userInfo }) {
   function someFunction() {
-    console.log("user info?", userInfo);
     return false;
   }
 
@@ -36,18 +35,19 @@ export default function BlogUserComments({ showBool, setBool, userInfo }) {
                           <img src={post.image} height={"150px"} width={"150px"} />
                         </Col>
                       </Row>
-                      {post.comments.map((comment,index) =>{return (
-                        <div key={index}>
-                          {" "}
-                          <Row className="overflow-auto my-2 py-1">
-                            <Col xs={4} md="auto">
-                              {comment.body}
-                            </Col>
-                            <Col>- {comment.createdAt}</Col>
-                          </Row>
-                        </div>
-                      );})}
-                    
+                      {post.comments.map((comment, index) => {
+                        return (
+                          <div key={index}>
+                            {" "}
+                            <Row className="overflow-auto my-2 py-1">
+                              <Col xs={4} md="auto">
+                                {comment.body}
+                              </Col>
+                              <Col>- {comment.createdAt}</Col>
+                            </Row>
+                          </div>
+                        );
+                      })}
                     </Container>
                   </div>
                 );

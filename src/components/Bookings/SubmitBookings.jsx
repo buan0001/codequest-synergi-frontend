@@ -31,7 +31,7 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
   }, [fetchData]);
 
   useEffect(() => {
-    // finding the first available date for default startDate
+    // Finding the first available date for default startDate
     function nextAvailableDate(date) {
       let today = new Date(date);
 
@@ -118,8 +118,10 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
 
     // Check if phone number is valid before proceeding
     if (phoneNumberError) {
-      console.error("Please correct the phone number."); // Log the error message
-      return; // Prevent form submission if there's an error
+      // Log the error message
+      console.error("Please correct the phone number.");
+      // Prevent form submission if there's an error
+      return;
     }
 
     const isoDate = parseDateString(startDate);
@@ -136,7 +138,6 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
       ...formEntries,
       phoneNumber,
       date: isoDate,
-      // lastDay: isoLastDay,
     };
 
     try {
@@ -147,14 +148,17 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
 
       if (responseData?.message?.includes("already exists")) {
         errorMessage("Dato'en var desværre optaget, venligst vælg en ny!");
-        fetchData(setDatesArray); // Fetch updated booking dates after unsuccessful booking
+        // Fetch updated booking dates after unsuccessful booking
+        fetchData(setDatesArray);
         return;
       } else if (!response.ok) {
         throw new Error("Network response was not ok");
       } else {
         SuccessMessage("Din booking er gennemført!");
-        event.target.reset(); // Reset the form on successful booking
-        fetchBookings(); // Fetch updated booking dates after successful booking
+        // Reset the form on successful booking
+        event.target.reset();
+        // Fetch updated booking dates after successful booking
+        fetchBookings();
         fetchData(setDatesArray);
       }
     } catch (error) {
