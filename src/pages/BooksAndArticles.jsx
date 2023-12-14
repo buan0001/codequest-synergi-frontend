@@ -61,43 +61,13 @@ export default function FetchComponent() {
     fetchData();
   }, [changedPost, showBorA]); // Dependency that decides how many times the effect runs
 
-  // async function handleSubmit(form, methodToUse = "POST", id) {
-  //   console.log("form,", form);
-  //   console.log("form entries", form.entries);
-  //   console.log("book or article?", formCreateType);
-  //   const newArticleOrBook = {
-  //     title: form.title,
-  //     releaseYear: form.releaseYear,
-  //     publisher: form.publisher,
-  //     authors: authorField.map((field) => {
-  //       return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
-  //     }),
-  //     link: form.link,
-  //     isPay: isPay,
-  //     resume: form.resume,
-  //   };
-  //   console.log("new article", newArticleOrBook);
-  //   let path = methodToUse === "POST" ? formCreateType : `${formCreateType}/${id}`;
-  //   const response = await tryCatch(path, {
-  //     method: methodToUse,
-  //     body: JSON.stringify(newArticleOrBook),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   console.log(result);
-  //   if (response) {
-  //     setChangedPost(response);
-  //   }
-  // }
-
   async function deleteClicked(e) {
     const id = e.target.id;
     console.log("delete this id", id);
     const confirmCheck = confirm("Vil du virkelig slette?");
     // console.log("did you confirm?", confirmCheck);
     if (confirmCheck) {
-      const res = await tryCatch(showBorA + "/" + id, { method: "DELETE" });
+      const res = await tryCatch(showBorA + "/" + id,  "DELETE" );
       console.log("RES", res);
       if (res.ok) {
         setChangedPost(await res.json());
