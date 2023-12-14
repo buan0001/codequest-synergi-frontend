@@ -15,10 +15,8 @@ export default function BlogForm({ updatePosts }) {
       commentsAllowed: formEntries.commentsAllowed,
     };
 
-    console.log("new post", newPost);
     // Send a POST request to the server with the new post data
     const response = await HTTPErrorHandling("blog", "POST", newPost);
-    console.log("response", response);
     // If the response is successful, update the posts
     if (response) {
       updatePosts(response);
@@ -38,10 +36,8 @@ export default function BlogForm({ updatePosts }) {
         className="bg-muted"
         onSubmit={(e) => {
           e.preventDefault();
-          console.log("target", new FormData(e.target));
           // Convert the form data into an object
           const formEntries = Object.fromEntries(new FormData(e.target).entries());
-          console.log("form entries", formEntries);
           // Handle the form submission
           handleSubmit(formEntries);
         }}
