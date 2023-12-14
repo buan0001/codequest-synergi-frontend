@@ -66,7 +66,7 @@ export default function Booking() {
         <div>
           <div>
             <SubmitBookingComponent
-              fetchBookings={bookings}
+              fetchBookings={fetchBookings}
               fetchData={fetchData}
             />
           </div>

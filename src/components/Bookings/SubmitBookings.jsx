@@ -67,13 +67,10 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
     setStartDate(nextAvailableDate(new Date()));
   }, [datesArray]);
 
-  const [phoneNumber, setPhoneNumber] = useState("");
-  console.log(phoneNumber);
   const [phoneNumberError, setPhoneNumberError] = useState("");
 
   const handlePhoneNumberChange = (event) => {
     const value = event.target.value;
-    setPhoneNumber(value);
 
     // Validate phone number length (example: minLength = 8)
     const length = 8;
