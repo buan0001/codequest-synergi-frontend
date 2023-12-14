@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
+import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import tryCatch from "../components/TryCatch";
 import BookArticleForm from "../components/BooksArticles/BooksArticlesForm";
@@ -20,6 +20,7 @@ export default function FetchComponent() {
   const [showForm, setShowForm] = useState(false)
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
+  // handles sorting order for books and articles
   const handleSort = (key) => {
     if (sortBy === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -28,6 +29,8 @@ export default function FetchComponent() {
       setSortOrder("desc");
     }
   };
+
+  
   const getSortArrow = (key) => {
     if (sortBy === key) {
       return sortOrder === "asc" ? "↑" : "↓";
@@ -35,13 +38,13 @@ export default function FetchComponent() {
     return null;
   };
 
-  const sortArticles = (articles) => {
+  const sortBooksAndArticles = (item) => {
     if (sortBy === "title") {
-      return articles.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
+      return item.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
     } else if (sortBy === "releaseYear") {
-      return articles.sort((a, b) => (sortOrder === "asc" ? a.releaseYear - b.releaseYear : b.releaseYear - a.releaseYear));
+      return item.sort((a, b) => (sortOrder === "asc" ? a.releaseYear - b.releaseYear : b.releaseYear - a.releaseYear));
     } else {
-      return articles;
+      return item;
     }
   };
 
@@ -69,6 +72,7 @@ export default function FetchComponent() {
       }
     }
   }
+
   async function editClicked(e) {
     const id = e.target.id;
     console.log("event id", e.target.id);
@@ -114,7 +118,7 @@ export default function FetchComponent() {
     <div>
       {data ? (
         <div style={{ margin: "10px" }}>
-          {sortArticles(data)
+          {sortBooksAndArticles(data)
             .filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
             .map((item) => (
               <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
@@ -190,6 +194,7 @@ export default function FetchComponent() {
     </div>
   );
 
+  // Display content, depending on whether user is logged in or not
   return (
     <div className="" style={{ backgroundColor: "rgb(237, 227, 227)" }}>
       {" "}

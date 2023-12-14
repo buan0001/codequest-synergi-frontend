@@ -139,6 +139,8 @@ export default function Blog() {
     return date;
   }
 
+  // Displays the blog posts and comments to the user and handles the logic for creating, deleting and updating posts and comments
+  // also handles the logic for displaying content depending on whether the user is logged in or not
   return (
     <div>
       {loggedIn ? (

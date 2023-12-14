@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loginStateReducer from "./features/LoginState";
 
-// Funktion til at gemme loginstate i localStorage
+// Function to save loginstate in localstorage
 const saveState = (state) => {
   try {
     const localStorageState = JSON.stringify(state);
@@ -11,7 +11,7 @@ const saveState = (state) => {
   }
 };
 
-// Læs loginstate fra localStorage
+// Read loginstate from localStorage
 const loadState = () => {
   try {
     const localStorageState = localStorage.getItem("loginState");
@@ -25,14 +25,15 @@ const loadState = () => {
   }
 };
 
+// Configure the Redux store
 const store = configureStore({
   reducer: {
     loginState: loginStateReducer,
   },
-  preloadedState: loadState(), // Læs state fra localStorage
+  preloadedState: loadState(), // Read state from localStorage
 });
 
-// Lytter på ændringer i state og gemmer i localStorage
+// Listen for changes in state and save to localStorage
 store.subscribe(() => {
   const state = store.getState();
   saveState(state);

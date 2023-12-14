@@ -14,7 +14,7 @@ export default function Contact() {
 
   const form = useRef();
 
-  // EmailJS funktionalitet
+  // Function to use emailjs to send an email
   const sendEmail = (e) => {
     e.preventDefault();
 
