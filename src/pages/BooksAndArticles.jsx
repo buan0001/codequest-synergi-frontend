@@ -209,7 +209,7 @@ export default function FetchComponent() {
               >
                 Vis/skjul oprettelsesformular
               </Button>
-              {showForm ? <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm> : ""}
+              {showForm ? <BooksArticlesForm formData={""} newSubmit={setChangedPost}></BooksArticlesForm> : ""}
             </div>
           )}
 
