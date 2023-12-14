@@ -41,7 +41,7 @@ export default function Blog() {
 
   useEffect(() => {
     async function fetchUsers() {
-      const logInFailSafe = loggedIn || false
+      const logInFailSafe = loggedIn || false;
       const response = await tryCatch("users/" + logInFailSafe);
       console.log("GETTING USERS", response);
       if (response) {
@@ -57,13 +57,12 @@ export default function Blog() {
     console.log("id to delete", blogId);
     const check = confirm(`Vil du virkelig slette opslaget ${title}?`);
     if (check) {
-      const response = await tryCatch("blog/" + blogId,  "DELETE" );
+      const response = await tryCatch("blog/" + blogId, "DELETE");
       console.log("delete response", response);
       if (response.ok) {
-        SuccessMessage("Opslag slettet")
+        SuccessMessage("Opslag slettet");
         setPostChanged(await response.json());
       }
-      else {ErrorMessage("Kunne ikke slette, prøv igen senere")}
     }
   }
 
@@ -77,19 +76,20 @@ export default function Blog() {
       newUser.admin = false;
     }
     console.log("creating user", newUser);
-    const response = await tryCatch("users", "POST", newUser );
+    const response = await tryCatch("users", "POST", newUser);
     if (response.ok) {
-      SuccessMessage("Bruger oprettet!")
+      SuccessMessage("Bruger oprettet!");
       setUserListChanged(true);
       setShowCreateUserModal(false);
+    } else {
+      ErrorMessage("Fejl ved oprettelse");
     }
-    else {ErrorMessage("Fejl ved oprettelse")}
   }
 
   async function getComments(postID) {
     const response = await tryCatch("comments/" + postID);
     if (response.ok) {
-      const result = await response.json()
+      const result = await response.json();
       console.log("GETTING COMMENTS", result);
       let existingEntry = comments?.find((post) => {
         return post._id === postID;
@@ -107,13 +107,14 @@ export default function Blog() {
   async function deleteCommentClicked(comment) {
     const check = confirm(`Vil du virkelig slette kommentaren skrevet af ${comment.userID.userName}?`);
     if (check) {
-      const response = await tryCatch("comments/" + comment._id,  "DELETE" );
+      const response = await tryCatch("comments/" + comment._id, "DELETE");
       console.log("delete response", response);
       if (response.ok) {
-        SuccessMessage("Kommentar slettet")
+        SuccessMessage("Kommentar slettet");
         getComments(comment.postID);
+      } else {
+        ErrorMessage("Kunne ikke slette kommentar, prøv igen senere");
       }
-      else {ErrorMessage("Kunne ikke slette kommentar, prøv igen senere")}
     }
   }
 
@@ -124,7 +125,7 @@ export default function Blog() {
       postID: postId,
     };
     console.log("new comment", newComment);
-    const response = await tryCatch("comments", "POST", newComment );
+    const response = await tryCatch("comments", "POST", newComment);
     if (response.ok) {
       getComments(postId);
     }
@@ -321,7 +322,7 @@ export default function Blog() {
                                         onClick={async () => {
                                           const response = await tryCatch("users/comments/" + comment.userID._id);
                                           if (response.ok) {
-                                            const result = await response.json()
+                                            const result = await response.json();
                                             result.userName = comment.userID.userName;
                                             // Make the dates reader friendly
                                             result.forEach((post) => {
