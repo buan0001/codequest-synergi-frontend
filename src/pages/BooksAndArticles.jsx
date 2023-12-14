@@ -51,7 +51,6 @@ export default function FetchComponent() {
   useEffect(() => {
     async function fetchData() {
       const response = await tryCatch(showBorA);
-      console.log("response", response);
       if (response.ok) {
         setData(await response.json());
       }
@@ -62,11 +61,9 @@ export default function FetchComponent() {
 
   async function deleteClicked(e) {
     const id = e.target.id;
-    console.log("delete this id", id);
     const confirmCheck = confirm("Vil du virkelig slette?");
     if (confirmCheck) {
       const res = await tryCatch(showBorA + "/" + id,  "DELETE" );
-      console.log("RES", res);
       if (res.ok) {
         setChangedPost(await res.json());
       }
@@ -75,14 +72,11 @@ export default function FetchComponent() {
 
   async function editClicked(e) {
     const id = e.target.id;
-    console.log("event id", e.target.id);
     const res = await tryCatch(showBorA + "/" + id);
     if (res.ok) {
       const result = res.json()
       setFormData(result);
       setShowModal(!showModal);
-      console.log("result", result);
-      console.log("form data:", formData);
       scrollTo({ top: 100, behavior: "smooth" });
     }
   }
@@ -119,9 +113,15 @@ export default function FetchComponent() {
       {data ? (
         <div style={{ margin: "10px" }}>
           {sortBooksAndArticles(data)
-            .filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            .filter((item) =>
+              item.title.toLowerCase().includes(searchTerm.toLowerCase())
+            )
             .map((item) => (
-              <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
+              <div
+                key={item._id}
+                className="container my-2"
+                style={{ border: "red 1px solid", borderRadius: "5px" }}
+              >
                 <div className="row gx-4 ">
                   <h2 className="col-9">{item.title}</h2>
                   {loggedIn ? (
@@ -179,7 +179,15 @@ export default function FetchComponent() {
                     );
                   })}
                 </div>
-                <div>{item.link ? <a href={item.link}>Link til {showBorA == "books" ? "bogen" : "artiklen"}</a> : ""}</div>
+                <div>
+                  {item.link ? (
+                    <a href={item.link}>
+                      Link til {showBorA == "books" ? "bogen" : "artiklen"}
+                    </a>
+                  ) : (
+                    ""
+                  )}
+                </div>
                 <p>
                   <b>Adgang: </b>
                   {item.pay == false ? "Gratis" : "Betalt"}
@@ -189,7 +197,7 @@ export default function FetchComponent() {
             ))}
         </div>
       ) : (
-        <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
+        <p>Loading...</p> // Placeholder if the data cannot be read or something else goes wrong
       )}
     </div>
   );

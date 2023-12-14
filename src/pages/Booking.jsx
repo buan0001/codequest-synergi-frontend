@@ -11,7 +11,6 @@ import tryCatch from "../components/TryCatch";
 
 export default function Booking() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  console.log("Logged in på booking?:", loggedIn);
 
   const [bookings, setBookings] = useState([]);
 
@@ -20,7 +19,6 @@ export default function Booking() {
 
     const data = await response.json();
     const sortedData = data.sort((b, a) => new Date(b.appointmentInfo.date) - new Date(a.appointmentInfo.date));
-    console.log("sortedData:", sortedData);
     setBookings(sortedData);
   };
 

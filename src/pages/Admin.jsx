@@ -3,7 +3,6 @@ import Login from "../components/Login";
 
 export default function AdminLogin() {
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  console.log("login boolean:", loggedIn);
   return loggedIn ? (
     <div>
       <h1>Du er nu logget ind som admin</h1>

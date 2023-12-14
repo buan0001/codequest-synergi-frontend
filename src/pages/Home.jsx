@@ -4,7 +4,6 @@ import Editor from "../components/CKEditor";
 
 
 export default function Home() {
-  // Checking if the user is logged in
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
   const prop = "forside";
