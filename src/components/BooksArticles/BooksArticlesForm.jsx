@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 // import tryCatch from "../components/TryCatch";
 import tryCatch from "../TryCatch";
 
-export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle}) {
+export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle, setShowModal }) {
   //   const [changedPost, setChangedPost] = useState("");
   //   const [showBorA, setShowBorA] = useState("articles");
   //   const [isPay, setIsPay] = useState(false);
@@ -25,10 +25,10 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
   //   return {firstName: author.firstName, lastName: author.lastName}
   // }))}
   console.log("methodToUse", methodToUse);
-  
+
   async function handleSubmit(form) {
     console.log("author field", authorField);
-    console.log("form data",formData);
+    console.log("form data", formData);
     // console.log("PROPS", props);
     console.log("form,", form);
     console.log("method to use,", methodToUse);
@@ -37,7 +37,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
       title: form.title,
       releaseYear: form.releaseYear,
       publisher: form.publisher,
-      authors: authorField.map((field,index) => {
+      authors: authorField.map((field, index) => {
         return { firstName: authorField[index].firstName, lastName: authorField[index].lastName };
       }),
       link: form.link,
@@ -46,13 +46,14 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
     };
     console.log("new article", newArticleOrBook);
     let path = form.bookOrArticle;
-    if (methodToUse === "PATCH"){newArticleOrBook._id = formData._id}
+    // if (methodToUse === "PATCH"){newArticleOrBook._id = d}
     // let path = methodToUse === "POST" ? form.bookOrArticle : `${form.bookOrArticle}/${formData._id}`;
     console.log("path", path);
-    const response = await tryCatch(path, methodToUse, newArticleOrBook);
+    const response = await tryCatch(path + "/" + formData._id, methodToUse, newArticleOrBook);
     console.log(response);
-    if (response) {
-      newSubmit(response)
+    if (response.ok) {
+      newSubmit(response);
+      setShowModal(false)
     }
   }
 

@@ -79,7 +79,7 @@ export default function FetchComponent() {
     console.log("event id", e.target.id);
     const res = await tryCatch(showBorA + "/" + id);
     if (res.ok) {
-      const result = res.json()
+      const result = await res.json()
       setFormData(result);
       setShowModal(!showModal);
       console.log("result", result);

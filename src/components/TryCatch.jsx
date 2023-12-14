@@ -19,7 +19,7 @@ export default async function tryCatch(path, method, body ) {
   }
 
   try {
-    // console.log(host + path, options);
+    console.log(host + path, options);
     const response = options.method ? await fetch(host + path, options) : await fetch(host + path);
     console.log("response",response);
     if (!response.ok) {

@@ -17,7 +17,7 @@ export default function UpdateModal({showModal, showBorA, setChangedPost, setSho
               <Modal.Title>Rediger {showBorA == "books" ? "bog" : "artikel"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <BookArticleForm formData={formData} newSubmit={setChangedPost} methodToUse={"PATCH"} bookOrArticle={showBorA}></BookArticleForm>
+              <BookArticleForm formData={formData} newSubmit={setChangedPost} methodToUse={"PATCH"} bookOrArticle={showBorA} setShowModal={setShowModal}></BookArticleForm>
             </Modal.Body>
 
             <Modal.Footer>

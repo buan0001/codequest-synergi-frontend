@@ -71,23 +71,6 @@ export default function Booking({ fetchBookings, fetchData }) {
     setStartDate(nextAvailableDate(new Date()));
   }, [datesArray]);
 
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:3333/booking");
-  //       if (!response.ok) {
-  //         throw new Error("An error occurred during fetch");
-  //       }
-  //       const result = await response.json();
-
-  //       // Assuming result is an array of booking objects with 'date' property
-  //       const dates = result.map((booking) => booking.appointmentInfo.date);
-  //       const dateObjectsArray = dates.map((dateString) => new Date(dateString));
-
-  //       setDatesArray(dateObjectsArray);
-  //     } catch (error) {
-  //       console.error("Error fetching dates:", error);
-  //     }
-  //   };
   console.log(datesArray);
 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -203,8 +186,11 @@ export default function Booking({ fetchBookings, fetchData }) {
       } else {
         SuccessMessage("Din booking er gennemført!");
         event.target.reset(); // Reset the form on successful booking
+        console.log("succesfully reset");
         fetchBookings(); // Fetch updated booking dates after successful booking
+        console.log("succesfully fetched bookings");
         fetchData();
+        console.log("succesfully fetched data");
       }
     } catch (error) {
       console.error("Error:", error);
