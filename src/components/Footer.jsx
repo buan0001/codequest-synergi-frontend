@@ -10,14 +10,6 @@ export default function Footer() {
           <p className="text-light">Peter Sass Hansen-Skovmoes</p>
           <p className="text-light">tlf: +45 53 51 53 40</p>
         </div>
-        <a className="text-light" href="https://www.facebook.com/peter.skovmoes">
-          {" "}
-          Facebook
-        </a>
-        <a className="text-light" href="https://www.instagram.com/peterskovmoes/">
-          {" "}
-          Instagram
-        </a>
       </div>
     </div>
   );
