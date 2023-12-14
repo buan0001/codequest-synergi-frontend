@@ -26,7 +26,6 @@ export default function Blog() {
   useEffect(() => {
     async function fetchPosts() {
       const response = await HTTPErrorHandling("blog");
-      console.log("GETTING POSTS", response);
       if (response.ok) {
         setPosts(await response.json());
       }
@@ -39,7 +38,6 @@ export default function Blog() {
     async function fetchUsers() {
       const logInFailSafe = loggedIn || false;
       const response = await HTTPErrorHandling("users/" + logInFailSafe);
-      console.log("GETTING USERS", response);
       if (response) {
         setUserList(await response.json());
       }
@@ -50,11 +48,9 @@ export default function Blog() {
 
   async function deletePostClicked(e, title) {
     const blogId = e.target.id;
-    console.log("id to delete", blogId);
     const check = confirm(`Vil du virkelig slette opslaget ${title}?`);
     if (check) {
       const response = await HTTPErrorHandling("blog/" + blogId, "DELETE");
-      console.log("delete response", response);
       if (response.ok) {
         SuccessMessage("Opslag slettet");
         setPostChanged(await response.json());
@@ -71,7 +67,6 @@ export default function Blog() {
     } else {
       newUser.admin = false;
     }
-    console.log("creating user", newUser);
     const response = await HTTPErrorHandling("users", "POST", newUser);
     if (response.ok) {
       SuccessMessage("Bruger oprettet!");
@@ -86,7 +81,6 @@ export default function Blog() {
     const response = await HTTPErrorHandling("comments/" + postID);
     if (response.ok) {
       const result = await response.json();
-      console.log("GETTING COMMENTS", result);
       let existingEntry = comments?.find((post) => {
         return post._id === postID;
       });
@@ -104,7 +98,6 @@ export default function Blog() {
     const check = confirm(`Vil du virkelig slette kommentaren skrevet af ${comment.userID.userName}?`);
     if (check) {
       const response = await HTTPErrorHandling("comments/" + comment._id, "DELETE");
-      console.log("delete response", response);
       if (response.ok) {
         SuccessMessage("Kommentar slettet");
         getComments(comment.postID);
@@ -120,7 +113,6 @@ export default function Blog() {
       userID: form.user.value,
       postID: postId,
     };
-    console.log("new comment", newComment);
     const response = await HTTPErrorHandling("comments", "POST", newComment);
     if (response.ok) {
       getComments(postId);
@@ -138,6 +130,8 @@ export default function Blog() {
     return date;
   }
 
+  // Displays the blog posts and comments to the user and handles the logic for creating, deleting and updating posts and comments
+  // also handles the logic for displaying content depending on whether the user is logged in or not
   return (
     <div>
       {loggedIn ? (
@@ -323,7 +317,6 @@ export default function Blog() {
                                             result.forEach((post) => {
                                               post.comments.forEach((comment) => (comment.createdAt = getPresentableDate(comment.createdAt)));
                                             });
-                                            console.log("getting comments from one user", result);
                                             setShowUserCommentsModal(true);
                                             setUserComments(result);
                                           }

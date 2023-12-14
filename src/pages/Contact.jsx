@@ -4,28 +4,23 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { useSelector } from "react-redux";
 import SuccessMessage from "../components/SuccessMessage";
 import ErrorMessage from "../components/ErrorMessage";
 
 export default function Contact() {
-  const loggedIn = useSelector((state) => state.loginState.loggedIn);
-  console.log("state", loggedIn);
 
   const form = useRef();
 
-  // EmailJS funktionalitet
+  // Function to use emailjs to send an email
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs.sendForm(`service_mo1481e`, `template_3x3y7gc`, form.current, `QennLeEfNjWQd9kMQ`).then(
-      (result) => {
-        console.log(result.text);
+      () => {
         SuccessMessage("Din besked er sendt!");
         e.target.reset();
       },
-      (error) => {
-        console.log(error.text);
+      () => {
         ErrorMessage("Din besked blev ikke sendt, prøv igen!");
       }
     );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
+import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import HTTPErrorHandling from "../components/TryCatch";
 import BookArticleForm from "../components/BooksArticles/BooksArticlesForm";
@@ -18,6 +18,7 @@ export default function FetchComponent() {
   const [showForm, setShowForm] = useState(false);
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
 
+  // handles sorting order for books and articles
   const handleSort = (key) => {
     if (sortBy === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -26,6 +27,7 @@ export default function FetchComponent() {
       setSortOrder("desc");
     }
   };
+
   const getSortArrow = (key) => {
     if (sortBy === key) {
       return sortOrder === "asc" ? "↑" : "↓";
@@ -33,20 +35,19 @@ export default function FetchComponent() {
     return null;
   };
 
-  const sortArticles = (articles) => {
+  const sortBooksAndArticles = (item) => {
     if (sortBy === "title") {
-      return articles.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
+      return item.sort((a, b) => (sortOrder === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
     } else if (sortBy === "releaseYear") {
-      return articles.sort((a, b) => (sortOrder === "asc" ? a.releaseYear - b.releaseYear : b.releaseYear - a.releaseYear));
+      return item.sort((a, b) => (sortOrder === "asc" ? a.releaseYear - b.releaseYear : b.releaseYear - a.releaseYear));
     } else {
-      return articles;
+      return item;
     }
   };
 
   useEffect(() => {
     async function fetchData() {
       const response = await HTTPErrorHandling(showBorA);
-      console.log("response", response);
       if (response.ok) {
         setData(await response.json());
       }
@@ -57,26 +58,22 @@ export default function FetchComponent() {
 
   async function deleteClicked(e) {
     const id = e.target.id;
-    console.log("delete this id", id);
     const confirmCheck = confirm("Vil du virkelig slette?");
     if (confirmCheck) {
       const res = await HTTPErrorHandling(showBorA + "/" + id, "DELETE");
-      console.log("RES", res);
       if (res.ok) {
         setChangedPost(await res.json());
       }
     }
   }
+
   async function editClicked(e) {
     const id = e.target.id;
-    console.log("event id", e.target.id);
     const res = await HTTPErrorHandling(showBorA + "/" + id);
     if (res.ok) {
       const result = res.json();
       setFormData(result);
       setShowModal(!showModal);
-      console.log("result", result);
-      console.log("form data:", formData);
       scrollTo({ top: 100, behavior: "smooth" });
     }
   }
@@ -112,7 +109,7 @@ export default function FetchComponent() {
     <div>
       {data ? (
         <div style={{ margin: "10px" }}>
-          {sortArticles(data)
+          {sortBooksAndArticles(data)
             .filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
             .map((item) => (
               <div key={item._id} className="container my-2" style={{ border: "red 1px solid", borderRadius: "5px" }}>
@@ -183,11 +180,12 @@ export default function FetchComponent() {
             ))}
         </div>
       ) : (
-        <p>Loading...</p> // Placeholder hvis data ikke kan læses eller andet går galt
+        <p>Loading...</p> // Placeholder if the data cannot be read or something else goes wrong
       )}
     </div>
   );
 
+  // Display content, depending on whether user is logged in or not
   return (
     <div className="" style={{ backgroundColor: "rgb(237, 227, 227)" }}>
       {" "}
