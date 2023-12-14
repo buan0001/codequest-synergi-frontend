@@ -13,6 +13,7 @@ export default function LogoutButton() {
   };
 
   if (loggedIn) {
+    // Render the logout button if the user is logged in
     return (
       <div>
         <Button
@@ -26,5 +27,6 @@ export default function LogoutButton() {
       </div>
     );
   }
+  // Return null if the user is not logged in
   return null;
 }

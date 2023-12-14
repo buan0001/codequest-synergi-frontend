@@ -14,8 +14,3 @@ const ErrorMessage = (errorString) => {
 };
 
 export default ErrorMessage;
-
-// how to use:
-// 1. import ErrorMessage
-// 2. insert when it's to be shown:
-// errorMessage("The text you want shown");

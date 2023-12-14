@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import HTTPErrorHandling from "../components/TryCatch";
-import BookArticleForm from "../components/BooksArticles/BooksArticlesForm";
+import BooksArticlesForm from "../components/BooksArticles/BooksArticlesForm";
 import UpdateModal from "../components/BooksArticles/UpdateModal";
 
 export default function FetchComponent() {
@@ -203,7 +203,7 @@ export default function FetchComponent() {
               >
                 Vis/skjul oprettelsesformular
               </Button>
-              {showForm ? <BookArticleForm formData={""} newSubmit={setChangedPost}></BookArticleForm> : ""}
+              {showForm ? <BooksArticlesForm formData={""} newSubmit={setChangedPost}></BooksArticlesForm> : ""}
             </div>
           )}
 

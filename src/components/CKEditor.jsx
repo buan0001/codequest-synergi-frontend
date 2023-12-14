@@ -1,24 +1,23 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import "../App.css";
 import { useState } from "react";
-import HTTPErrorHandling from "./TryCatch";
 import { Button } from "react-bootstrap";
+import "../App.css";
 import SuccessMessage from "./SuccessMessage";
+import HTTPErrorHandling from "./TryCatch";
 
 function Edit({ title, callUpdate }) {
   const [textContent, setTextContent] = useState();
   const routeToUse = "pages";
 
+  // Fetches the page content from the server and sets the text content and editor data
   async function fetchPage(editor) {
-    console.log("route to use", routeToUse);
     try {
       const response = await HTTPErrorHandling(`${routeToUse}/${title}`);
       if (!response.ok) {
         throw new Error("Der opstod en fejl ved fetch");
       }
       const result = await response.json();
-      console.log("FETCH DATA", result);
       setTextContent(result.body);
       editor?.setData(result.body);
     } catch (error) {
@@ -26,6 +25,7 @@ function Edit({ title, callUpdate }) {
     }
   }
 
+  // Sends a PATCH request to update the page content
   async function patchContent() {
     const data = { body: textContent, title: title };
     const response = await HTTPErrorHandling(routeToUse, "PATCH", data);
@@ -33,8 +33,6 @@ function Edit({ title, callUpdate }) {
       SuccessMessage(`${title} blev redigeret!`);
       callUpdate(true);
     }
-
-    console.log(response);
   }
 
   return (

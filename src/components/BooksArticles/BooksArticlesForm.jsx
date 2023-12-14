@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import HTTPErrorHandling from "../TryCatch";
 
-export default function BookArticleForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle }) {
+export default function BooksArticlesForm({ formData, newSubmit, methodToUse = "POST", bookOrArticle }) {
   const [formCreateType, setFormCreateType] = useState("articles");
   const [authorField, setAuthorField] = useState(
     methodToUse === "POST"
@@ -14,13 +14,8 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
           return { firstName: author.firstName, lastName: author.lastName, placement: index };
         })
   );
-  console.log("methodToUse", methodToUse);
 
   async function handleSubmit(form) {
-    console.log("author field", authorField);
-    console.log("form data", formData);
-    console.log("form,", form);
-    console.log("method to use,", methodToUse);
     const newArticleOrBook = {
       title: form.title,
       releaseYear: form.releaseYear,
@@ -32,14 +27,14 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
       isPay: form.isPay,
       resume: form.resume,
     };
-    console.log("new article", newArticleOrBook);
+
     let path = form.bookOrArticle;
+
     if (methodToUse === "PATCH") {
       newArticleOrBook._id = formData._id;
     }
-    console.log("path", path);
+
     const response = await HTTPErrorHandling(path, methodToUse, newArticleOrBook);
-    console.log(response);
     if (response) {
       newSubmit(response);
     }
@@ -58,9 +53,7 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
         className="bg-muted"
         onSubmit={(e) => {
           e.preventDefault();
-          console.log("target", new FormData(e.target));
           const formEntries = Object.fromEntries(new FormData(e.target).entries());
-          console.log("form entries", formEntries);
           handleSubmit(formEntries);
         }}
         onChange={(e) => {
@@ -83,7 +76,6 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
               className="justify-content-center"
               style={{ width: "30vw" }}
               onChange={(e) => {
-                console.log("default value", bookOrArticle);
                 setFormCreateType(e.target.value);
               }}
             >
@@ -121,7 +113,6 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
 
         <div>
           {authorField.map((field, index) => {
-            console.log("mapping");
             return (
               <div key={index}>
                 <div>
@@ -150,7 +141,6 @@ export default function BookArticleForm({ formData, newSubmit, methodToUse = "PO
                         id={index}
                         onClick={(e) => {
                           const id = Number(e.target.id);
-                          console.log("ID", id);
                           const newField = authorField.filter((entry) => {
                             return entry.placement !== id;
                           });
