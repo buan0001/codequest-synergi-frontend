@@ -23,8 +23,8 @@ setDefaultLocale("da");
 
 export default function SubmitBookings({ fetchBookings, fetchData }) {
   const [datesArray, setDatesArray] = useState([]);
-
   const [startDate, setStartDate] = useState(null);
+  const [phoneNumberError, setPhoneNumberError] = useState("");
 
   useEffect(() => {
     fetchData(setDatesArray);
@@ -67,13 +67,8 @@ export default function SubmitBookings({ fetchBookings, fetchData }) {
     setStartDate(nextAvailableDate(new Date()));
   }, [datesArray]);
 
-  const [phoneNumber, setPhoneNumber] = useState("");
-  console.log(phoneNumber);
-  const [phoneNumberError, setPhoneNumberError] = useState("");
-
   const handlePhoneNumberChange = (event) => {
     const value = event.target.value;
-    setPhoneNumber(value);
 
     // Validate phone number length (example: minLength = 8)
     const length = 8;
