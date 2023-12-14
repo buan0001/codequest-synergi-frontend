@@ -32,7 +32,7 @@ const store = configureStore({
   preloadedState: loadState(), // Læs state fra localStorage
 });
 
-// "Subscribe" til ændringer i state og gem i localStorage
+// Lytter på ændringer i state og gemmer i localStorage
 store.subscribe(() => {
   const state = store.getState();
   saveState(state);
