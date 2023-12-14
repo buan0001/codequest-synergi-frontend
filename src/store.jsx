@@ -16,7 +16,7 @@ const loadState = () => {
   try {
     const localStorageState = localStorage.getItem("loginState");
     if (localStorageState === null) {
-      return undefined
+      return undefined;
     }
     return JSON.parse(localStorageState);
   } catch (err) {

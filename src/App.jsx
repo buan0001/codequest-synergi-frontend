@@ -25,7 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
 // import Processconsultation from "./pages/Processconsultation";
 // import InternalTrainingCourses from "./pages/InternalTrainingCourses";
 
-// fd3c3;
+// "#dfd3c3"
 
 export default function App() {
   return (
@@ -52,8 +52,8 @@ export default function App() {
             <Route path="/ledelsesudvikling" element={<StandardPage title={"ledelsesudvikling"} />}></Route> {/* Ledelsesudvikling page */}
             <Route path="/4R ledelsesudvikling" element={<StandardPage title={"4R ledelsesudvikling"} />}></Route> {/* 4R Ledelsesudvikling page */}
             <Route path="/interne uddannelsesforløb" element={<StandardPage title={"interne uddannelsesforløb"} />}></Route> {/* Interne uddannelsesforløb page */}
-            <Route path="*" element={<h1>Site Not Found</h1>}></Route>
             <Route path="/admin" element={<Admin />}></Route>
+            <Route path="*" element={<h1>Site Not Found</h1>}></Route>
           </Routes>
         </div>
       </div>

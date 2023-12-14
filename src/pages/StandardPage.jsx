@@ -4,11 +4,9 @@ import Editor from "../components/CKEditor";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 
-export default function Coaching(prop) {
-  // console.log(prop);
-  console.log(prop.title);
-  const title = prop.title;
+export default function StandardPage({title}) {
   const [showEditor, setShowEditor] = useState(false);
+  const [updatePage, setUpdatePage] = useState(false)
   const loggedIn = useSelector((state) => state.loginState.loggedIn);
   //   const prop = "anerkendende coaching";
   function handleEditor() {
@@ -21,11 +19,11 @@ export default function Coaching(prop) {
           handleEditor();
         }}
       >
-        Toggle editor
+        {showEditor ? "Luk redigeringsvindue" : "Åbn redigeringsvindue"}
       </Button>
-      {showEditor ? <Editor title={title} /> : <div></div>}
+      {showEditor ? <Editor title={title} callUpdate={setUpdatePage} /> : <div></div>}
       <div className="p-4">
-        <InfoPages title={title} />
+        <InfoPages title={title} update={updatePage} />
       </div>
     </div>
   ) : (

@@ -53,43 +53,13 @@ export default function FetchComponent() {
     async function fetchData() {
       const response = await tryCatch(showBorA);
       console.log("response", response);
-      if (response) {
-        setData(response);
+      if (response.ok) {
+        setData(await response.json());
       }
     }
 
     fetchData();
   }, [changedPost, showBorA]); // Dependency that decides how many times the effect runs
-
-  // async function handleSubmit(form, methodToUse = "POST", id) {
-  //   console.log("form,", form);
-  //   console.log("form entries", form.entries);
-  //   console.log("book or article?", formCreateType);
-  //   const newArticleOrBook = {
-  //     title: form.title,
-  //     releaseYear: form.releaseYear,
-  //     publisher: form.publisher,
-  //     authors: authorField.map((field) => {
-  //       return { firstName: form["firstName" + field], lastName: form["lastName" + field] };
-  //     }),
-  //     link: form.link,
-  //     isPay: isPay,
-  //     resume: form.resume,
-  //   };
-  //   console.log("new article", newArticleOrBook);
-  //   let path = methodToUse === "POST" ? formCreateType : `${formCreateType}/${id}`;
-  //   const response = await tryCatch(path, {
-  //     method: methodToUse,
-  //     body: JSON.stringify(newArticleOrBook),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   console.log(result);
-  //   if (response) {
-  //     setChangedPost(response);
-  //   }
-  // }
 
   async function deleteClicked(e) {
     const id = e.target.id;
@@ -97,10 +67,10 @@ export default function FetchComponent() {
     const confirmCheck = confirm("Vil du virkelig slette?");
     // console.log("did you confirm?", confirmCheck);
     if (confirmCheck) {
-      const res = await tryCatch(showBorA + "/" + id, { method: "DELETE" });
+      const res = await tryCatch(showBorA + "/" + id,  "DELETE" );
       console.log("RES", res);
-      if (res) {
-        setChangedPost(res);
+      if (res.ok) {
+        setChangedPost(await res.json());
       }
     }
   }
@@ -108,10 +78,11 @@ export default function FetchComponent() {
     const id = e.target.id;
     console.log("event id", e.target.id);
     const res = await tryCatch(showBorA + "/" + id);
-    if (res) {
-      setFormData(res);
+    if (res.ok) {
+      const result = res.json()
+      setFormData(result);
       setShowModal(!showModal);
-      console.log("RES", res);
+      console.log("result", result);
       console.log("form data:", formData);
       scrollTo({ top: 100, behavior: "smooth" });
     }
